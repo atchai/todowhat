@@ -46,7 +46,7 @@ App.view = Backbone.View.extend({
     render: function () {
         listofitems = '';
         collection.each(function (col) {
-            var tmpsting = '<li id=' + col.get('id') + '> <input type="checkbox">' + col.get('content') + '</li>';
+            var tmpsting = '<li id=' + col.cid + '> <input type="checkbox">' + col.get('content') + '</li>';
             listofitems = tmpsting.concat(listofitems);
         });
         var html = this.template({
@@ -58,7 +58,7 @@ App.view = Backbone.View.extend({
             collection.fetch();
             collection.each(function (col) {
                 if (col.get('done')) {
-                    var tmpid = '#' + col.get('id');
+                    var tmpid = '#' + col.cid;
                     console.log($(tmpid));
                     $(tmpid + ' input').attr('checked', 'checked');
                     $(tmpid).addClass('struck');
