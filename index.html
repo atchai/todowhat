@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>testing Backbone.js</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+          <script src="jquery.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+      <script src="underscore.js"></script>
+      <script src="backbone.js"></script>
+      <script type="text/javascript" src="backbone.localStorage.js"></script>
+            <script id="test-template">
+      <div id="container">
+      <form>      
+      <input type="text" size="25" placeholder="todo here" id="todofield">
+      <button class="submit">add todo</button>
+      </form>
+          <%= test %>
+          <ul id="todoul">
+          <%= todoslist %>
+          </ul>
+      </div>
+      </script>
+  </head>
+  <body>
+
+
+      <script src="app.js"></script>
+      <script type="text/javascript">
+
+        $(document).ready(function() {
+            var test = new App.view();
+            });
+
+      </script>
+
+  </body>
+</html>
