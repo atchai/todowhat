@@ -1,5 +1,8 @@
 var App = App || {};
-
+var order = [];
+var rearrange = function(position) {
+    return collection.get({cid: value});
+}
 App.model = Backbone.Model.extend({
     defaults: {
         done: false
@@ -39,21 +42,40 @@ App.view = Backbone.View.extend({
     },
     events: {
         "click .submit": "addTodo",
-            "click .remove": "removeTodo",
+        "click .remove": "removeTodo",
     },
     el: $("body"),
     template: _.template($('#test-template').html()),
     render: function () {
         listofitems = '';
-        collection.each(function (col) {
-            var tmpsting = '<li id=' + col.cid + '> <input type="checkbox">' + col.get('content') + '</li>';
-            listofitems = tmpsting.concat(listofitems);
-        });
-        var html = this.template({
-            test: '<h1>test</h1>',
-            todoslist: listofitems
-        });
-        this.$el.html(html);
+        if (order.length == 0) {
+            collection.each(function (col) {
+                var tmpsting = '<li id=' + col.cid + '> <input type="checkbox">' + col.get('content') + '</li>';
+                listofitems = tmpsting.concat(listofitems);
+            });
+            var html = this.template({
+                test: '<h1>test</h1>',
+                todoslist: listofitems
+            });
+            this.$el.html(html);
+        }
+        else {
+            console.log('order array isnt empty');
+            $(document).ready(function(){
+                for (var i=0; i<order.length; i++)
+                {
+                    console.log(collection.get({cid: order[i]}).get('content'));
+                    var tmpstring = '<li id=' + order[i] + '> <input type="checkbox">' + collection.get({cid: order[i]}).get('content') + '</li>';
+                
+                listofitems += tmpstring;
+                }
+                console.log(listofitems);
+                $('#todoul').html(listofitems);
+                
+            });
+            
+
+        }
         $(document).ready(function () {
             collection.fetch();
             collection.each(function (col) {
@@ -80,10 +102,13 @@ App.view = Backbone.View.extend({
             })
         });
         $(document).ready(function () {
+
             $("#todoul").sortable({
                  update : function () {
-                    var order = $('#todoul').sortable('toArray').toString();                    
+                    order = $('#todoul').sortable('toArray');                    
                     console.log("Order: "+order);
+
+                    localStorage["orderlist"] = JSON.stringify(order);
             
 
                 }
@@ -107,6 +132,12 @@ App.view = Backbone.View.extend({
                 console.log('adding: ' + todotmp);
                 // $('ul').prepend('<li>'+todotmp+'</li>');
                 //  $('li:first').prepend('<input type="checkbox">');
+                cid = collection.at(collection.length - 1).cid;
+                console.log(cid);
+                if (order.length != 0){ //if list has been rearranged, order array wont be empty
+                    order.unshift(cid);
+                }
+
             }
             $('input[type="checkbox"]').click(function () {
                 if (this.checked) {
