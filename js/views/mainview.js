@@ -6,8 +6,16 @@ app.MainView = Backbone.View.extend({
             reset: true
         });
         if (app.todos.models.length == 0) {
-            var fakeModels = [{'content': 'review this ticket'}, {'content': 'drink some water'}, {'content': 'take a break'}];
-            for(var i=0;i<fakeModels.length;i++){app.todos.create(fakeModels[i]);}
+            var fakeModels = [{
+                'content': 'review this ticket'
+            }, {
+                'content': 'drink some water'
+            }, {
+                'content': 'take a break'
+            }];
+            for (var i = 0; i < fakeModels.length; i++) {
+                app.todos.create(fakeModels[i]);
+            }
         }
         this.listenTo(app.todos, 'reset', this.render);
         this.listenTo(app.todos, 'add', this.addTodoView);
@@ -16,20 +24,26 @@ app.MainView = Backbone.View.extend({
 
     },
     events: {
-        "click .submit": "addTodo"
+        "click .submit": "addTodo",
+        "click #filterDone": "filterDone",
+        "click #filterNotDone": "filterNotDone",
+        "click #showAll": "render"
     },
     el: $("body"),
     render: function() {
         $('#todoul').empty();
         app.todos.each(function(item) {
             this.addTodoView(item);
-        }, this)
+        }, this);
+        $('#showAll').attr("id","showAllDummy");;
         $(document).ready(function() {
             app.checkDoneStatus();
             app.toggleDoneStatus();
             app.orderPersistance();
             $("#todoul").disableSelection();
         });
+        $('a').css('font-weight', 'normal');
+        $('#showAllDummy').css('font-weight', 'bold');
         return this;
 
 
@@ -37,7 +51,7 @@ app.MainView = Backbone.View.extend({
     addTodo: function(e) {
         e.preventDefault();
         var todoContent = $('#todofield').val();
-        if (todoContent && todoContent.length<=255) {
+        if (todoContent && todoContent.length <= 255) {
             console.log(todoContent.length);
             var todosAmount = app.todos.models.length;
             var highestOrder;
@@ -70,6 +84,48 @@ app.MainView = Backbone.View.extend({
     removeTodoView: function(todo) {
         var cid = '#' + todo.cid;
         $(cid).remove();
+    },
+    filterDone: function() {
+        var thing = app.todos.filterDone(true);
+        if (thing.length==0){return false};
+        $('#todoul').empty();
+        thing.each(function(c) {
+            console.log(c);
+            this.addTodoView(c);
+        }, this);
+        $('a').css('font-weight', 'normal');
+        $('#filterDone').css("font-weight", "bold");
+        $(document).ready(function() {
+            app.checkDoneStatus();
+            app.toggleDoneStatus();
+            app.orderPersistance();
+            $("#todoul").disableSelection();
+        });
+        $('#showAllDummy').attr("id","showAll")
+
+    },
+    filterNotDone: function() {
+        var thing = app.todos.filterDone(false);
+        if (thing.length==0){return false};
+        $('#todoul').empty();
+        thing.each(function(c) {
+            console.log(c);
+            this.addTodoView(c);
+        }, this);
+        $('a').css('font-weight', 'normal');
+        $('#filterNotDone').css("font-weight", "bold");
+        $(document).ready(function() {
+            app.checkDoneStatus();
+            app.toggleDoneStatus();
+            app.orderPersistance();
+            $("#todoul").disableSelection();
+        });
+    },
+    showAll: function() {
+        app.todos.each(function(c) {
+            console.log(c);
+            this.addTodoView(c);
+        }, this);
     }
 });
 
@@ -102,6 +158,8 @@ app.orderPersistance = function() {
                     'order': orderOfAbove - 1
                 });
             } else {
+                console.log(app.todos.get(cidOfDropped).get('order'))
+
                 app.todos.get({
                     cid: cidOfDropped
                 }).save({
@@ -126,12 +184,11 @@ app.orderPersistance = function() {
 };
 
 app.checkDoneStatus = function() {
-     this.todos.each(function(col) { //check if has been marked as done, then sets style
-                if (col.get('done')) {
-                    var tmpId = '#' + col.cid;
-                    $(tmpId + ' input').attr('checked', 'checked');
-                    $(tmpId).addClass('struck');
-                }
-            });
+    this.todos.each(function(col) { //check if has been marked as done, then sets style
+        if (col.get('done')) {
+            var tmpId = '#' + col.cid;
+            $(tmpId + ' input').attr('checked', 'checked');
+            $(tmpId).addClass('struck');
+        }
+    });
 };
-
