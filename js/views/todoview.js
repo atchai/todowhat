@@ -3,7 +3,7 @@ var app = app || {};
 app.TodoView = Backbone.View.extend({
     tagName: 'li',
     id: function() {
-        return this.model.cid
+        return this.model.cid;
     },
     events: {
         "click .remove": "removeTodo",
@@ -11,7 +11,6 @@ app.TodoView = Backbone.View.extend({
     },
     template: _.template($('#todo-template').html()),
     render: function() {
-        if (this.model.get('done')){console.log('this is done')};
         var html = this.template({
             todoItem: this.model.get('content')
         });
@@ -23,7 +22,6 @@ app.TodoView = Backbone.View.extend({
     },
     toggleDone: function() {
         var done = this.model.get('done');
-        console.log(!done);
         this.model.save({'done': !done});
         $(this.el).toggleClass('struck');
     }
