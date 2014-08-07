@@ -52,20 +52,7 @@ app.MainView = Backbone.View.extend({
         e.preventDefault();
         var todoContent = $('#todofield').val();
         if (todoContent && todoContent.length <= 255 && ($.trim(todoContent)) != 0) {
-            console.log(todoContent.length);
-            var todosAmount = app.todos.models.length;
-            var highestOrder;
-            if (todosAmount == 0) {
-                app.todos.create({ //THIS SHIT TRIGGERS ADD EVENT
-                    content: todoContent
-                });
-            } else {
-                highestOrder = app.todos.models[todosAmount - 1].get('order');
-                app.todos.create({
-                    content: todoContent,
-                    order: highestOrder
-                });
-            }
+            app.todos.create({content: todoContent, order: app.todos.newOrder()});
             $('#todofield').val('');
         }
     },

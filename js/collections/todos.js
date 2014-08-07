@@ -9,6 +9,9 @@ app.Todos = Backbone.Collection.extend({
 			return todo.get('done') === status;
 		});
 		return new app.Todos(filtered);
+	},
+	newOrder: function() {
+		return this.last().get('order')+1;
 	}
 });
 app.todos = new app.Todos([]);
