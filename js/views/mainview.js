@@ -2,6 +2,9 @@ app = app || {}
 
 app.MainView = Backbone.View.extend({
     initialize: function() {
+        this.listenTo(app.todos, 'reset', this.render);
+        this.listenTo(app.todos, 'add', this.addTodoView);
+        this.listenTo(app.todos, 'remove', this.removeTodoView);
         app.todos.fetch({
             reset: true
         });
@@ -13,14 +16,11 @@ app.MainView = Backbone.View.extend({
             }, {
                 'content': 'take a break'
             }];
-            for (var i = 0; i < fakeModels.length; i++) {
-                app.todos.create(fakeModels[i]);
-            }
+            _.each(fakeModels, function(thing) {
+                console.log(thing)
+                app.todos.create(thing)
+            })
         }
-        this.listenTo(app.todos, 'reset', this.render);
-        this.listenTo(app.todos, 'add', this.addTodoView);
-        this.listenTo(app.todos, 'remove', this.removeTodoView);
-        this.render();
 
     },
     events: {
@@ -34,16 +34,16 @@ app.MainView = Backbone.View.extend({
         $('#todoul').empty();
         app.todos.each(function(item) {
             this.addTodoView(item);
+            this.checkDoneStatus(item);
         }, this);
-        $('#showAll').attr("id","showAllDummy");;
+        $('#showAll').attr("id", "showAllDummy");
         $(document).ready(function() {
-            app.checkDoneStatus();
-            app.toggleDoneStatus();
             app.orderPersistance();
             $("#todoul").disableSelection();
         });
         $('a').css('font-weight', 'normal');
         $('#showAllDummy').css('font-weight', 'bold');
+
         return this;
 
 
@@ -51,7 +51,7 @@ app.MainView = Backbone.View.extend({
     addTodo: function(e) {
         e.preventDefault();
         var todoContent = $('#todofield').val();
-        if (todoContent && todoContent.length <= 255) {
+        if (todoContent && todoContent.length <= 255 && ($.trim(todoContent)) != 0) {
             console.log(todoContent.length);
             var todosAmount = app.todos.models.length;
             var highestOrder;
@@ -68,11 +68,6 @@ app.MainView = Backbone.View.extend({
             }
             $('#todofield').val('');
         }
-        $(document).ready(function() {
-            app.toggleDoneStatus();
-        });
-
-
     },
     addTodoView: function(todo) {
         var thing = new app.TodoView({
@@ -87,73 +82,68 @@ app.MainView = Backbone.View.extend({
     },
     filterDone: function() {
         var thing = app.todos.filterDone(true);
-        if (thing.length==0){return false};
+        if (thing.length == 0) {
+            return false
+        };
         $('#todoul').empty();
         thing.each(function(c) {
             console.log(c);
             this.addTodoView(c);
+            this.checkDoneStatus(c);
         }, this);
         $('a').css('font-weight', 'normal');
         $('#filterDone').css("font-weight", "bold");
         $(document).ready(function() {
-            app.checkDoneStatus();
-            app.toggleDoneStatus();
             app.orderPersistance();
             $("#todoul").disableSelection();
         });
-        $('#showAllDummy').attr("id","showAll")
+        $('#showAllDummy').attr("id", "showAll")
 
     },
     filterNotDone: function() {
         var thing = app.todos.filterDone(false);
-        if (thing.length==0){return false};
+        if (thing.length == 0) {
+            return false
+        };
         $('#todoul').empty();
         thing.each(function(c) {
             console.log(c);
             this.addTodoView(c);
+            this.checkDoneStatus(c);
         }, this);
         $('a').css('font-weight', 'normal');
         $('#filterNotDone').css("font-weight", "bold");
         $(document).ready(function() {
-            app.checkDoneStatus();
-            app.toggleDoneStatus();
             app.orderPersistance();
             $("#todoul").disableSelection();
         });
+        $('#showAllDummy').attr("id", "showAll")
+
     },
     showAll: function() {
         app.todos.each(function(c) {
             console.log(c);
             this.addTodoView(c);
         }, this);
+    },
+    checkDoneStatus: function(todo) {
+        if (todo.get('done')) {
+            var tmpId = '#' + todo.cid;
+            $(tmpId + ' input').attr('checked', 'checked');
+            $(tmpId).addClass('struck');
+        }
     }
 });
-
-app.toggleDoneStatus = function() {
-    $('input[type="checkbox"]').click(function() {
-        if (this.checked) {
-            app.todos.get($(this).closest('li').attr("id")).save({
-                "done": true
-            });
-            $(this).closest('li').addClass('struck');
-        } else {
-            $(this).closest('li').removeClass('struck');
-            app.todos.get($(this).closest('li').attr("id")).save({
-                "done": false
-            });
-        }
-    });
-};
 
 app.orderPersistance = function() {
     $("#todoul").sortable({
         update: function(event, ui) {
-            var order = $('#todoul').sortable('toArray');
-            var cidOfDropped = ui.item.context.id;
-            var itemIndex = ui.item.index();
+            var order = $('#todoul').sortable('toArray'),
+                cidOfDropped = ui.item.context.id,
+                itemIndex = ui.item.index();
             if (itemIndex == order.length - 1) {
-                var cidOfAbove = order[itemIndex - 1];
-                var orderOfAbove = app.todos.get(cidOfAbove).get('order');
+                var cidOfAbove = order[itemIndex - 1],
+                    orderOfAbove = app.todos.get(cidOfAbove).get('order');
                 app.todos.get(cidOfDropped).save({
                     'order': orderOfAbove - 1
                 });
@@ -183,12 +173,12 @@ app.orderPersistance = function() {
     });
 };
 
-app.checkDoneStatus = function() {
-    this.todos.each(function(col) { //check if has been marked as done, then sets style
-        if (col.get('done')) {
-            var tmpId = '#' + col.cid;
-            $(tmpId + ' input').attr('checked', 'checked');
-            $(tmpId).addClass('struck');
-        }
-    });
-};
+// app.checkDoneStatus = function() {
+//     this.todos.each(function(col) { //check if has been marked as done, then sets style
+//         if (col.get('done')) {
+//             var tmpId = '#' + col.cid;
+//             $(tmpId + ' input').attr('checked', 'checked');
+//             $(tmpId).addClass('struck');
+//         }
+//     });
+// };
