@@ -17,7 +17,7 @@ app.MainView = Backbone.View.extend({
             reset: true
         });
         if (app.todos.models.length == 0) {
-            this.$todoList.append('<li>Nothing to do</li>');
+            this.$todoList.append('<li id="noTodos">Nothing to do</li>');
         }
     },
     render: function() {
@@ -50,6 +50,9 @@ app.MainView = Backbone.View.extend({
         });
         this.$todoList.prepend(thing.render().el);
         this.orderPersistance();
+        if ($('#noTodos')) {
+            $('#noTodos').remove();
+        };
     },
     removeTodoView: function(todo) {
         var cid = '#' + todo.cid;
