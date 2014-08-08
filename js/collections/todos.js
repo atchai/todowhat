@@ -11,7 +11,12 @@ app.Todos = Backbone.Collection.extend({
 		return new app.Todos(filtered);
 	},
 	newOrder: function() {
-		return this.last().get('order')+1;
+		if (this.last()) {
+			return this.last().get('order') + 1;
+		}
+		else {
+			return 0;
+		}
 	}
 });
 app.todos = new app.Todos([]);

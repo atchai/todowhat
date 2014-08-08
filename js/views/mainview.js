@@ -17,14 +17,7 @@ app.MainView = Backbone.View.extend({
             reset: true
         });
         if (app.todos.models.length == 0) {
-            var fakeModels = [
-                {'content': 'review this ticket'},
-                {'content': 'drink some water'},
-                {'content': 'take a break'}
-            ];
-            _.each(fakeModels, function(todoModel) {
-                app.todos.create(todoModel)
-            });
+            this.$todoList.append('<li>Nothing to do</li>');
         }
     },
     render: function() {
