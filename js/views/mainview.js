@@ -31,7 +31,6 @@ app.MainView = Backbone.View.extend({
         this.$todoList.empty();
         app.todos.each(function(item) {
             this.addTodoView(item);
-            this.checkDoneStatus(item);
         }, this);
         $('#showAll').attr("id", "showAllDummy");
         this.orderPersistance();
@@ -71,7 +70,6 @@ app.MainView = Backbone.View.extend({
         this.$todoList.empty();
         thing.each(function(c) {
             this.addTodoView(c);
-            this.checkDoneStatus(c);
         }, this);
         $('a').css('font-weight', 'normal');
         $('#filterDone').css("font-weight", "bold");
@@ -87,7 +85,6 @@ app.MainView = Backbone.View.extend({
         this.$todoList.empty();
         thing.each(function(c) {
             this.addTodoView(c);
-            this.checkDoneStatus(c);
         }, this);
         $('a').css('font-weight', 'normal');
         $('#filterNotDone').css("font-weight", "bold");
@@ -100,16 +97,9 @@ app.MainView = Backbone.View.extend({
             this.addTodoView(c);
         }, this);
     },
-    checkDoneStatus: function(todo) {
-        if (todo.get('done')) {
-            var tmpId = '#' + todo.cid;
-            $(tmpId + ' input').attr('checked', 'checked');
-            $(tmpId).addClass('struck');
-        }
-    },
     orderPersistance: function() {
         this.$todoList.sortable({
-            update: function(event, ui) {
+            update: function(event, ui) {//use underscore bind, underscore javascript templates
                 var order = $('#todoul').sortable('toArray'),
                     cidOfDropped = ui.item.context.id,
                     itemIndex = ui.item.index();

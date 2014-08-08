@@ -12,8 +12,17 @@
     <script src="components/backbone.localStorage.js"></script>
     <script src="components/bootstrap.js"></script>
     <script type="text/template" id="todo-template">
-      <div class="view">
-        <input class="toggle" type="checkbox"/>
+      <div <%
+          if (done) {
+            print('class="struck"')
+          };
+        %>>
+        <input class="toggle" type="checkbox" <%
+          if (done) {
+            print('checked')
+          };
+        %>
+        >
         <%- todoItem %>
         <button class="remove" href="#">remove</button>
       </div>
