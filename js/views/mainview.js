@@ -1,6 +1,13 @@
 app = app || {}
 
 app.MainView = Backbone.View.extend({
+    events: {
+        "click .submit": "addTodo",
+        "click #filterDone": "filterDone",
+        "click #filterNotDone": "filterNotDone",
+        "click #showAll": "render"
+    },
+    el: $("body"),
     initialize: function() {
         this.$todoList = $("#todoul");
         this.listenTo(app.todos, 'reset', this.render);
@@ -10,27 +17,18 @@ app.MainView = Backbone.View.extend({
             reset: true
         });
         if (app.todos.models.length == 0) {
-            var fakeModels = [{
-                'content': 'review this ticket'
-            }, {
-                'content': 'drink some water'
-            }, {
-                'content': 'take a break'
-            }];
+            var fakeModels = [
+                {'content': 'review this ticket'},
+                {'content': 'drink some water'},
+                {'content': 'take a break'}
+            ];
             _.each(fakeModels, function(todoModel) {
                 app.todos.create(todoModel)
             });
         }
     },
-    events: {
-        "click .submit": "addTodo",
-        "click #filterDone": "filterDone",
-        "click #filterNotDone": "filterNotDone",
-        "click #showAll": "render"
-    },
-    el: $("body"),
     render: function() {
-        $('#todoul').empty();
+        this.$todoList.empty();
         app.todos.each(function(item) {
             this.addTodoView(item);
             this.checkDoneStatus(item);
@@ -58,7 +56,7 @@ app.MainView = Backbone.View.extend({
         var thing = new app.TodoView({
             model: todo
         });
-        $('#todoul').prepend(thing.render().el);
+        this.$todoList.prepend(thing.render().el);
         this.orderPersistance();
     },
     removeTodoView: function(todo) {
@@ -70,7 +68,7 @@ app.MainView = Backbone.View.extend({
         if (thing.length == 0) {
             return false
         };
-        $('#todoul').empty();
+        this.$todoList.empty();
         thing.each(function(c) {
             this.addTodoView(c);
             this.checkDoneStatus(c);
@@ -86,7 +84,7 @@ app.MainView = Backbone.View.extend({
         if (thing.length == 0) {
             return false
         };
-        $('#todoul').empty();
+        this.$todoList.empty();
         thing.each(function(c) {
             this.addTodoView(c);
             this.checkDoneStatus(c);
