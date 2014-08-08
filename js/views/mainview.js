@@ -2,10 +2,10 @@ app = app || {}
 
 app.MainView = Backbone.View.extend({
     events: {
-        "click .submit": "addTodo",
-        "click #filterDone": "filterDone",
-        "click #filterNotDone": "filterNotDone",
-        "click #showAll": "render"
+        "click .submit": "addTodo"
+        // "click #filterDone": "filterDone",
+        // "click #filterNotDone": "filterNotDone",
+        // "click #showAll": "render"
     },
     el: $("body"),
     initialize: function() {
@@ -21,15 +21,28 @@ app.MainView = Backbone.View.extend({
         }
     },
     render: function() {
-        this.$todoList.empty();
-        app.todos.each(function(item) {
-            this.addTodoView(item);
-        }, this);
+        // this.$todoList.empty();
+
         $('#showAll').attr("id", "showAllDummy");
         this.orderPersistance();
         $('a').css('font-weight', 'normal');
         $('#showAllDummy').css('font-weight', 'bold');
-        return this;
+
+        switch (app.router.filterParam) {
+            case 'done':
+                this.filterDone();
+                break;
+            case 'todo':
+                this.filterNotDone();
+                break;
+            default:
+                this.$todoList.empty();
+                app.todos.each(function(item) {
+                    this.addTodoView(item);
+                }, this);
+                break;
+                return this;
+        }
 
 
     },
@@ -95,7 +108,7 @@ app.MainView = Backbone.View.extend({
     },
     orderPersistance: function() {
         this.$todoList.sortable({
-            update: function(event, ui) {//use underscore bind, underscore javascript templates
+            update: function(event, ui) { //use underscore bind, underscore javascript templates
                 var order = $('#todoul').sortable('toArray'),
                     cidOfDropped = ui.item.context.id,
                     itemIndex = ui.item.index();
