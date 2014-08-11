@@ -14,12 +14,18 @@ app.TodoView = Backbone.View.extend({
     },
     template: _.template($('#todo-template').html()),
     render: function() {
+        var tagstring = '';
+        $(this.el).addClass('list-group-item');
+        _.each(this.model.getTags(), function(t){tagstring+=t});
+        console.log(tagstring);
         var html = this.template({
             todoItem: this.model.get('content') ,
-            done: this.model.get('done')
+            done: this.model.get('done'),
+            tags: this.model.getTags()
         });
         this.$el.html(html);
         return this;
+
     },
     removeTodo: function() {
         this.model.destroy();
@@ -27,5 +33,27 @@ app.TodoView = Backbone.View.extend({
     toggleDone: function() {
         var done = this.model.get('done');
         this.model.save({'done': !done});
+
+        if (app.todos.filterDone(true).length==0) {
+            $('#filterDone').addClass('disabled');
+        }
+        else {
+            $('#filterDone').removeClass('disabled');
+        }
+        if (app.todos.filterDone(false).length==0) {
+            $('#filterNotDone').addClass('disabled');
+        }
+        else {
+            $('#filterNotDone').removeClass('disabled');
+        }     
+        // app.todos.trigger('reset');
+        switch(app.router.filterParam) {
+            case "done":
+            case "todo":
+                app.todos.trigger('reset'); 
+                break;
+            default:
+                break;  
+        }
     }
 });

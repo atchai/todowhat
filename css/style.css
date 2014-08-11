@@ -1,1 +1,49 @@
-.struck {text-decoration: line-through;}
+.struck {
+	text-decoration: line-through; 
+	color: #999;
+}
+.remove {
+	float: right;
+}
+body {
+	padding: 10px;
+	background: url('../images/paper_fibers.png');
+}
+.list-group {
+	margin-top: 14px;
+}
+.list-group-item {
+	background: #fffefe;
+	border-color: #888; 
+	border-top-style: dashed;
+	border-bottom-style: dashed;
+	border-right-style: none; 
+	border-left-style: none;
+}
+.list-group-item:first-child {
+	border-top-style: none;
+}
+.list-group-item:last-child {
+	border-bottom-style: none;
+ }
+h1 {
+	font-weight: 900;
+	margin-left: 2%;
+}
+.wrapper {
+	width: 65%; 
+	margin: auto;
+}
+a.disabled {
+	color:gray; 
+	pointer-events: none; 
+	font-style: italic;
+}
+ul {
+	border-top: 2px solid #99B3FF;
+	border-bottom: 2px solid #99B3FF;
+}
+.label {
+	opacity: 0.6;
+	color: purple;
+}

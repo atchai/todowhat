@@ -2,12 +2,13 @@ app = app || {}
 
 app.MainView = Backbone.View.extend({
     events: {
-        "click .submit": "addTodo"
-        // "click #filterDone": "filterDone",
-        // "click #filterNotDone": "filterNotDone",
-        // "click #showAll": "render"
+        "click .submit": "addTodo",
+        "keyup #todofield": "keyPressEventHandler",
+        "keyup #tagsfield": "keyPressEventHandler"
     },
+
     el: $("body"),
+
     initialize: function() {
         this.$todoList = $("#todoul");
         this.listenTo(app.todos, 'reset', this.render);
@@ -17,46 +18,68 @@ app.MainView = Backbone.View.extend({
             reset: true
         });
         if (app.todos.models.length == 0) {
-            this.$todoList.append('<li id="noTodos">Nothing to do</li>');
+            this.$todoList.append('<li id="noTodos" class="list-group-item">Nothing to do</li>');
         }
     },
+
     render: function() {
         // this.$todoList.empty();
-
-        $('#showAll').attr("id", "showAllDummy");
         this.orderPersistance();
+        $('#showAll').attr("id", "showAllDummy");
         $('a').css('font-weight', 'normal');
         $('#showAllDummy').css('font-weight', 'bold');
+        if (app.todos.filterDone(true).length == 0) {
+            $('#filterDone').addClass('disabled');
+        } else {
+            $('#filterDone').removeClass('disabled');
+        }
+        if (app.todos.filterDone(false).length == 0) {
+            $('#filterNotDone').addClass('disabled');
+        } else {
+            $('#filterNotDone').removeClass('disabled');
+        }
 
         switch (app.router.filterParam) {
             case 'done':
                 this.filterDone();
+                var thing = app.todos.filterDone(true);
+                thing.length == 0 ? this.showAll() : console.log('some left');
                 break;
             case 'todo':
                 this.filterNotDone();
+                var thing = app.todos.filterDone(false);
+                thing.length == 0 ? this.showAll() : console.log('some left');
                 break;
             default:
                 this.$todoList.empty();
-                app.todos.each(function(item) {
-                    this.addTodoView(item);
-                }, this);
+                // app.todos.each(function(item) {
+                //     this.addTodoView(item);
+                // }, this);
+                this.showAll();
                 break;
                 return this;
         }
-
-
     },
+
     addTodo: function(e) {
         e.preventDefault();
         var todoContent = $('#todofield').val();
+        var tagsContent = $('#tagsfield').val().split(',');
+        tagsContent = _.map(tagsContent, function(t){ return t.trim(); });
+        console.log(tagsContent);
         if (todoContent && todoContent.length <= 255 && ($.trim(todoContent)) != 0) {
             app.todos.create({
                 content: todoContent,
-                order: app.todos.newOrder()
+                order: app.todos.newOrder(),
+                tags: tagsContent
             });
             $('#todofield').val('');
+            $('#tagsfield').val('');
+            $('.submit').addClass('disabled');
         }
+
     },
+
     addTodoView: function(todo) {
         var thing = new app.TodoView({
             model: todo
@@ -66,12 +89,41 @@ app.MainView = Backbone.View.extend({
         if ($('#noTodos')) {
             $('#noTodos').remove();
         };
+        if (app.todos.filterDone(true).length == 0) {
+            $('#filterDone').addClass('disabled');
+        } else {
+            $('#filterDone').removeClass('disabled');
+        }
+        if (app.todos.filterDone(false).length == 0) {
+            $('#filterNotDone').addClass('disabled');
+        } else {
+            $('#filterNotDone').removeClass('disabled');
+        }
     },
+
     removeTodoView: function(todo) {
         var cid = '#' + todo.cid;
         $(cid).remove();
+        if (app.todos.filterDone(true).length == 0) {
+            $('#filterDone').addClass('disabled');
+        } else {
+            $('#filterDone').removeClass('disabled');
+        }
+        if (app.todos.filterDone(false).length == 0) {
+            $('#filterNotDone').addClass('disabled');
+
+        } else {
+            $('#filterNotDone').removeClass('disabled');
+        }
+        if (app.todos.models.length == 0) {
+            this.$todoList.append('<li id="noTodos" class="list-group-item">Nothing to do</li>');
+        }
     },
+
     filterDone: function() {
+        app.router.navigate('done', {
+            trigger: true
+        });
         var thing = app.todos.filterDone(true);
         if (thing.length == 0) {
             return false
@@ -87,6 +139,9 @@ app.MainView = Backbone.View.extend({
 
     },
     filterNotDone: function() {
+        app.router.navigate('todo', {
+            trigger: true
+        });
         var thing = app.todos.filterDone(false);
         if (thing.length == 0) {
             return false
@@ -102,9 +157,18 @@ app.MainView = Backbone.View.extend({
 
     },
     showAll: function() {
+        app.router.navigate('#', {
+            trigger: true
+        });
+        this.$todoList.empty();
         app.todos.each(function(c) {
             this.addTodoView(c);
         }, this);
+    },
+    keyPressEventHandler: function(event) {
+        if (event.keyCode == 13) {
+            this.$(".submit").click();
+        }
     },
     orderPersistance: function() {
         this.$todoList.sortable({

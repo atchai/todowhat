@@ -5,6 +5,7 @@
     <title>testing Backbone.js</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
     <script src="components/jquery.js"></script>
     <script src="components/jquery-ui.js"></script>
     <script src="components/underscore.js"></script>
@@ -25,22 +26,38 @@
         %>
         >
         <%- todoItem %>
-        <button class="remove" href="#">remove</button>
+        <% _.each(tags, function(t){
+            print('<span class="label label-default">'+t+'</span> ');
+        })%>
+        <button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove" href="#"></button>
       </div>
     </script>
   </head>
   <body>
-
-    <form>      
+  <div class="wrapper">
+  <div class="h1wrapper">
+  <h1>What todo</h1>
+  </div>
+<!--     <form>      
         <input type="text" size="25" placeholder="todo here" id="todofield">
-        <button class="submit">add todo</button>
-    </form>
+        <button class="btn btn-default submit">add todo</button>
+    </form> -->
+    <div class="form-group">
+  <div class="input-group">
+    <input type="text" placeholder="todo here" id="todofield" class="form-control">
+    <span class="input-group-btn">
+      <button class="btn btn-primary disabled submit" type="button">add todo</button>
+      
+  </div>
+  <input type="text" placeholder="(optional) tags here, deliminate with commas" id="tagsfield" class="form-control">
+</div>
 
     <a href="#done" id="filterDone">done</a> |
     <a href="#todo" id='filterNotDone'>not done</a> | 
     <a href="#" id='showAll'>all</a>
 
-    <ul id="todoul"></ul>
+    <ul id="todoul" class="list-group"></ul>
+</div>
 
     <script src="js/app.js"></script>
     <script src="js/models/todo.js"></script>
@@ -48,5 +65,16 @@
     <script src="js/views/todoview.js"></script>
     <script src="js/views/mainview.js"></script>
     <script src="js/routers/router.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+      $('#todofield').keyup(function() {
+        if ($(this).val() !== "") {
+          $('.submit').removeClass('disabled');
+        } else {
+          $('.submit').addClass('disabled');
+        }
+      });
+    });
+    </script>
   </body>
 </html>

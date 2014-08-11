@@ -5,5 +5,8 @@ app.Todo = Backbone.Model.extend({
         done: false,
         order: 0
     },
+    getTags: function() {
+    	return this.get('tags');
+    },
     localStorage: new Backbone.LocalStorage("StoredTodos")	
 })
