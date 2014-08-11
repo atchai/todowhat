@@ -4,6 +4,7 @@ app.Tags = Backbone.Collection.extend({
 	localStorage: new Backbone.LocalStorage("StoredTags"),
 
 	model: app.Tag,
+	comparator: 'name',
 
 	exist: function(tag) {
 		var existingTag = app.tags.find(function(model) {

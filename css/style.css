@@ -43,6 +43,9 @@ a.disabled {
 	opacity: 0.6;
 	color: purple;
 }
+#taglist {
+	font-size: 0.85em;
+}
 #taglist li {
 	border: none;
 }
