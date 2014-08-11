@@ -25,7 +25,9 @@
           };
         %>
         >
+        <span>
         <%- todoItem %>
+        </span>
         <% _.each(tags, function(t){
             print('<span class="label label-default">'+t+'</span> ');
         })%>
@@ -33,7 +35,7 @@
       </div>
     </script>
     <script type="text/template" id="tag-template">
-    <%- tagName %> <%- tagCount %>
+    <%- tagName %> (<%- tagCount %>)
     </script>
   </head>
   <body>
@@ -50,13 +52,15 @@
   </div>
   <input type="text" placeholder="(optional) tags here, deliminate with commas" id="tagsfield" class="form-control">
 </div>
+    <div class="col-md-12">
+      <a href="#done" id="filterDone">done</a> |
+      <a href="#todo" id='filterNotDone'>not done</a> | 
+      <a href="#" id='showAll'>all</a>
+    </div>
+    <ul id="taglist" class="list-group col-md-2">
+    </ul>
 
-    <a href="#done" id="filterDone">done</a> |
-    <a href="#todo" id='filterNotDone'>not done</a> | 
-    <a href="#" id='showAll'>all</a>
-
-    <ul id="todoul" class="list-group"></ul>
-        <ul id="taglist" class="list-group"></ul>
+    <ul id="todoul" class="list-group col-md-10"></ul>
 
 </div>
 

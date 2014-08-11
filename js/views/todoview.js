@@ -14,10 +14,7 @@ app.TodoView = Backbone.View.extend({
     },
     template: _.template($('#todo-template').html()),
     render: function() {
-        var tagstring = '';
         $(this.el).addClass('list-group-item');
-        // _.each(this.model.getTags(), function(t){tagstring+=t});
-        // console.log(tagstring);
         var html = this.template({
             todoItem: this.model.get('content') ,
             done: this.model.get('done'),

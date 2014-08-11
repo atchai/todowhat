@@ -10,6 +10,7 @@ app.TagView = Backbone.View.extend({
     },
 	template: _.template($('#tag-template').html()),
 	render: function() {
+		$(this.el).addClass('list-group-item');
         var html = this.template({
             tagName: this.model.get('name') ,
             tagCount: this.model.get('count')

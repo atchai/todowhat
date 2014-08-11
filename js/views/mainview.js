@@ -15,10 +15,8 @@ app.MainView = Backbone.View.extend({
         this.listenTo(app.todos, 'add', this.addTodoView);
         this.listenTo(app.todos, 'remove', this.removeTodoView);
         this.listenTo(app.tags, 'reset', this.render);
-
         this.listenTo(app.tags, 'add', this.addTagView);
         this.listenTo(app.tags, 'remove', this.removeTagView);
-
 
         app.tags.fetch({
             reset: true
@@ -35,6 +33,7 @@ app.MainView = Backbone.View.extend({
         // this.$todoList.empty();
         this.orderPersistance();
         $('#taglist').empty();
+        $('#taglist').append($('<li class="list-group-item active">tags</li>'));
         app.tags.each(function(t) {
             this.addTagView(t);
         }, this);

@@ -1,4 +1,4 @@
-.struck {
+.struck span:first-of-type{
 	text-decoration: line-through; 
 	color: #999;
 }
@@ -21,10 +21,10 @@ body {
 	border-left-style: none;
 }
 .list-group-item:first-child {
-	border-top-style: none;
+	border-top: 2px solid #99B3FF;
 }
 .list-group-item:last-child {
-	border-bottom-style: none;
+	border-bottom: 2px solid #99B3FF;
  }
 h1 {
 	font-weight: 900;
@@ -39,11 +39,10 @@ a.disabled {
 	pointer-events: none; 
 	font-style: italic;
 }
-ul {
-	border-top: 2px solid #99B3FF;
-	border-bottom: 2px solid #99B3FF;
-}
 .label {
 	opacity: 0.6;
 	color: purple;
+}
+#taglist li {
+	border: none;
 }
