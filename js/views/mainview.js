@@ -81,8 +81,8 @@ app.MainView = Backbone.View.extend({
         tagsContent = _.map(tagsContent, function(t) {
             return t.trim();
         });
-        console.log(tagsContent);
-        if (todoContent && todoContent.length <= 255 && ($.trim(todoContent)) != 0) {
+        console.log(tagsContent[0].length);
+        if (todoContent && todoContent.length <= 255 && ($.trim(todoContent)) != 0 && tagsContent[0].length!=0) {
             app.todos.create({
                 content: todoContent,
                 order: app.todos.newOrder(),
@@ -90,6 +90,15 @@ app.MainView = Backbone.View.extend({
             });
             _.each(tagsContent, function(t) {
                 app.tags.exist(t);
+            });
+            $('#todofield').val('');
+            $('#tagsfield').val('');
+            $('.submit').addClass('disabled');
+        }
+        else if (todoContent && todoContent.length <= 255 && ($.trim(todoContent)) != 0) {
+            app.todos.create({
+                content: todoContent,
+                order: app.todos.newOrder()
             });
             $('#todofield').val('');
             $('#tagsfield').val('');
