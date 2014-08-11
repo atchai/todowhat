@@ -56,12 +56,16 @@ app.MainView = Backbone.View.extend({
             case 'done':
                 this.filterDone();
                 var thing = app.todos.filterDone(true);
-                thing.length == 0 ? this.showAll() : console.log('some left');
+                if (thing.length == 0) {
+                    this.showAll();
+                }
                 break;
             case 'todo':
                 this.filterNotDone();
                 var thing = app.todos.filterDone(false);
-                thing.length == 0 ? this.showAll() : console.log('some left');
+                if (thing.length == 0) {
+                    this.showAll();
+                }
                 break;
             default:
                 this.showAll();

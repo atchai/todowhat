@@ -4,7 +4,6 @@ app.Router = Backbone.Router.extend({
   },
   filterTodos: function(p) {
     this.filterParam = p;
-    console.log(this.filterParam);
     app.todos.trigger('reset');
   }
 });
