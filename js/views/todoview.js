@@ -16,8 +16,8 @@ app.TodoView = Backbone.View.extend({
     render: function() {
         var tagstring = '';
         $(this.el).addClass('list-group-item');
-        _.each(this.model.getTags(), function(t){tagstring+=t});
-        console.log(tagstring);
+        // _.each(this.model.getTags(), function(t){tagstring+=t});
+        // console.log(tagstring);
         var html = this.template({
             todoItem: this.model.get('content') ,
             done: this.model.get('done'),
@@ -28,6 +28,9 @@ app.TodoView = Backbone.View.extend({
 
     },
     removeTodo: function() {
+        _.each(this.model.getTags(), function(tag) {
+            app.tags.removeTag(tag)
+        });
         this.model.destroy();
     },
     toggleDone: function() {

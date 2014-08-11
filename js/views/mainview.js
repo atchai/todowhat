@@ -14,6 +14,15 @@ app.MainView = Backbone.View.extend({
         this.listenTo(app.todos, 'reset', this.render);
         this.listenTo(app.todos, 'add', this.addTodoView);
         this.listenTo(app.todos, 'remove', this.removeTodoView);
+        this.listenTo(app.tags, 'reset', this.render);
+
+        this.listenTo(app.tags, 'add', this.addTagView);
+        this.listenTo(app.tags, 'remove', this.removeTagView);
+
+
+        app.tags.fetch({
+            reset: true
+        });
         app.todos.fetch({
             reset: true
         });
@@ -25,6 +34,11 @@ app.MainView = Backbone.View.extend({
     render: function() {
         // this.$todoList.empty();
         this.orderPersistance();
+        $('#taglist').empty();
+        app.tags.each(function(t) {
+            this.addTagView(t);
+        }, this);
+
         $('#showAll').attr("id", "showAllDummy");
         $('a').css('font-weight', 'normal');
         $('#showAllDummy').css('font-weight', 'bold');
@@ -51,10 +65,6 @@ app.MainView = Backbone.View.extend({
                 thing.length == 0 ? this.showAll() : console.log('some left');
                 break;
             default:
-                this.$todoList.empty();
-                // app.todos.each(function(item) {
-                //     this.addTodoView(item);
-                // }, this);
                 this.showAll();
                 break;
                 return this;
@@ -65,13 +75,18 @@ app.MainView = Backbone.View.extend({
         e.preventDefault();
         var todoContent = $('#todofield').val();
         var tagsContent = $('#tagsfield').val().split(',');
-        tagsContent = _.map(tagsContent, function(t){ return t.trim(); });
+        tagsContent = _.map(tagsContent, function(t) {
+            return t.trim();
+        });
         console.log(tagsContent);
         if (todoContent && todoContent.length <= 255 && ($.trim(todoContent)) != 0) {
             app.todos.create({
                 content: todoContent,
                 order: app.todos.newOrder(),
                 tags: tagsContent
+            });
+            _.each(tagsContent, function(t) {
+                app.tags.exist(t);
             });
             $('#todofield').val('');
             $('#tagsfield').val('');
@@ -164,6 +179,16 @@ app.MainView = Backbone.View.extend({
         app.todos.each(function(c) {
             this.addTodoView(c);
         }, this);
+    },
+    addTagView: function(tag) {
+        var tagthing = new app.TagView({
+            model: tag
+        });
+        $('#taglist').append(tagthing.render().el);
+    },
+    removeTagView: function(tag) {
+        var cid = '#tag' + tag.cid;
+        $(cid).remove();
     },
     keyPressEventHandler: function(event) {
         if (event.keyCode == 13) {
