@@ -2,7 +2,7 @@ var app = app || {};
 
 app.TodoView = Backbone.View.extend({
     initialize: function(){
-        this.listenTo(this.model, 'change', this.render)
+        this.listenTo(this.model, 'change', this.render);
     },
     tagName: 'li',
     id: function() {
@@ -21,6 +21,10 @@ app.TodoView = Backbone.View.extend({
             tags: this.model.getTags()
         });
         this.$el.html(html);
+        $('#navlinks').empty();
+        var links = new app.NavView({});
+        $('#navlinks').append(links.render().el);
+        this.checkAllDone();
         return this;
 
     },
@@ -33,27 +37,14 @@ app.TodoView = Backbone.View.extend({
     toggleDone: function() {
         var done = this.model.get('done');
         this.model.save({'done': !done});
-
-        if (app.todos.filterDone(true).length==0) {
-            $('#filterDone').addClass('disabled');
-        }
-        else {
-            $('#filterDone').removeClass('disabled');
+        app.todos.trigger('reset'); 
+    },
+    checkAllDone: function() {
+         if (app.todos.filterDone(true).length==0) {
+            app.todos.trigger('allDoneTrigger');
         }
         if (app.todos.filterDone(false).length==0) {
-            $('#filterNotDone').addClass('disabled');
-        }
-        else {
-            $('#filterNotDone').removeClass('disabled');
-        }     
-        // app.todos.trigger('reset');
-        switch(app.router.filterParam) {
-            case "done":
-            case "todo":
-                app.todos.trigger('reset'); 
-                break;
-            default:
-                break;  
+            app.todos.trigger('noneDoneTrigger');
         }
     }
 });

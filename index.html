@@ -6,12 +6,12 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-    <script src="components/jquery.js"></script>
-    <script src="components/jquery-ui.js"></script>
-    <script src="components/underscore.js"></script>
-    <script src="components/backbone.js"></script>
-    <script src="components/backbone.localStorage.js"></script>
-    <script src="components/bootstrap.js"></script>
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/jquery-ui/jquery-ui.js"></script>
+    <script src="node_modules/underscore/underscore.js"></script>
+    <script src="node_modules/backbone/backbone.js"></script>
+    <script src="node_modules/backbone.localstorage/backbone.localStorage.js"></script>
+
     <script type="text/template" id="todo-template">
       <div <%
           if (done) {
@@ -34,12 +34,37 @@
         <button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove" href="#"></button>
       </div>
     </script>
+
     <script type="text/template" id="tag-template">
     <%- tagName %> <span class="badge"><%- tagCount %></span>
     </script>
+
+    <script type="text/template" id="nav-template">
+      <a href="#done" id="filterDone" 
+        <% if (todo) {
+            print('class="disabled"')
+          } %>
+        <% if (boldDone) {
+            print('class="bold"')
+          } %>
+      >done</a> |
+      <a href="#todo" id='filterNotDone'
+        <% if (done) {
+            print('class="disabled"')
+          } %>
+        <% if (boldNotDone) {
+            print('class="bold"')
+          } %>
+      >not done</a> | 
+      <a href="#" id='showAll'
+        <% if (boldAll) {
+            print('class="bold"')
+          } %>
+      >all</a>
+    </script>
   </head>
   <body>
-  <div class="wrapper">
+  <div class="container">
   <div class="h1wrapper">
   <h1>What todo</h1>
   </div>
@@ -53,9 +78,7 @@
   <input type="text" placeholder="(optional) tags here, deliminate with commas" id="tagsfield" class="form-control">
 </div>
     <div class="col-md-12">
-      <a href="#done" id="filterDone">done</a> |
-      <a href="#todo" id='filterNotDone'>not done</a> | 
-      <a href="#" id='showAll'>all</a>
+          <div id="navlinks"> </div>
     </div>
     <ul id="taglist" class="list-group col-md-2">
     </ul>
@@ -71,6 +94,7 @@
     <script src="js/collections/tags.js"></script>
     <script src="js/views/tagview.js"></script>
     <script src="js/views/todoview.js"></script>
+    <script src="js/views/navview.js"></script>
     <script src="js/views/mainview.js"></script>
     <script src="js/routers/router.js"></script>
     <script type="text/javascript">
