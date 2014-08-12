@@ -4,15 +4,20 @@ app.TodoView = Backbone.View.extend({
     initialize: function(){
         this.listenTo(this.model, 'change', this.render);
     },
+
     tagName: 'li',
+
     id: function() {
         return this.model.cid;
     },
+
     events: {
         "click .remove": "removeTodo",
         "click .toggle": "toggleDone"
     },
+
     template: _.template($('#todo-template').html()),
+
     render: function() {
         $(this.el).addClass('list-group-item');
         var html = this.template({
@@ -24,27 +29,26 @@ app.TodoView = Backbone.View.extend({
         $('#navlinks').empty();
         var links = new app.NavView({});
         $('#navlinks').append(links.render().el);
-        this.checkAllDone();
         return this;
-
     },
+
     removeTodo: function() {
         _.each(this.model.getTags(), function(tag) {
-            app.tags.removeTag(tag)
+            app.tags.removeTag(tag);
         });
         this.model.destroy();
     },
+
     toggleDone: function() {
         var done = this.model.get('done');
         this.model.save({'done': !done});
-        app.todos.trigger('reset'); 
-    },
-    checkAllDone: function() {
-         if (app.todos.filterDone(true).length==0) {
-            app.todos.trigger('allDoneTrigger');
-        }
-        if (app.todos.filterDone(false).length==0) {
-            app.todos.trigger('noneDoneTrigger');
+        switch(app.router.filterParam) {
+            case "done":
+            case "todo":
+                app.todos.trigger('reset');  //so that on last todo being (un)checked, user sent back to all todos page
+                break;
+            default:
+                break;  
         }
     }
 });

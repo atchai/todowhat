@@ -15,10 +15,9 @@ body {
 .list-group-item {
 	background: #fffefe;
 	border-color: #888; 
+	border-style: none;
 	border-top-style: dashed;
 	border-bottom-style: dashed;
-	border-right-style: none; 
-	border-left-style: none;
 }
 .list-group-item:first-child {
 	border-top: 2px solid #99B3FF;
@@ -26,13 +25,9 @@ body {
 .list-group-item:last-child {
 	border-bottom: 2px solid #99B3FF;
  }
+
 h1 {
 	font-weight: 900;
-	margin-left: 2%;
-}
-.wrapper {
-	width: 65%; 
-	margin: auto;
 }
 a.disabled {
 	color:gray; 
@@ -48,4 +43,10 @@ a.disabled {
 }
 #taglist li {
 	border: none;
+}
+#taglist li:nth-child(even) {  
+  background: #efefef;
+}
+.bold {
+	font-weight: 900;
 }

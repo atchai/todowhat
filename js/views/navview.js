@@ -3,9 +3,6 @@ var app = app || {};
 app.NavView = Backbone.View.extend({
     el: $('#navlinks'),
 
-    initialize: function() {
-    },
-
     template: _.template($('#nav-template').html()),
 
     render: function() {
@@ -21,10 +18,10 @@ app.NavView = Backbone.View.extend({
                 boldAll = true;
                 break;
         }
-        if (app.todos.filterDone(true).length == 0) {
+        if (app.todos.filterDone(true).length === 0) {
             noneDone = true;
         }
-        if (app.todos.filterDone(false).length == 0) {
+        if (app.todos.filterDone(false).length === 0) {
             allDone = true;
         }
         var html = this.template({
