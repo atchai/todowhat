@@ -2,5 +2,6 @@ var app = app || {};
 
 $(document).ready(function() {
     var todoAppView = new app.MainView();
-    Backbone.history.start()
+    app.router = new app.Router();
+    Backbone.history.start();
 });

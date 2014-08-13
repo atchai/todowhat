@@ -20,7 +20,7 @@ app.TodosView = Backbone.View.extend({
 		if (!app.todos.last()) {
             this.$el.append('<li id="noTodos" class="list-group-item">Nothing to do</li>');
         }
-      return this; // returning this for chaining..
+      return this;
 	}
 
 })
