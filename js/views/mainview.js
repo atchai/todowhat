@@ -1,4 +1,3 @@
-/*jshint maxerr: 10000 */
 var app = app || {};
 
 app.MainView = Backbone.View.extend({
@@ -12,10 +11,6 @@ app.MainView = Backbone.View.extend({
 
     initialize: function() {
         this.$todoList = $("#todoul");
-        this.$tagList = $('#taglist');
-        this.listenTo(app.tags, 'reset', this.render); 
-        this.listenTo(app.tags, 'add', this.render); //so that new tags are added alphabetically
-        this.listenTo(app.tags, 'remove', this.removeTagView);
         //retrieve any todos and tags in local storage and render them
         app.tags.fetch({
             reset: true
@@ -23,18 +18,13 @@ app.MainView = Backbone.View.extend({
         app.todos.fetch({
             reset: true
         });
-        // if (!app.todos.last()) {
-        //     this.$todoList.append('<li id="noTodos" class="list-group-item">Nothing to do</li>');
-        // }
+        this.render();
     },
 
     render: function() {
         this.orderPersistance();
-        this.$tagList.empty(); 
-        this.$tagList.append('<li class="list-group-item active">tags</li>');
-        app.tags.each(function(t) { //all tags to be visible in taglist always
-            this.addTagView(t);
-        }, this);
+        var tagsthingy = new app.TagsView({collection: app.tags});
+        tagsthingy.render();
     },
 
     addTodo: function(e) { //add a todo model (and tags) to the collection(s)
@@ -59,18 +49,6 @@ app.MainView = Backbone.View.extend({
         $('#tagsfield').val('');
         $('.submit').addClass('disabled');
 
-    },
-
-    addTagView: function(tag) {
-        var tagthing = new app.TagView({
-            model: tag
-        });
-        this.$tagList.append(tagthing.render().el);
-    },
-
-    removeTagView: function(tag) {
-        var cid = '#tag' + tag.cid;
-        $(cid).remove();
     },
 
     keyPressEventHandler: function(event) {

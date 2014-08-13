@@ -47,8 +47,9 @@ a.disabled {
 #taglist li {
 	border: none;
 }
-#taglist li:nth-child(pointer-events) {  
-  background: #efefef;
+
+#taglist li:nth-child(odd) {  
+  background: #eeefff;
 }
 .bold {
 	font-weight: 900;
