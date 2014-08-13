@@ -4,6 +4,8 @@
 }
 .remove {
 	float: right;
+	font-size: 0.8em;
+	opacity: 0.8;
 }
 body {
 	padding: 10px;
@@ -28,6 +30,7 @@ body {
 
 h1 {
 	font-weight: 900;
+	font-size: 3em;
 }
 a.disabled {
 	color:gray; 
@@ -44,7 +47,7 @@ a.disabled {
 #taglist li {
 	border: none;
 }
-#taglist li:nth-child(even) {  
+#taglist li:nth-child(pointer-events) {  
   background: #efefef;
 }
 .bold {
