@@ -7,6 +7,7 @@ app.FilterTodoView = Backbone.View.extend({
         //changing done state of a model in this collection will rerender view so the todo is removed from view
         this.listenTo(this.collection, 'change', this.render);
         this.listenTo(this.collection, 'add', this.close);
+        this.listenTo(this.collection, 'remove', this.render);
     },
     render: function() {
         var thing = app.todos.filterDone(false);
