@@ -13,13 +13,13 @@ app.TagsView = Backbone.View.extend({
     render: function() {
         this.$el.empty();
         console.log('hi');
-        app.tags.each(function(t) { //all tags to be visible in taglist always
+        app.tags.each(function(t) {
             var tagList = new app.TagView({
                 model: t
             });
             this.$el.append(tagList.render().el);
         }, this);
-        return this; // returning this for chaining..
+        return this;
     },
 
     removeTagView: function(tag) {

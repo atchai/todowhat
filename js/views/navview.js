@@ -11,19 +11,19 @@ app.NavView = Backbone.View.extend({
                 {   
                     name: 'todo',
                     href: '#todo',
-                    disabled: (app.todos.filterDone(false).length === 0),
-                    bold: ('todo'==Backbone.history.fragment)
+                    disabled: (app.todos.filterDone(false).length == 0),
+                    bold: ('todo' == Backbone.history.fragment)
                 },
                 {
                     name: 'done',
                     href: '#done',
-                    disabled: (app.todos.filterDone(true).length === 0),
-                    bold: ('done'==Backbone.history.fragment)
+                    disabled: (app.todos.filterDone(true).length == 0),
+                    bold: ('done' == Backbone.history.fragment)
                 },
                 {
                     name: 'all',
                     href: '',
-                    bold: (''==Backbone.history.fragment)
+                    bold: ('' == Backbone.history.fragment)
                 }
             ]
         });

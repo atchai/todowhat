@@ -15,7 +15,7 @@ app.FilterTodoView = Backbone.View.extend({
             var todoview = new app.TodoView({
                 model: c
             });
-            this.$el.prepend(todoview.render().el); // calling render method manually..
+            this.$el.prepend(todoview.render().el);
         }, this);
         if (!thing.last()) {
             console.log('none left redirect to root route');
@@ -24,7 +24,6 @@ app.FilterTodoView = Backbone.View.extend({
     },
     close: function() {
         app.router.navigate('', true);
-
         this.stopListening();
     }
 

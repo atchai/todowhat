@@ -4,97 +4,92 @@
   <meta charset="utf-8">  
   <title>What Todo</title>
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-  <link rel="stylesheet" type="text/css" href="css/style.css">
   <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-  <script src="components/jquery.js"></script>
-  <script src="components/jquery-ui.js"></script>
-  <script src="components/underscore.js"></script>
-  <script src="components/backbone.js"></script>
-  <script src="components/backbone.localStorage.js"></script>
 
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script src="node_modules/jquery/dist/jquery.js"></script>
+  <script src="node_modules/jquery-ui/jquery-ui.js"></script>
+  <script src="node_modules/underscore/underscore.js"></script>
+  <script src="node_modules/backbone/backbone.js"></script>
+  <script src="node_modules/backbone.localstorage/backbone.localStorage.js"></script>
   <script type="text/template" id="todo-template">
-    <div <%
-    if (done) {
-      print('class="struck"')
-    };
-    %>
-    >
-    <input class="toggle" type="checkbox" <%
-    if (done) {
-      print('checked')
-    };
-    %>
-    >
+    <div <%if (done) { print('class="struck"') };%> >
+    <input class="toggle" type="checkbox" <% if (done) { print('checked') };%> >
     <span>
       <%- todoItem %>
     </span>
-    <% _.each(tags, function(t){
+    <% _.each(tags, function(t) {
       print('<span class="label label-default">'+t+'</span> ');
     })%>
     <button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove" href="#"></button>
   </div>
-</script>
+  </script>
 
-<script type="text/template" id="tag-template">
-  <%- tagName %> <span class="badge"><%- tagCount %></span>
-</script>
+  <script type="text/template" id="tag-template">
+    <%- tagName %> <span class="badge"><%- tagCount %></span>
+  </script>
 
-<script type="text/template" id="nav-template">
-  <% _.each(items, function(item) {
-    var cssClass = '';
-    if (item.disabled) {cssClass += 'disabled'}
-    if (item.bold) {cssClass += 'bold'}
-    print('<a href="'+item.href+'" class="'+cssClass+'">'+item.name+'</a> ')
-  }) %>
-</script>
+  <script type="text/template" id="nav-template">
+    <% _.each(items, function(item) {
+      var cssClass = '';
+      if (item.disabled) {cssClass += 'disabled'}
+      if (item.bold) {cssClass += 'bold'}
+      print('<a href="'+item.href+'" class="'+cssClass+'">'+item.name+'</a> ')
+    }) %>
+  </script>
 
 </head>
 <body>
   <div class="container">
-      <h1>What todo</h1>
+    <h1>What todo</h1>
     <div class="form-group">
       <div class="input-group">
         <input type="text" placeholder="todo here" id="todofield" class="form-control">
         <span class="input-group-btn">
           <button class="btn btn-primary disabled submit" type="button">add todo</button>
         </span>
-        </div>
-        <input type="text" placeholder="(optional) tags here, deliminate with commas" id="tagsfield" class="form-control">
       </div>
-      <div class="col-md-12" id="navlinks">
-      </div>
-      <ul id="taglist" class="list-group col-xs-2 col-md-2">
-      </ul>
-
-      <ul id="todoul" class="list-group col-xs-10 col-md-10"></ul>
-
+      <input type="text" placeholder="(optional) tags here, deliminate with commas" id="tagsfield" class="form-control">
     </div>
+    <div class="col-md-12" id="navlinks"></div>
+    <ul id="taglist" class="list-group col-xs-2 col-md-2">
+    </ul>
 
-    <script src="js/app.js"></script>
-    <script src="js/models/todo.js"></script>
-    <script src="js/models/tag.js"></script>
-    <script src="js/collections/todos.js"></script>
-    <script src="js/collections/tags.js"></script>
-    <script src="js/views/tagview.js"></script>
-    <script src="js/views/todoview.js"></script>
-    <script src="js/views/navview.js"></script>
-    <script src="js/views/mainview.js"></script>
-    <script src="js/views/todosview.js"></script>
-    <script src="js/views/tagsview.js"></script>
-    <script src="js/views/filterdoneview.js"></script>
-    <script src="js/views/filtertodoview.js"></script>
-    <script src="js/routers/router.js"></script>
+    <ul id="todoul" class="list-group col-xs-10 col-md-10"></ul>
 
-    <script type="text/javascript">
-      $(document).ready(function() {
-        $('#todofield').keyup(function() {
-          if ($(this).val() !== "") {
-            $('.submit').removeClass('disabled');
-          } else {
-            $('.submit').addClass('disabled');
-          }
-        });
+  </div>
+
+  <script src="js/app.js"></script>
+  <script src="js/models/todo.js"></script>
+  <script src="js/models/tag.js"></script>
+  <script src="js/collections/todos.js"></script>
+  <script src="js/collections/tags.js"></script>
+  <script src="js/views/tagview.js"></script>
+  <script src="js/views/todoview.js"></script>
+  <script src="js/views/navview.js"></script>
+  <script src="js/views/mainview.js"></script>
+  <script src="js/views/todosview.js"></script>
+  <script src="js/views/tagsview.js"></script>
+  <script src="js/views/filterdoneview.js"></script>
+  <script src="js/views/filtertodoview.js"></script>
+  <script src="js/routers/router.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#todofield').keyup(function() {
+        if ($(this).val() !== "") {
+          $('.submit').removeClass('disabled');
+        } else {
+          $('.submit').addClass('disabled');
+        }
       });
+<<<<<<< HEAD
     </script>
   </body>
   </html>
+=======
+    });
+  </script>
+</body>
+</html>
+>>>>>>> added comments

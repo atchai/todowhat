@@ -1,16 +1,27 @@
-.struck span:first-of-type{
-	text-decoration: line-through; 
-	color: #999;
+body {
+	background: url('../images/paper_fibers.png');
+}
+a.disabled {
+	color:gray; 
+	pointer-events: none; 
+	font-style: italic;
 }
 .remove {
 	float: right;
 	font-size: 0.8em;
 	opacity: 0.8;
 }
-body {
-	padding: 10px;
-	background: url('../images/paper_fibers.png');
+h1 {
+	font-weight: 900;
+	font-size: 3em;
 }
+.bold {
+	font-weight: 900;
+}
+
+/***************************
+Todo list
+***************************/
 .list-group {
 	margin-top: 14px;
 }
@@ -26,17 +37,15 @@ body {
 }
 .list-group-item:last-child {
 	border-bottom: 2px solid #99B3FF;
- }
+}
+.struck span:first-of-type{
+	text-decoration: line-through; 
+	color: #999;
+}
 
-h1 {
-	font-weight: 900;
-	font-size: 3em;
-}
-a.disabled {
-	color:gray; 
-	pointer-events: none; 
-	font-style: italic;
-}
+/***************************
+Tags
+***************************/
 .label {
 	opacity: 0.6;
 	color: purple;
@@ -47,10 +56,6 @@ a.disabled {
 #taglist li {
 	border: none;
 }
-
 #taglist li:nth-child(odd) {  
   background: #eeefff;
-}
-.bold {
-	font-weight: 900;
 }

@@ -18,10 +18,14 @@ app.FilterDoneView = Backbone.View.extend({
             this.$el.prepend(todoview.render().el);
         }, this);
         if (!thing.last()) {
-            console.log('none left redirect to root route');
             this.close();
         }
     },
+
+    /**
+    * stops listening to events from the todos collection so that
+    * toggling done states of todos does not cause this view to render again
+    */
     close: function() {
     	app.router.navigate('', true);
         this.stopListening();

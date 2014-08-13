@@ -4,7 +4,9 @@ app.TodoView = Backbone.View.extend({
     initialize: function(){
         //changing done state of model will rerender the view of that todo, toggling appropriate styling
         this.listenTo(this.model, 'change', this.render);
+        this.$navlinks = $('#navlinks');
     },
+
     tagName: 'li',
 
     id: function() {
@@ -18,21 +20,27 @@ app.TodoView = Backbone.View.extend({
 
     template: _.template($('#todo-template').html()),
 
+    /**
+    * renders view of a todo as well as the navigation links
+    *
+    */
     render: function() {
-        console.log('im rendering');
-        $(this.el).addClass('list-group-item');
+        this.$el.addClass('list-group-item');
         var html = this.template({
             todoItem: this.model.get('content') ,
             done: this.model.get('done'),
             tags: this.model.getTags()
         });
         this.$el.html(html);
-        $('#navlinks').empty();
+        this.$navlinks.empty();
         var links = new app.NavView({});
-        $('#navlinks').append(links.render().el);
+        this.$navlinks.append(links.render().el);
         return this;
     },
 
+    /**
+    * removes model from collection, and decreases count of associated tags
+    */
     removeTodo: function() {
         _.each(this.model.getTags(), function(tag) {
             app.tags.removeTag(tag);

@@ -4,20 +4,22 @@ app.TodosView = Backbone.View.extend({
 	tagName: 'ul',
 
     el: $("#todoul"),
-	initialize: function() {
-		console.log(this.collection);
-        this.listenTo(app.todos, 'reset', this.render);
-        this.listenTo(app.todos, 'add', this.render);
-        this.listenTo(app.todos, 'remove', this.render);
-	},
-	render: function() {
 
+	initialize: function() {
+        this.listenTo(this.collection, 'reset', this.render);
+        this.listenTo(this.collection, 'add', this.render);
+        this.listenTo(this.collection, 'remove', this.render);
+	},
+	/**
+	* renders every todo in the app.todos collection
+	*/
+	render: function() {
         this.$el.empty();
 		this.collection.each(function(todo){
           var todoview = new app.TodoView({ model: todo });
           this.$el.prepend(todoview.render().el);
       }, this);
-		if (!app.todos.last()) {
+		if (!this.collection.last()) {//if collection is empty
             this.$el.append('<li id="noTodos" class="list-group-item">Nothing to do</li>');
         }
       return this;
