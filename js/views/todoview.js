@@ -2,17 +2,22 @@ var app = app || {};
 
 app.TodoView = Backbone.View.extend({
     initialize: function(){
-        this.listenTo(this.model, 'change', this.render)
+        this.listenTo(this.model, 'change', this.render);
     },
+
     tagName: 'li',
+
     id: function() {
         return this.model.cid;
     },
+
     events: {
         "click .remove": "removeTodo",
         "click .toggle": "toggleDone"
     },
+
     template: _.template($('#todo-template').html()),
+
     render: function() {
         $(this.el).addClass('list-group-item');
         var html = this.template({
@@ -21,36 +26,26 @@ app.TodoView = Backbone.View.extend({
             tags: this.model.getTags()
         });
         this.$el.html(html);
+        $('#navlinks').empty();
+        var links = new app.NavView({});
+        $('#navlinks').append(links.render().el);
         return this;
-
     },
+
     removeTodo: function() {
         _.each(this.model.getTags(), function(tag) {
-            app.tags.removeTag(tag)
+            app.tags.removeTag(tag);
         });
         this.model.destroy();
     },
+
     toggleDone: function() {
         var done = this.model.get('done');
         this.model.save({'done': !done});
-
-        if (app.todos.filterDone(true).length==0) {
-            $('#filterDone').addClass('disabled');
-        }
-        else {
-            $('#filterDone').removeClass('disabled');
-        }
-        if (app.todos.filterDone(false).length==0) {
-            $('#filterNotDone').addClass('disabled');
-        }
-        else {
-            $('#filterNotDone').removeClass('disabled');
-        }     
-        // app.todos.trigger('reset');
         switch(app.router.filterParam) {
             case "done":
             case "todo":
-                app.todos.trigger('reset'); 
+                app.todos.trigger('reset');  //so that on last todo being (un)checked, user sent back to all todos page
                 break;
             default:
                 break;  

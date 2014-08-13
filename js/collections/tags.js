@@ -4,9 +4,10 @@ app.Tags = Backbone.Collection.extend({
 	localStorage: new Backbone.LocalStorage("StoredTags"),
 
 	model: app.Tag,
-	comparator: 'name',
 
-	exist: function(tag) {
+	comparator: 'name', //so that models are inserted into collection alphabetically
+
+	exist: function(tag) { //check if tag with same name exists in collection already
 		var existingTag = app.tags.find(function(model) {
 				return model.get('name') == tag;
 			});
@@ -19,6 +20,7 @@ app.Tags = Backbone.Collection.extend({
 				'name': tag
 			});
 	},
+
 	removeTag: function(tag) {
 		var existingTag = app.tags.find(function(model) {
 				return model.get('name') == tag;
