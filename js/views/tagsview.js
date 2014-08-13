@@ -5,14 +5,12 @@ app.TagsView = Backbone.View.extend({
 
     el: $("#taglist"),
     initialize: function() {
-        console.log(this.collection);
         this.listenTo(this.collection, 'reset', this.render);
         this.listenTo(this.collection, 'add', this.render); //so that new tags are added alphabetically
         this.listenTo(this.collection, 'remove', this.removeTagView);
     },
     render: function() {
         this.$el.empty();
-        console.log('hi');
         app.tags.each(function(t) {
             var tagList = new app.TagView({
                 model: t

@@ -18,7 +18,6 @@ app.FilterTodoView = Backbone.View.extend({
             this.$el.prepend(todoview.render().el);
         }, this);
         if (!thing.last()) {
-            console.log('none left redirect to root route');
             this.close();
         }
     },

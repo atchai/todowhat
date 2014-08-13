@@ -37,7 +37,6 @@ app.MainView = Backbone.View.extend({
         tagsContent = _.map(this.$tagsfield.val().split(','), function(t) {
             return t.trim();
         }).filter(Boolean);
-        console.log(tagsContent);
         app.todos.create(
                 {
                     content: todoContent,
