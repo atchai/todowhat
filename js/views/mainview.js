@@ -12,52 +12,59 @@ app.MainView = Backbone.View.extend({
     initialize: function() {
         this.$todoList = $("#todoul");
         //retrieve any todos and tags in local storage and render them
-        app.tags.fetch({
-            reset: true
-        });
-        app.todos.fetch({
-            reset: true
-        });
+        app.tags.fetch({reset: true});
+        app.todos.fetch({reset: true});
         this.render();
     },
-
+    
     render: function() {
         this.orderPersistance();
-        var tagsthingy = new app.TagsView({collection: app.tags});
-        tagsthingy.render();
+        var tagsList = new app.TagsView({collection: app.tags});
+        tagsList.render();
     },
-
-    addTodo: function(e) { //add a todo model (and tags) to the collection(s)
+    /**
+    * add a todo model (and tags) to the collection(s) using content in
+    * input boxes
+    */
+    addTodo: function(e) { 
         e.preventDefault();
-        var todoContent, tagsContent, todoContentValid;
-        todoContent = $('#todofield').val();
-        tagsContent = $('#tagsfield').val().split(',');
-        tagsContent = _.map(tagsContent, function(t) {
+        //cache input fields
+        this.$todofield = $('#todofield');
+        this.$tagsfield = $('#tagsfield');
+        var todoContent, tagsContent;
+        todoContent = this.$todofield.val();
+        //grabs tag values deliminated by commas and removes whitespace
+        tagsContent = _.map(this.$tagsfield.val().split(','), function(t) {
             return t.trim();
-        });
-        tagsContent = tagsContent.filter(Boolean);
-        console.log(tagsContent);
+        }).filter(Boolean);
         app.todos.create({
                 content: todoContent,
                 order: app.todos.newOrder(),
                 tags: tagsContent
-            }, { wait: true }); 
+            //using .create so we must set wait:true so input can be validated by model 
+            }, { wait: true });
+            //to see if tag exists in collection so count can be updated appropriately
              _.each(tagsContent, function(t) {
                 app.tags.exist(t);
             });
-        $('#todofield').val('');
-        $('#tagsfield').val('');
+        this.$todofield.val('');
+        this.$tagsfield.val('');
         $('.submit').addClass('disabled');
 
     },
-
+    /**
+    * clicks add todo button if enter key is pressed
+    */
     keyPressEventHandler: function(event) {
         if (event.keyCode == 13) {
             this.$(".submit").click();
         }
     },
-
-    orderPersistance: function() { //update order property of todo models after a drag and drop
+    /**
+    * uses jQuery UI to make list items sortable. 
+    * if sorting has occured, order of items is saved to models accordingly.
+    */
+    orderPersistance: function() {
         this.$todoList.sortable({
             update: function(event, ui) {
                 var order = $('#todoul').sortable('toArray'),

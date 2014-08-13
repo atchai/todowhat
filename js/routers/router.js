@@ -4,10 +4,12 @@ app.Router = Backbone.Router.extend({
     'done': 'filterDone',
     'todo': 'filterNotDone',
   },
+  /**
+  * based on the route, the following methods pass the todos collection to appropriate view and renders
+  */
   allRoute: function() {
   	var thetodosview = new app.TodosView({collection: app.todos});
         thetodosview.render();
-    console.log('at the allRoute method');
   },
   filterDone: function() {
   	var filteredView = new app.FilterDoneView({collection: app.todos});
