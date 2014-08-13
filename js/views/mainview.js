@@ -37,16 +37,23 @@ app.MainView = Backbone.View.extend({
         tagsContent = _.map(this.$tagsfield.val().split(','), function(t) {
             return t.trim();
         }).filter(Boolean);
-        app.todos.create({
-                content: todoContent,
-                order: app.todos.newOrder(),
-                tags: tagsContent
-            //using .create so we must set wait:true so input can be validated by model 
-            }, { wait: true });
-            //to see if tag exists in collection so count can be updated appropriately
-             _.each(tagsContent, function(t) {
-                app.tags.exist(t);
-            });
+        console.log(tagsContent);
+        app.todos.create(
+                {
+                    content: todoContent,
+                    order: app.todos.newOrder(),
+                    tags: tagsContent
+                }, 
+                { 
+                    //using .create so we must set wait:true so input can be validated by model 
+                    wait: true, 
+                    //if todo content was valid, see if tag(s) exists in collection so count can be updated appropriately
+                    success: function() {
+                        _.each(tagsContent, function(t) {
+                            app.tags.exist(t);
+                        });
+                    } 
+                });
         this.$todofield.val('');
         this.$tagsfield.val('');
         $('.submit').addClass('disabled');
