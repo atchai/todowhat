@@ -2,9 +2,9 @@ var app = app || {};
 
 app.TodoView = Backbone.View.extend({
     initialize: function(){
+        //changing done state of model will rerender the view of that todo, toggling appropriate styling
         this.listenTo(this.model, 'change', this.render);
     },
-
     tagName: 'li',
 
     id: function() {
@@ -19,6 +19,7 @@ app.TodoView = Backbone.View.extend({
     template: _.template($('#todo-template').html()),
 
     render: function() {
+        console.log('im rendering');
         $(this.el).addClass('list-group-item');
         var html = this.template({
             todoItem: this.model.get('content') ,
@@ -42,13 +43,5 @@ app.TodoView = Backbone.View.extend({
     toggleDone: function() {
         var done = this.model.get('done');
         this.model.save({'done': !done});
-        switch(app.router.filterParam) {
-            case "done":
-            case "todo":
-                app.todos.trigger('reset');  //so that on last todo being (un)checked, user sent back to all todos page
-                break;
-            default:
-                break;  
-        }
     }
 });

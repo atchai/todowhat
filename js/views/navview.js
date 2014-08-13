@@ -6,30 +6,26 @@ app.NavView = Backbone.View.extend({
     template: _.template($('#nav-template').html()),
 
     render: function() {
-        var allDone, noneDone, boldDone, boldNotDone, boldAll;
-        switch (app.router.filterParam) {
-            case 'done':
-                boldDone = true;
-                break;
-            case 'todo':
-                boldNotDone = true;
-                break;
-            default:
-                boldAll = true;
-                break;
-        }
-        if (app.todos.filterDone(true).length === 0) {
-            noneDone = true;
-        }
-        if (app.todos.filterDone(false).length === 0) {
-            allDone = true;
-        }
         var html = this.template({
-            done: allDone,
-            todo: noneDone,
-            boldDone: boldDone,
-            boldNotDone: boldNotDone,
-            boldAll: boldAll
+            items: [
+                {   
+                    name: 'todo',
+                    href: '#todo',
+                    disabled: (app.todos.filterDone(false).length === 0),
+                    bold: ('todo'==Backbone.history.fragment)
+                },
+                {
+                    name: 'done',
+                    href: '#done',
+                    disabled: (app.todos.filterDone(true).length === 0),
+                    bold: ('done'==Backbone.history.fragment)
+                },
+                {
+                    name: 'all',
+                    href: '',
+                    bold: (''==Backbone.history.fragment)
+                }
+            ]
         });
         this.$el.html(html);
         return this;

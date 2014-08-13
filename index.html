@@ -40,28 +40,14 @@
 </script>
 
 <script type="text/template" id="nav-template">
-  <a href="#done" id="filterDone" 
-  <% if (todo) {
-    print('class="disabled"')
-  } %>
-  <% if (boldDone) {
-    print('class="bold"')
-  } %>
-  >done</a> |
-  <a href="#todo" id='filterNotDone'
-  <% if (done) {
-    print('class="disabled"')
-  } %>
-  <% if (boldNotDone) {
-    print('class="bold"')
-  } %>
-  >not done</a> | 
-  <a href="#" id='showAll'
-  <% if (boldAll) {
-    print('class="bold"')
-  } %>
-  >all</a>
+  <% _.each(items, function(item) {
+    var cssClass = '';
+    if (item.disabled) {cssClass += 'disabled'}
+    if (item.bold) {cssClass += 'bold'}
+    print('<a href="'+item.href+'" class="'+cssClass+'">'+item.name+'</a> ')
+  }) %>
 </script>
+
 </head>
 <body>
   <div class="container">
@@ -93,6 +79,10 @@
     <script src="js/views/todoview.js"></script>
     <script src="js/views/navview.js"></script>
     <script src="js/views/mainview.js"></script>
+    <script src="js/views/todosview.js"></script>
+    <script src="js/views/filterdoneview.js"></script>
+        <script src="js/views/filtertodoview.js"></script>
+
     <script src="js/routers/router.js"></script>
     <script type="text/javascript">
       $(document).ready(function() {

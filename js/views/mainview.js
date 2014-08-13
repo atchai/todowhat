@@ -13,9 +13,6 @@ app.MainView = Backbone.View.extend({
     initialize: function() {
         this.$todoList = $("#todoul");
         this.$tagList = $('#taglist');
-        this.listenTo(app.todos, 'reset', this.render);
-        this.listenTo(app.todos, 'add', this.addTodoView);
-        this.listenTo(app.todos, 'remove', this.removeTodoView);
         this.listenTo(app.tags, 'reset', this.render); 
         this.listenTo(app.tags, 'add', this.render); //so that new tags are added alphabetically
         this.listenTo(app.tags, 'remove', this.removeTagView);
@@ -26,9 +23,9 @@ app.MainView = Backbone.View.extend({
         app.todos.fetch({
             reset: true
         });
-        if (!app.todos.last()) {
-            this.$todoList.append('<li id="noTodos" class="list-group-item">Nothing to do</li>');
-        }
+        // if (!app.todos.last()) {
+        //     this.$todoList.append('<li id="noTodos" class="list-group-item">Nothing to do</li>');
+        // }
     },
 
     render: function() {
@@ -38,28 +35,6 @@ app.MainView = Backbone.View.extend({
         app.tags.each(function(t) { //all tags to be visible in taglist always
             this.addTagView(t);
         }, this);
-        switch (app.router.filterParam) { //renders done, not done or all todos based on url
-            case 'done':
-                var thing = app.todos.filterDone(true);
-                if (thing.length === 0) {
-                    this.showAll();
-                } else {
-                    this.filterDone();
-                }
-                break;
-            case 'todo':
-                var thing = app.todos.filterDone(false);
-                if (thing.length === 0) {
-                    this.showAll();
-                } else {
-                    this.filterNotDone();
-                }
-                break;
-            default:
-                this.showAll();
-                break;
-                return this;
-        }
     },
 
     addTodo: function(e) { //add a todo model (and tags) to the collection(s)
@@ -71,80 +46,19 @@ app.MainView = Backbone.View.extend({
             return t.trim();
         });
         tagsContent = tagsContent.filter(Boolean);
-        todoContentValid = (todoContent && todoContent.length <= 255 && ($.trim(todoContent)) != 0 ) ? 
-            true:false
-        if (todoContentValid && tagsContent.length != 0) {
-            app.todos.create({
+        console.log(tagsContent);
+        app.todos.create({
                 content: todoContent,
                 order: app.todos.newOrder(),
                 tags: tagsContent
-            });
-            _.each(tagsContent, function(t) {
+            }, { wait: true }); 
+             _.each(tagsContent, function(t) {
                 app.tags.exist(t);
             });
-
-        } else if (todoContentValid) {
-            app.todos.create({
-                content: todoContent,
-                order: app.todos.newOrder()
-            }); 
-        }
         $('#todofield').val('');
         $('#tagsfield').val('');
         $('.submit').addClass('disabled');
 
-    },
-
-    addTodoView: function(todo) { //create new todo view
-        var thing = new app.TodoView({
-            model: todo
-        });
-        this.$todoList.prepend(thing.render().el);
-        this.orderPersistance();
-        if ($('#noTodos')) {
-            $('#noTodos').remove();
-        };
-    },
-
-    removeTodoView: function(todo) {
-        var cid = '#' + todo.cid;
-        $(cid).remove();
-        if (!app.todos.last()) {
-            this.$todoList.append('<li id="noTodos" class="list-group-item">Nothing to do</li>');
-            $('#navlinks').empty(); //navigation links are pointless with no todos
-        }
-    },
-
-    filterDone: function() { //filter and render todos marked as done
-        app.router.navigate('done', {
-            trigger: true
-        });
-        var thing = app.todos.filterDone(true);
-        this.$todoList.empty();
-        thing.each(function(c) {
-            this.addTodoView(c);
-        }, this);
-    },
-
-    filterNotDone: function() {
-        app.router.navigate('todo', {
-            trigger: true
-        });
-        var thing = app.todos.filterDone(false);
-        this.$todoList.empty();
-        thing.each(function(c) {
-            this.addTodoView(c);
-        }, this);
-    },
-
-    showAll: function() {
-        app.router.navigate('#', {
-            trigger: true
-        });
-        this.$todoList.empty();
-        app.todos.each(function(c) {
-            this.addTodoView(c);
-        }, this);
     },
 
     addTagView: function(tag) {
