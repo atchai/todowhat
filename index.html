@@ -29,7 +29,7 @@
   </script>
 
   <script type="text/template" id="nav-template">
-  <ul class="nav nav-pills red">
+  <ul class="nav nav-pills">
     <% _.each(items, function(item) { %>
       <li <% if (item.bold) {%> class="active" <%} %> ><a href="<%- item.href %>" 
       class="<% if (item.disabled) {%> disabled <%} if (item.bold) {%> bold <%} %>">
@@ -41,30 +41,34 @@
 
 </head>
 <body>
+
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 <div class="container">
-    <h1 class="col-md-8">What todo</h1>
-    <div class="col-md-4" id="navlinks"></div>
+    <h1>What todo</h1>
 </div>
 </nav>
 <div class="container main-content">
+        <div class="col-md-2" id="navlinks"></div>
 
-    <div class="col-md-10 row pull-right">
+    <div class="col-md-10 row blah">
         <div class="col-md-10">
             <form class="form-horizontal" role="form">
-                <div class="form-group form-group-lg">
+                <div class="form-group form-group-lg field-size">
                     <input class="form-control" type="text" id="todofield" placeholder="Enter your todo here">
                 </div>
-                <div class="form-group form-group-sm">
+                <div class="form-group form-group-sm field-size">
                     <input class="form-control" type="text" id="tagsfield" placeholder="Put some tags here if you want, seperated with commas">
                 </div>
             </form>
 
         </div>
         <div class="col-md-2">
-            <button type="submit" class="btn btn-primary submit disabled glyphicon glyphicon-plus"></button>
+            <button type="submit" class="btn btn-primary submit disabled">
+              <span class="glyphicon glyphicon-plus"></span>
+            </button>
         </div>
     </div>
+    
     <ul id="taglist" class="list-group col-xs-2 col-md-2"></ul>
     <div class="well col-xs-10 col-md-10 pull-right">
           <ul id="todoul" class="list-group"></ul>
@@ -87,7 +91,6 @@
   <script src="js/views/filterdoneview.js"></script>
   <script src="js/views/filtertodoview.js"></script>
   <script src="js/routers/router.js"></script>
-
   <script type="text/javascript">
     $(document).ready(function() {
       $('#todofield').keyup(function() {

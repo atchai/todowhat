@@ -9,6 +9,7 @@ app.FilterDoneView = Backbone.View.extend({
         this.listenTo(this.collection, 'add', this.close);
         this.listenTo(this.collection, 'remove', this.render);
     },
+    
     /**
     * renders the todos that have been done
     */

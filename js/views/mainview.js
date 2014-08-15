@@ -21,6 +21,11 @@ app.MainView = Backbone.View.extend({
         this.orderPersistance();
         var tagsList = new app.TagsView({collection: app.tags});
         tagsList.render();
+        $(document).ready(function(){
+            $('.navlinks').empty();
+        var links = new app.NavView({});
+        $('.navlinks').append(links.render().el);
+        })
     },
     /**
     * add a todo model (and tags) to the collection(s) using content in
@@ -69,7 +74,6 @@ app.MainView = Backbone.View.extend({
     /**
     * uses jQuery UI to make list items sortable. 
     * if sorting has occured, order of items is saved to models accordingly.
-    * 
     */
     orderPersistance: function() {
         this.$todoList.sortable({

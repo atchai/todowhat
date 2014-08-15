@@ -46,6 +46,7 @@ app.TodoView = Backbone.View.extend({
             app.tags.removeTag(tag);
         });
         this.model.destroy();
+        this.render();
     },
 
     toggleDone: function() {

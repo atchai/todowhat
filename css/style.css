@@ -1,30 +1,34 @@
 body {
 	background: url('../images/paper_fibers.png');
 }
+.col-md-2 {}
+.form-horizontal {
+    margin-left: -30px;
+    width: 110%;
+}
 h1 {
 	font-weight: 900;
 	font-size: 3em;
     color: #fff;
+    margin-top: 20px;
 }
 .submit {
-    height: 85px;
+    height: 90px;
     font-size: 50px;
+    margin-left: 45%;
 }
 .main-content {
-	margin-top: 140px; 
+	margin-top: 125px; 
 }
 
 /***************************
 Navigation
 ***************************/
 .nav {
-	margin-top: 35px;
-    float: right;
-}
-.nav-pills a:hover {
-    background: #666;
+    margin: 10px 0px 0px -23px;
 }
 .navbar {
+    height: 70px;
     background: url('../images/concrete_wall.png');
 }
 a.disabled {
@@ -74,6 +78,7 @@ Tags
 }
 #taglist {
 	font-size: 9px;
+	margin-left: -10px;
 }
 .tags-head {
 	background: url('../images/concrete_wall.png');
@@ -81,6 +86,7 @@ Tags
 }
 #taglist li {
 	border: 1px solid #E7E7E7;
+    word-wrap: break-word;
 }
 #taglist li:nth-child(even) {  
   background: #eeefff;
@@ -90,4 +96,17 @@ Tags
 }
 .badge {
 	opacity: 0.7;
+}
+.blah {
+	float: right;
+}
+.glyphicon-plus {
+	margin: 10px 0 0 5px;
+}
+.btn {
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	outline: none;
+	border: none;
 }
