@@ -9,6 +9,7 @@ app.FilterTodoView = Backbone.View.extend({
         this.listenTo(this.collection, 'add', this.close);
         this.listenTo(this.collection, 'remove', this.render);
     },
+    
     render: function() {
         var thing = app.todos.filterDone(false);
         this.$el.empty();
@@ -22,6 +23,7 @@ app.FilterTodoView = Backbone.View.extend({
             this.close();
         }
     },
+    
     close: function() {
         app.router.navigate('', true);
         this.stopListening();

@@ -27,9 +27,7 @@ app.TodosView = Backbone.View.extend({
 
 	remove: function(todo) {
 		var that = this;
-		console.log(todo.cid);
-		$('#'+todo.cid).toggle( "fade" );
-		setTimeout(function(){that.render()}, 650);
+		$('#'+todo.cid).remove();
 	}
 
 })
