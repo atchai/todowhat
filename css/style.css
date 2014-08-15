@@ -1,24 +1,36 @@
 body {
 	background: url('../images/paper_fibers.png');
 }
-.col-md-2 {}
-.form-horizontal {
-    margin-left: -30px;
-    width: 110%;
-}
 h1 {
 	font-weight: 900;
 	font-size: 3em;
     color: #fff;
-    margin-top: 20px;
+    margin-top: 15px;
+}
+.main-content {
+	margin-top: 100px; 
+}
+
+/***************************
+Create todo fields
+***************************/
+.form-horizontal {
+    margin-left: -30px;
+    width: 110%;
+}
+.add-todo-fields {
+	float: right;
+}
+.glyphicon-plus {
+	margin: 10px 0 0 5px;
+}
+.input-sm, .form-horizontal .form-group-sm .form-control {
+    border-radius: 5px;
 }
 .submit {
     height: 90px;
     font-size: 50px;
-    margin-left: 45%;
-}
-.main-content {
-	margin-top: 125px; 
+    margin-left: 48%;
 }
 
 /***************************
@@ -28,8 +40,12 @@ Navigation
     margin: 10px 0px 0px -23px;
 }
 .navbar {
+    margin: 0;
+    padding: 0;
     height: 70px;
     background: url('../images/concrete_wall.png');
+    border-right: 0px;
+    border-left: 0px;
 }
 a.disabled {
 	color:gray; 
@@ -97,12 +113,7 @@ Tags
 .badge {
 	opacity: 0.7;
 }
-.blah {
-	float: right;
-}
-.glyphicon-plus {
-	margin: 10px 0 0 5px;
-}
+
 .btn {
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
