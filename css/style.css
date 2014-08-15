@@ -6,6 +6,7 @@ a.disabled {
 	pointer-events: none; 
 	font-style: italic;
 }
+
 .remove {
 	float: right;
 	font-size: 0.8em;
@@ -14,6 +15,7 @@ a.disabled {
 h1 {
 	font-weight: 900;
 	font-size: 3em;
+    color: #fff;
 }
 .bold {
 	font-weight: 900;
@@ -26,17 +28,18 @@ Todo list
 	margin-top: 14px;
 }
 .list-group-item {
-	background: #fffefe;
-	border-color: #888; 
+	border-color: #d6d6c6; 
 	border-style: none;
 	border-top-style: dashed;
 	border-bottom-style: dashed;
+	font-size: 1.4em;
+	background: rgba(0,0,0,0);
 }
-.list-group-item:first-child {
-	border-top: 2px solid #99B3FF;
+.well {	background: url('../images/linedpaper.png');
 }
-.list-group-item:last-child {
-	border-bottom: 2px solid #99B3FF;
+
+.list-group-item span:first-of-type {
+	margin-right: 10px;
 }
 .struck span:first-of-type{
 	text-decoration: line-through; 
@@ -47,15 +50,43 @@ Todo list
 Tags
 ***************************/
 .label {
-	opacity: 0.6;
-	color: purple;
+	opacity: 0.8;
 }
 #taglist {
-	font-size: 0.85em;
+	font-size: 9px;
 }
 #taglist li {
-	border: none;
+	border: 1px solid #E7E7E7;
 }
-#taglist li:nth-child(odd) {  
+#taglist li:nth-child(even) {  
   background: #eeefff;
+}
+#noTodos {
+		pointer-events: none; 
+}
+.nav {
+	margin-top: 35px;
+    float: right;
+/*    background: #222;*/
+}
+.nav-pills a:hover {
+    background: #666;
+}
+.navbar {
+    background: url('../images/concrete_wall.png');
+}
+.submit {
+    height: 85px;
+    font-size: 50px;
+}
+
+.main-content {
+	margin-top: 140px; 
+}
+.badge {
+	opacity: 0.7;
+}
+.tags-head {
+	background: url('../images/concrete_wall.png');
+	color: white;
 }
