@@ -21,6 +21,11 @@ app.MainView = Backbone.View.extend({
         this.orderPersistance();
         var tagsList = new app.TagsView({collection: app.tags});
         tagsList.render();
+        $(document).ready(function(){
+            $('.navlinks').empty();
+        var links = new app.NavView({});
+        $('.navlinks').append(links.render().el);
+        })
     },
     /**
     * add a todo model (and tags) to the collection(s) using content in

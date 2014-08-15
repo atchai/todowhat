@@ -8,7 +8,7 @@ app.TodosView = Backbone.View.extend({
 	initialize: function() {
         this.listenTo(this.collection, 'reset', this.render);
         this.listenTo(this.collection, 'add', this.render);
-        this.listenTo(this.collection, 'remove', this.remove);
+        this.listenTo(this.collection, 'remove', this.render);
 	},
 	/**
 	* renders every todo in the app.todos collection
@@ -23,11 +23,6 @@ app.TodosView = Backbone.View.extend({
             this.$el.append('<li id="noTodos" class="list-group-item">Nothing to do</li>');
         }
       return this;
-	}, 
-
-	remove: function(todo) {
-		var that = this;
-		$('#'+todo.cid).remove();
 	}
 
 })
