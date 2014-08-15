@@ -12,8 +12,8 @@ app.MainView = Backbone.View.extend({
     initialize: function() {
         this.$todoList = $("#todoul");
         //retrieve any todos and tags in local storage and render them
-        app.tags.fetch({reset: true});
-        app.todos.fetch({reset: true});
+        app.tags.fetch();
+        app.todos.fetch();
         this.render();
     },
     
@@ -37,16 +37,22 @@ app.MainView = Backbone.View.extend({
         tagsContent = _.map(this.$tagsfield.val().split(','), function(t) {
             return t.trim();
         }).filter(Boolean);
-        app.todos.create({
-                content: todoContent,
-                order: app.todos.newOrder(),
-                tags: tagsContent
-            //using .create so we must set wait:true so input can be validated by model 
-            }, { wait: true });
-            //to see if tag exists in collection so count can be updated appropriately
-             _.each(tagsContent, function(t) {
-                app.tags.exist(t);
-            });
+        app.todos.create(
+                {
+                    content: todoContent,
+                    order: app.todos.newOrder(),
+                    tags: tagsContent
+                }, 
+                { 
+                    //using .create so we must set wait:true so input can be validated by model 
+                    wait: true, 
+                    //if todo content was valid, see if tag(s) exists in collection so count can be updated appropriately
+                    success: function() {
+                        _.each(tagsContent, function(t) {
+                            app.tags.exist(t);
+                        });
+                    } 
+                });
         this.$todofield.val('');
         this.$tagsfield.val('');
         $('.submit').addClass('disabled');
@@ -66,36 +72,30 @@ app.MainView = Backbone.View.extend({
     */
     orderPersistance: function() {
         this.$todoList.sortable({
+            axis: "y",
+
             update: function(event, ui) {
                 var order = $('#todoul').sortable('toArray'),
                     cidOfDropped = ui.item.context.id,
                     itemIndex = ui.item.index();
+
                 //if dropped item is now last in list, change order property to less than that of penultimate
                 if (itemIndex == order.length - 1) { 
                     var cidOfAbove = order[itemIndex - 1],
                         orderOfAbove = app.todos.get(cidOfAbove).get('order');
-                    app.todos.get(cidOfDropped).save({
-                        'order': orderOfAbove - 1
-                    });
+                    app.todos.get(cidOfDropped).save({'order': orderOfAbove - 1});
                 } else { //else change the order to more than item below it
-                    app.todos.get({
-                        cid: cidOfDropped
-                    }).save({
-                        'order': app.todos.get({
-                            cid: order[itemIndex + 1]
-                        }).get('order') + 1
-                    });
+                    app.todos.get({cid: cidOfDropped})
+                        .save({'order': app.todos.get({cid: order[itemIndex + 1]})
+                            .get('order') + 1});
+
                     for (var i = 0; i < itemIndex; i++) { //then increase order of those above it
-                        var currentOrder = app.todos.get({
-                            cid: order[i]
-                        }).get('order');
-                        app.todos.get({
-                            cid: order[i]
-                        }).save({
-                            "order": currentOrder + 2
-                        });
+                        var currentOrder = app.todos.get({cid: order[i]}).get('order');
+                        app.todos.get({cid: order[i]})
+                            .save({"order": currentOrder + 2});
                     }
                 }
+                app.todos.sort();
 
             }
         });

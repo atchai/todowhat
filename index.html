@@ -6,23 +6,23 @@
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
   <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/style.css">
-  <script src="node_modules/jquery/dist/jquery.js"></script>
-  <script src="node_modules/jquery-ui/jquery-ui.js"></script>
-  <script src="node_modules/underscore/underscore.js"></script>
-  <script src="node_modules/backbone/backbone.js"></script>
-  <script src="node_modules/backbone.localstorage/backbone.localStorage.js"></script>
 
+  <script src="components/jquery.js"></script>
+  <script src="components/jquery-ui.js"></script>
+  <script src="components/underscore.js"></script>
+  <script src="components/backbone.js"></script>
+  <script src="components/backbone.localStorage.js"></script>
   <script type="text/template" id="todo-template">
-    <div <%if (done) { print('class="struck"') };%> >
-    <input class="toggle" type="checkbox" <% if (done) { print('checked') };%> >
-    <span>
-      <%- todoItem %>
-    </span>
-    <% _.each(tags, function(t) {
-      print('<span class="label label-default">'+t+'</span> ');
-    })%>
-    <button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove" href="#"></button>
-  </div>
+    <div <% if (done) {%> class="struck" <%} %> >
+      <input class="toggle" type="checkbox" <% if (done) {%> checked <%} %> >
+      <span>
+        <%- todoItem %>
+      </span>
+      <% _.each(tags, function(t) { %>
+       <span class="label label-info"><%print(t)%></span>
+      <%})%>
+      <button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove" href="#"></button>
+    </div>
   </script>
 
   <script type="text/template" id="tag-template">
@@ -30,34 +30,50 @@
   </script>
 
   <script type="text/template" id="nav-template">
-    <% _.each(items, function(item) {
-      var cssClass = '';
-      if (item.disabled) {cssClass += 'disabled'}
-      if (item.bold) {cssClass += 'bold'}
-      print('<a href="'+item.href+'" class="'+cssClass+'">'+item.name+'</a> ')
-    }) %>
+  <ul class="nav nav-pills red">
+    <% _.each(items, function(item) { %>
+      <li <% if (item.bold) {%> class="active" <%} %> ><a href="<%- item.href %>" 
+      class="<% if (item.disabled) {%> disabled <%} if (item.bold) {%> bold <%} %>">
+        <%- item.name %>
+      </a></li>
+    <% }) %>
+    </ul>
   </script>
 
 </head>
 <body>
-  <div class="container">
-    <h1>What todo</h1>
-    <div class="form-group">
-      <div class="input-group">
-        <input type="text" placeholder="todo here" id="todofield" class="form-control">
-        <span class="input-group-btn">
-          <button class="btn btn-primary disabled submit" type="button">add todo</button>
-        </span>
-      </div>
-      <input type="text" placeholder="(optional) tags here, deliminate with commas" id="tagsfield" class="form-control">
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+<div class="container">
+    <h1 class="col-md-8">What todo</h1>
+    <div class="col-md-4" id="navlinks"></div>
+</div>
+</nav>
+<div class="container main-content">
+
+    <div class="col-md-10 row pull-right">
+        <div class="col-md-10">
+            <form class="form-horizontal" role="form">
+                <div class="form-group form-group-lg">
+                    <input class="form-control" type="text" id="todofield" placeholder="Enter your todo here">
+                </div>
+                <div class="form-group form-group-sm">
+                    <input class="form-control" type="text" id="tagsfield" placeholder="Put some tags here if you want, seperated with commas">
+                </div>
+            </form>
+
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary submit disabled glyphicon glyphicon-plus"></button>
+        </div>
     </div>
-    <div class="col-md-12" id="navlinks"></div>
-    <ul id="taglist" class="list-group col-xs-2 col-md-2">
-    </ul>
+    <ul id="taglist" class="list-group col-xs-2 col-md-2"></ul>
+    <div class="well col-xs-10 col-md-10 pull-right">
+          <ul id="todoul" class="list-group"></ul>
+    </div>
 
-    <ul id="todoul" class="list-group col-xs-10 col-md-10"></ul>
+</div>
 
-  </div>
 
   <script src="js/app.js"></script>
   <script src="js/models/todo.js"></script>
@@ -73,7 +89,6 @@
   <script src="js/views/filterdoneview.js"></script>
   <script src="js/views/filtertodoview.js"></script>
   <script src="js/routers/router.js"></script>
-
   <script type="text/javascript">
     $(document).ready(function() {
       $('#todofield').keyup(function() {
@@ -84,6 +99,6 @@
         }
       });
     });
-  </script>
+    </script>
 </body>
 </html>

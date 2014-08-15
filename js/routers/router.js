@@ -21,6 +21,3 @@ app.Router = Backbone.Router.extend({
   },
 });
 
-app.router = new app.Router();
-
-
