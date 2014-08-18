@@ -7,16 +7,25 @@
     "type": "git",
     "url": "https://github.com/ackl/what-todo.git"
   },
-  "dependencies"  : {
-    "jquery"  : "1.11.1",
-    "jquery-ui"  : "1.10.5",
-    "underscore"  : "1.6.0",
-    "backbone"  : "1.1.2",
-    "backbone.localstorage" : "1.1.13"
+  "dependencies": {
+    "backbone": "1.1.2",
+    "backbone.localstorage": "1.1.13",
+    "jquery": "1.11.1",
+    "jquery-ui": "1.10.5",
+    "jquery-ui-touch-punch": "^0.2.3",
+    "underscore": "1.6.0"
   },
   "author": "Andrew Low",
   "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/ackl/what-todo/issues"
+  },
+  "devDependencies": {
+    "browserify": "^5.10.0",
+    "jasmine-node": "^1.14.5",
+    "karma": "^0.12.21",
+    "karma-browserify": "^0.2.1",
+    "karma-chrome-launcher": "^0.1.4",
+    "karma-jasmine": "^0.1.5"
   }
 }
