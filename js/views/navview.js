@@ -1,6 +1,9 @@
-var app = app || {};
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
+var Todos = require('../collections/todos');
 
-app.NavView = Backbone.View.extend({
+module.exports = Backbone.View.extend({
     el: $('#navlinks'),
 
     template: _.template($('#nav-template').html()),
@@ -11,13 +14,13 @@ app.NavView = Backbone.View.extend({
                 {   
                     name: 'todo',
                     href: '#todo',
-                    disabled: (app.todos.filterDone(false).length == 0),
+                    disabled: (Todos.filterDone(false).length == 0),
                     bold: ('todo' == Backbone.history.fragment)
                 },
                 {
                     name: 'done',
                     href: '#done',
-                    disabled: (app.todos.filterDone(true).length == 0),
+                    disabled: (Todos.filterDone(true).length == 0),
                     bold: ('done' == Backbone.history.fragment)
                 },
                 {

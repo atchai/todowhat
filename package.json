@@ -1,0 +1,22 @@
+{
+  "name": "what-todo",
+  "version": "0.0.1",
+  "description": "Todo list application built with Backbone.js",
+  "main": "js/app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ackl/what-todo.git"
+  },
+  "dependencies"  : {
+    "jquery"  : "1.11.1",
+    "jquery-ui"  : "1.10.5",
+    "underscore"  : "1.6.0",
+    "backbone"  : "1.1.2",
+    "backbone.localstorage" : "1.1.13"
+  },
+  "author": "Andrew Low",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/ackl/what-todo/issues"
+  }
+}

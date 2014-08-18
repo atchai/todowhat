@@ -1,6 +1,10 @@
-var app = app || {};
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
+var Todos = require('../collections/todos');
+var TodoView = require('./todoview');
 
-app.FilterDoneView = Backbone.View.extend({
+module.exports = Backbone.View.extend({
     tagName: 'ul',
     el: $("#todoul"),
     initialize: function() {
@@ -14,10 +18,10 @@ app.FilterDoneView = Backbone.View.extend({
     * renders the todos that have been done
     */
     render: function() {
-        var thing = app.todos.filterDone(true);
+        var thing = Todos.filterDone(true);
         this.$el.empty();
         thing.each(function(c) {
-            var todoview = new app.TodoView({
+            var todoview = new TodoView({
                 model: c
             });
             this.$el.prepend(todoview.render().el);
@@ -32,7 +36,7 @@ app.FilterDoneView = Backbone.View.extend({
     * toggling done states of todos does not cause this view to render again
     */
     close: function() {
-    	app.router.navigate('', true);
+    	Backbone.history.navigate('', true);
         this.stopListening();
     }
 })

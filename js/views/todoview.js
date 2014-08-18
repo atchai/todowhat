@@ -1,6 +1,10 @@
-var app = app || {};
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
+var NavView = require('./navview');
+var Tags = require('../collections/tags');
 
-app.TodoView = Backbone.View.extend({
+module.exports = Backbone.View.extend({
     initialize: function(){
         //changing done state of model will rerender the view of that todo, toggling appropriate styling
         this.listenTo(this.model, 'change', this.render);
@@ -33,7 +37,7 @@ app.TodoView = Backbone.View.extend({
         });
         this.$el.html(html);
         this.$navlinks.empty();
-        var links = new app.NavView({});
+        var links = new NavView({});
         this.$navlinks.append(links.render().el);
         return this;
     },
@@ -43,7 +47,7 @@ app.TodoView = Backbone.View.extend({
     */
     removeTodo: function() {
         _.each(this.model.getTags(), function(tag) {
-            app.tags.removeTag(tag);
+            Tags.removeTag(tag);
         });
         this.model.destroy();
         this.render();

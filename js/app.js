@@ -1,7 +1,18 @@
-var app = app || {};
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
+todoAppView = require('./views/mainview');
+appRouter = require('./routers/router');
 
 $(document).ready(function() {
-    var todoAppView = new app.MainView();
-    app.router = new app.Router();
+    new todoAppView();
+    new appRouter();
     Backbone.history.start();
+      $('#todofield').keyup(function() {
+        if ($(this).val() !== "") {
+          $('.submit').removeClass('disabled');
+        } else {
+          $('.submit').addClass('disabled');
+        }
+      });
 });

@@ -1,6 +1,8 @@
-var app = app || {};
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
 
-app.TagView = Backbone.View.extend({
+module.exports = Backbone.View.extend({
 	initialize: function() {
 		this.listenTo(this.model, 'change', this.render)	
 	},

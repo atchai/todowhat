@@ -1,6 +1,8 @@
-var app = app || {};
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
 
-app.Todo = Backbone.Model.extend({
+module.exports = Backbone.Model.extend({
     defaults: {
         done: false,
         order: 0

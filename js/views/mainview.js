@@ -1,6 +1,15 @@
-var app = app || {};
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
+var Todos = require('../collections/todos');
+var TodoView = require('./todoview');
+var Tags = require('../collections/tags')
+var TagsView = require('./tagsview');
+var NavView = require('./navview');
+require('jquery-ui');
+Backbone.$ = $;
 
-app.MainView = Backbone.View.extend({
+module.exports = Backbone.View.extend({
     events: {
         "click .submit": "addTodo",
         "keyup #todofield": "keyPressEventHandler",
@@ -12,18 +21,18 @@ app.MainView = Backbone.View.extend({
     initialize: function() {
         this.$todoList = $("#todoul");
         //retrieve any todos and tags in local storage and render them
-        app.tags.fetch();
-        app.todos.fetch();
+        Tags.fetch();
+        Todos.fetch();
         this.render();
     },
     
     render: function() {
         this.orderPersistance();
-        var tagsList = new app.TagsView({collection: app.tags});
+        var tagsList = new TagsView({collection: Tags});
         tagsList.render();
         $(document).ready(function(){
             $('.navlinks').empty();
-        var links = new app.NavView({});
+        var links = new NavView({});
         $('.navlinks').append(links.render().el);
         })
     },
@@ -42,10 +51,10 @@ app.MainView = Backbone.View.extend({
         tagsContent = _.map(this.$tagsfield.val().split(','), function(t) {
             return t.trim();
         }).filter(Boolean);
-        app.todos.create(
+        Todos.create(
                 {
                     content: todoContent,
-                    order: app.todos.newOrder(),
+                    order: Todos.newOrder(),
                     tags: tagsContent
                 }, 
                 { 
@@ -54,7 +63,7 @@ app.MainView = Backbone.View.extend({
                     //if todo content was valid, see if tag(s) exists in collection so count can be updated appropriately
                     success: function() {
                         _.each(tagsContent, function(t) {
-                            app.tags.exist(t);
+                            Tags.exist(t);
                         });
                     } 
                 });
@@ -87,20 +96,20 @@ app.MainView = Backbone.View.extend({
                 //if dropped item is now last in list, change order property to less than that of penultimate
                 if (itemIndex == order.length - 1) { 
                     var cidOfAbove = order[itemIndex - 1],
-                        orderOfAbove = app.todos.get(cidOfAbove).get('order');
-                    app.todos.get(cidOfDropped).save({'order': orderOfAbove - 1});
+                        orderOfAbove = Todos.get(cidOfAbove).get('order');
+                    Todos.get(cidOfDropped).save({'order': orderOfAbove - 1});
                 } else { //else change the order to more than item below it
-                    app.todos.get({cid: cidOfDropped})
-                        .save({'order': app.todos.get({cid: order[itemIndex + 1]})
+                    Todos.get({cid: cidOfDropped})
+                        .save({'order': Todos.get({cid: order[itemIndex + 1]})
                             .get('order') + 1});
 
                     for (var i = 0; i < itemIndex; i++) { //then increase order of those above it
-                        var currentOrder = app.todos.get({cid: order[i]}).get('order');
-                        app.todos.get({cid: order[i]})
+                        var currentOrder = Todos.get({cid: order[i]}).get('order');
+                        Todos.get({cid: order[i]})
                             .save({"order": currentOrder + 2});
                     }
                 }
-                app.todos.sort();
+                Todos.sort();
 
             }
         });

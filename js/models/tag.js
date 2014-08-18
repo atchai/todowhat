@@ -1,6 +1,8 @@
-var app = app || {};
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
 
-app.Tag = Backbone.Model.extend({
+module.exports = Backbone.Model.extend({
     defaults: {
         count: 1
     },

@@ -1,6 +1,15 @@
-var app = app || {};
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
+var Todos = require('../collections/todos');
+var TodoView = require('./todoview');
+var Tags = require('../collections/tags')
+var TagsView = require('./tagsview');
+var TagView = require('./tagview');
+var NavView = require('./navview');
+Backbone.$ = $;
 
-app.TagsView = Backbone.View.extend({
+module.exports = Backbone.View.extend({
     tagName: 'ul',
 
     el: $("#taglist"),
@@ -17,8 +26,8 @@ app.TagsView = Backbone.View.extend({
     render: function() {
         this.$el.empty();
         this.$el.append('<li class="list-group-item tags-head"><span class="glyphicon glyphicon-tags"></span>tags</li>');
-        app.tags.each(function(t) {
-            var tagList = new app.TagView({
+        Tags.each(function(t) {
+            var tagList = new TagView({
                 model: t
             });
             this.$el.append(tagList.render().el);

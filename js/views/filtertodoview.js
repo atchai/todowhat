@@ -1,6 +1,10 @@
-var app = app || {};
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
+var Todos = require('../collections/todos');
+var TodoView = require('./todoview');
 
-app.FilterTodoView = Backbone.View.extend({
+module.exports = Backbone.View.extend({
     tagName: 'ul',
     el: $("#todoul"),
     initialize: function() {
@@ -11,10 +15,10 @@ app.FilterTodoView = Backbone.View.extend({
     },
     
     render: function() {
-        var thing = app.todos.filterDone(false);
+        var thing = Todos.filterDone(false);
         this.$el.empty();
         thing.each(function(c) {
-            var todoview = new app.TodoView({
+            var todoview = new TodoView({
                 model: c
             });
             this.$el.prepend(todoview.render().el);
@@ -25,7 +29,7 @@ app.FilterTodoView = Backbone.View.extend({
     },
     
     close: function() {
-        app.router.navigate('', true);
+        Backbone.history.navigate('', true);
         this.stopListening();
     }
 

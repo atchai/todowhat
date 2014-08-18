@@ -1,6 +1,9 @@
-var app = app || {};
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
+var TodoView = require('./todoview');
 
-app.TodosView = Backbone.View.extend({
+module.exports = Backbone.View.extend({
 	tagName: 'ul',
 
     el: $("#todoul"),
@@ -16,7 +19,7 @@ app.TodosView = Backbone.View.extend({
 	render: function() {
         this.$el.empty();
 		this.collection.each(function(todo){
-          var todoview = new app.TodoView({ model: todo });
+          var todoview = new TodoView({ model: todo });
           this.$el.prepend(todoview.render().el);
       }, this);
 		if (!this.collection.last()) {//if collection is empty
