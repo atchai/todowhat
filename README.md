@@ -2,7 +2,7 @@
 Todo app made with Backbone.js
 
 ## Demo
-[Demo on gh-pages](ackl.github.io/what-todo)
+[Demo on gh-pages](http://ackl.github.io/what-todo)
 ## Installation
 ```
 npm install
