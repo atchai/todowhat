@@ -58,10 +58,13 @@ Navigation
 .dropdown-menu > li > a {
 	color: #0099FF;
 }
-.dropdown-menu > li > a.disabled {
-	color:gray; 
+a.disabled {
+	color: gray; 
 	pointer-events: none; 
 	font-style: italic;
+}
+.dropdown-menu > li > a.disabled {
+	color: gray;
 }
 .bold {
 	font-weight: 900;
