@@ -29,6 +29,6 @@
         "karma-jasmine": "0.1.5"
     },
     "scripts": {
-        "test": "./node_modules/.bin/karma start tests/my.conf.js"
+        "test": "./node_modules/.bin/karma start tests/my.conf.js --browsers Firefox --single-run"
     }
 }
