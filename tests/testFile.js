@@ -10,7 +10,7 @@ describe("the todo", function(){
   });
  
   it("should have content", function(){
-    expect(this.todo.get("content")).toBe("A test todo");
+    expect(this.todo.get("content")).toBe("A  todo");
   });
   it("should not be done yet", function(){
     expect(this.todo.get("done")).toBe(false);
