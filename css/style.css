@@ -12,8 +12,8 @@ h1 {
 	margin-top: 100px; 
 }
 input[type='checkbox'] {
-    width:30px;
-    height:30px;
+    width:17px;
+    height:17px;
 }
 input[type='checkbox']:checked {
     background: #abd;
@@ -39,7 +39,6 @@ Create todo fields
     font-size: 50px;
     margin-left: 48%;
 }
-
 /***************************
 Navigation
 ***************************/
@@ -55,7 +54,11 @@ Navigation
     border-right: 0px;
     border-left: 0px;
 }
-a.disabled {
+
+.dropdown-menu > li > a {
+	color: #0099FF;
+}
+.dropdown-menu > li > a.disabled {
 	color:gray; 
 	pointer-events: none; 
 	font-style: italic;
@@ -80,6 +83,13 @@ Todo list
 	border-bottom-style: dashed;
 	font-size: 1.4em;
 	background: rgba(0,0,0,0);
+	line-height: 2em;
+
+}
+.todododo {
+	position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
 .list-group-item span:first-of-type {
 	margin-right: 10px;
@@ -165,9 +175,10 @@ Tags
 		margin-top: 10px;
 	}
 	#taglist {
+		font-size: 12px;
 	}
 	.nav {
-    margin: -16px 0px 10px -23px;
+    margin: -26px 0px 10px -23px;
 	}
 	.list-group-item {
 
@@ -180,7 +191,23 @@ Tags
 		margin-left: -10px;
 	}
 }
-.theBox {
-	height: 50px;
+#mobilenavlinks {
+	font-size: 1.4em;
+}
+/*.appTitle {
+	width: 50%;
 	background: red;
+	font-size: 0.4em;
+}*/
+.navbar-fixed-top > .container > h1 {
+	width: 70%;
+}
+.navbar-fixed-top > .container > li {
+	width: 25%;
+	float: right;
+	margin: -65px -30px 0 0;
+
+}
+.dropdown-toggle {
+	color: white;
 }

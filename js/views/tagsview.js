@@ -25,7 +25,6 @@ module.exports = Backbone.View.extend({
     */
     render: function() {
         this.$el.empty();
-        this.$el.append('<li class="list-group-item tags-head"><span class="glyphicon glyphicon-tags"></span>tags</li>');
         Tags.each(function(t) {
             var tagList = new TagView({
                 model: t
