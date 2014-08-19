@@ -59,7 +59,8 @@ module.exports = function(config) {
         plugins: [
             // these plugins will be require() by Karma
             'karma-jasmine',
-            'karma-firefox-launcher'
+            'karma-firefox-launcher',
+            'karma-browserify'
         ],
 
 
