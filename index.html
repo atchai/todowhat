@@ -11,7 +11,7 @@
   <script type="text/template" id="todo-template">
     <div <% if (done) {%> class="struck" <%} %> >
         <input class="toggle" type="checkbox" <% if (done) {%> checked <%} %> >
-      <span>
+      <span class="todododo">
         <%- todoItem %>
       </span>
       <% _.each(tags, function(t) { %>
@@ -35,17 +35,40 @@
     <% }) %>
     </ul>
   </script>
+  <script type="text/template" id="mobile-nav-template">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+     <% _.each(items, function(item) { %>
+      <% if(item.bold) {%> <%- item.name %> <%} %>
+      <% }) %>
+     <span class="caret"></span>
+    </a>
+          <ul class="dropdown-menu" role="menu">
+            <% _.each(items, function(item) { %>
+              <li>
+                <a href="<%- item.href %>" 
+                class="<% if (item.disabled) {%> disabled <%} %>">
+                <%- item.name %>
+                </a>
+              </li>
+            <% }) %>
+          </ul>
+  </script>
 
 </head>
 <body>
 
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-<div class="container ">
+<div class="container">
     <h1>What todo</h1>
+    <li class="dropdown visible-sm visible-xs" id="mobilenavlinks"></li>
+
 </div>
+
 </nav>
+
 <div class="container main-content">
-        <div class="col-xs-12 col-md-2" id="navlinks"></div>
+        <div class="col-sm-2 col-md-2 visible-md visible-lg" id="navlinks"></div>
+        <!-- <li class="dropdown visible-sm visible-xs" id="mobilenavlinks"></li> -->
 
     <div class="col-xs-12 col-sm-12 col-md-10 row add-todo-fields">
         <div class="col-xs-10 col-md-10">
@@ -54,7 +77,7 @@
                     <input class="form-control" type="text" id="todofield" placeholder="Enter your todo here">
                 </div>
                 <div class="form-group form-group-sm">
-                    <input class="form-control" type="text" id="tagsfield" placeholder="Put some tags here if you want, seperated with commas">
+                    <input class="form-control" type="text" id="tagsfield" placeholder="Put optional tags here, seperated with commas">
                 </div>
             </form>
 
@@ -66,7 +89,7 @@
         </div>
     </div>
     
-    
+  
     <div class="well col-xs-12 col-md-10 pull-right">
           <ul id="todoul" class="list-group"></ul>
     </div>
@@ -87,7 +110,7 @@
   <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 
   <script src="bundle.js"></script>
-    <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="components/bootstrap.js"></script>
     <script type="text/javascript">
       $(function(){
     $(window).resize(function() {    // Optional: if you want to detect when the window is resized;
