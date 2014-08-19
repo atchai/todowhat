@@ -23,11 +23,11 @@
         "browserify": "5.10.0",
         "jasmine-node": "1.14.5",
         "karma-cli": "0.0.4",
-        "karma": ">=0.9.3",
+        "karma-browserify": "0.2.1",
         "karma-phantomjs-launcher": "~0.1",
         "karma-jasmine": "0.1.5"
     },
     "scripts": {
-        "test": "./node_modules/.bin/karma start tests/my.conf.js"
+        "test": "./node_modules/.bin/karma start tests/my.conf.js --browsers Firefox --single-run"
     }
 }
