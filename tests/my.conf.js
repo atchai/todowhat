@@ -26,7 +26,7 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            '../js/*.js': ['browserify']
+            'js/*.js': ['browserify']
         },
 
 
@@ -56,6 +56,11 @@ module.exports = function(config) {
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
         browsers: ['Chrome'],
+        plugins: [
+            // these plugins will be require() by Karma
+            'karma-jasmine',
+            'karma-firefox-launcher'
+        ],
 
 
         // Continuous Integration mode
