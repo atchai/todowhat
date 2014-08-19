@@ -1,31 +1,34 @@
 {
-  "name": "what-todo",
-  "version": "0.0.1",
-  "description": "Todo list application built with Backbone.js",
-  "main": "js/app.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ackl/what-todo.git"
-  },
-  "dependencies": {
-    "backbone": "1.1.2",
-    "backbone.localstorage": "1.1.13",
-    "jquery": "1.11.1",
-    "jquery-ui": "1.10.5",
-    "jquery-ui-touch-punch": "^0.2.3",
-    "underscore": "1.6.0"
-  },
-  "author": "Andrew Low",
-  "license": "BSD-2-Clause",
-  "bugs": {
-    "url": "https://github.com/ackl/what-todo/issues"
-  },
-  "devDependencies": {
-    "browserify": "^5.10.0",
-    "jasmine-node": "^1.14.5",
-    "karma": "^0.12.21",
-    "karma-browserify": "^0.2.1",
-    "karma-chrome-launcher": "^0.1.4",
-    "karma-jasmine": "^0.1.5"
-  }
+    "name": "what-todo",
+    "version": "0.0.1",
+    "description": "Todo list application built with Backbone.js",
+    "main": "js/app.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ackl/what-todo.git"
+    },
+    "dependencies": {
+        "backbone": "1.1.2",
+        "backbone.localstorage": "1.1.13",
+        "jquery": "1.11.1",
+        "jquery-ui": "1.10.5",
+        "jquery-ui-touch-punch": "^0.2.3",
+        "underscore": "1.6.0"
+    },
+    "author": "Andrew Low",
+    "license": "BSD-2-Clause",
+    "bugs": {
+        "url": "https://github.com/ackl/what-todo/issues"
+    },
+    "devDependencies": {
+        "browserify": "^5.10.0",
+        "jasmine-node": "^1.14.5",
+        "karma": "^0.12.21",
+        "karma-browserify": "^0.2.1",
+        "karma-chrome-launcher": "^0.1.4",
+        "karma-jasmine": "^0.1.5"
+    },
+    "scripts": {
+        "test": "karma start tests/my.conf.js"
+    }
 }
