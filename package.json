@@ -25,7 +25,6 @@
         "karma-cli": "0.0.4",
         "karma": ">=0.9.3",
         "karma-browserify": "0.2.1",
-        "karma-chrome-launcher": "0.1.4",
         "karma-firefox-launcher": "~0.0.1",
         "karma-jasmine": "0.1.5"
     },
