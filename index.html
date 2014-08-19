@@ -3,15 +3,14 @@
 <head>
   <meta charset="utf-8">  
   <title>What Todo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
   <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/style.css">
-  
   <script type="text/template" id="todo-template">
     <div <% if (done) {%> class="struck" <%} %> >
-      <input class="toggle" type="checkbox" <% if (done) {%> checked <%} %> >
+        <input class="toggle" type="checkbox" <% if (done) {%> checked <%} %> >
       <span>
         <%- todoItem %>
       </span>
@@ -48,8 +47,8 @@
 <div class="container main-content">
         <div class="col-xs-12 col-md-2" id="navlinks"></div>
 
-    <div class="col xs-12 col-md-10 row add-todo-fields">
-        <div class="col-xs-9 col-md-10 mobile-field">
+    <div class="col-xs-12 col-sm-12 col-md-10 row add-todo-fields">
+        <div class="col-xs-10 col-md-10">
             <form class="form-horizontal" role="form">
                 <div class="form-group form-group-lg">
                     <input class="form-control" type="text" id="todofield" placeholder="Enter your todo here">
@@ -67,13 +66,44 @@
         </div>
     </div>
     
-    <ul id="taglist" class="list-group col-xs-12 col-md-2"></ul>
+    
     <div class="well col-xs-12 col-md-10 pull-right">
           <ul id="todoul" class="list-group"></ul>
     </div>
+    <div class="accordion col-xs-12 col-md-2" id="accordion1">
+        <div class="accordion-group">
+            <a class="accordion-toggle" data-toggle="collapse" href="#taglist">
+                <li class="list-group-item tags-head">
+                    <span class="glyphicon glyphicon-tags"></span>tags</li>
+            </a>
+            
+                <ul id="taglist" class="list-group accordion-body collapse"></ul> 
+        </div>
+    </div>
+
+
 
 </div>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 
   <script src="bundle.js"></script>
+    <script type="text/javascript" src="components/bootstrap.js"></script>
+    <script type="text/javascript">
+      $(function(){
+    $(window).resize(function() {    // Optional: if you want to detect when the window is resized;
+        processBodies($(window).width());
+    });
+    function processBodies(width) {
+        if(width > 768) {
+            $('.accordion-body').collapse('show');
+        }
+        else {
+            $('.accordion-body').collapse('hide');
+        }
+    }
+    processBodies($(window).width());
+});
+    </script>
+
 </body>
 </html>

@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
@@ -6,9 +5,8 @@ var TodoView = require('./todoview');
 var Tags = require('../collections/tags')
 var TagsView = require('./tagsview');
 var NavView = require('./navview');
-require('jquery-ui');
+var $ = require('../jquery')
 Backbone.$ = $;
-
 module.exports = Backbone.View.extend({
     events: {
         "click .submit": "addTodo",
@@ -87,7 +85,6 @@ module.exports = Backbone.View.extend({
     orderPersistance: function() {
         this.$todoList.sortable({
             axis: "y",
-
             update: function(event, ui) {
                 var order = $('#todoul').sortable('toArray'),
                     cidOfDropped = ui.item.context.id,
