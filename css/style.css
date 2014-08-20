@@ -58,13 +58,15 @@ Navigation
 .dropdown-menu > li > a {
 	color: #0099FF;
 }
-a.disabled {
-	color: gray; 
+.dropdown-menu > li > a.disabled {
+	color:gray; 
 	pointer-events: none; 
 	font-style: italic;
 }
-.dropdown-menu > li > a.disabled {
-	color: gray;
+a.disabled {
+	color:gray; 
+	pointer-events: none; 
+	font-style: italic;
 }
 .bold {
 	font-weight: 900;
@@ -97,14 +99,14 @@ Todo list
 .list-group-item span:first-of-type {
 	margin-right: 10px;
 }
-.struck span:first-of-type{
+.struck span:nth-of-type(2){
 	text-decoration: line-through; 
 	color: #999;
 }
 .remove {
 	float: right;
 	font-size: 0.8em;
-	opacity: 0.8;
+	opacity: 0.5;
 	height: 30px;
 }
 
@@ -114,7 +116,7 @@ Tags
 .label {
 	opacity: 0.8;
 }
-#taglist {
+.taglist {
 	font-size: 9px;
 	margin-left: -10px;
 	margin-top: 0px;
@@ -127,20 +129,23 @@ Tags
     white-space: nowrap;
     margin-left: -10px;
 }
-#taglist li {
+.taglist li {
 	border: 1px solid #E7E7E7;
 	border-radius: 0px;
     word-wrap: break-word;
-    white-space: nowrap
+    background: #eeefff;
 }
-#taglist li:nth-child(even) {  
-  background: #eeefff;
-}
+.taglist > li > div{  
+	width: 80%;
+  }
 #noTodos {
 		pointer-events: none; 
 }
 .badge {
 	opacity: 0.7;
+	position: absolute;
+	top: 30%;
+	right: 2%;
 }
 
 .btn {
@@ -177,7 +182,7 @@ Tags
 	h1 {
 		margin-top: 10px;
 	}
-	#taglist {
+	.taglist {
 		font-size: 12px;
 	}
 	.nav {
@@ -186,6 +191,9 @@ Tags
 	.list-group-item {
 
 	font-size: 1em;
+	}
+	.main-content {
+		margin-top:76px;
 	}
 
 }
@@ -203,14 +211,28 @@ Tags
 	font-size: 0.4em;
 }*/
 .navbar-fixed-top > .container > h1 {
-	width: 70%;
+	min-width: 40%;
 }
 .navbar-fixed-top > .container > li {
-	width: 25%;
+	width: 20%;
 	float: right;
 	margin: -65px -30px 0 0;
 
 }
+.navbar-fixed-top > .container > #accordion1 {
+	width: 40%;
+	float: right;
+	margin: -58px 50px 0 0;
+}
+.glyphicon-tags {
+	margin-left: 100px;
+}
 .dropdown-toggle {
 	color: white;
+}
+.dropdown-menu {
+
+	margin-left: -150px;
+	font-size: 19px;
+	text-align: center;
 }
