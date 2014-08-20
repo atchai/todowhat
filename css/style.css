@@ -96,7 +96,7 @@ Todo list
   top: 50%;
   transform: translateY(-50%);
 }
-.list-group-item span:first-of-type {
+.list-group-item span:nth-of-type(2) {
 	margin-right: 10px;
 }
 .struck span:nth-of-type(2){
