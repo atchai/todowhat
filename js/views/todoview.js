@@ -21,9 +21,8 @@ module.exports = Backbone.View.extend({
 
     events: {
         "click .remove": "removeTodo",
-        "click .toggle": "toggleDone"
+        "click .toggle": "toggleDone",
     },
-
     template: _.template($('#todo-template').html()),
 
     /**

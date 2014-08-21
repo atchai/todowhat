@@ -5,6 +5,7 @@ var TodosView = require('../views/todosview');
 var FilterDoneView = require('../views/filterdoneview');
 var FilterTodoView = require('../views/filtertodoview');
 var Todos = require('../collections/todos');
+todoAppView = require('../views/mainview');
 
 module.exports = Backbone.Router.extend({
   routes: {
@@ -16,8 +17,12 @@ module.exports = Backbone.Router.extend({
   * based on the route, the following methods pass the todos collection to appropriate view and renders
   */
   allRoute: function() {
+    if (!this.view) {
+      this.view = new todoAppView();
+    }
   	var thetodosview = new TodosView({collection: Todos});
         thetodosview.render();
+        
   },
   filterDone: function() {
   	var filteredView = new FilterDoneView({collection: Todos});
