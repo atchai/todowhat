@@ -1,22 +1,26 @@
 body {
     background: url('../images/paper_fibers.png');
 }
-h1 {
-    font-weight: 900;
-    font-size: 3em;
-    color: #fff;
-    margin-top: 15px;
+.title {
+	font-size: 3em;
+	color: #fff;
+	pointer-events: none;
+
 }
 .main-content {
     margin-top: 100px;
 }
-input[type='checkbox'] {
-    width: 17px;
-    height: 17px;
+.second-row {
+    margin-top: 5px;
 }
-input[type='checkbox']:checked {
-    background: #abd;
+.btn {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    outline: none;
+    border: none;
 }
+
 /***************************
 Create todo fields
 ***************************/
@@ -43,24 +47,25 @@ Create todo fields
 Navigation
 ***************************/
 
-.nav {
-    
+.nav > li > a {
+    padding: 4px 0px 4px 10px;
 }
 .navbar {
     margin: 0;
     padding: 0;
-    height: 70px;
+    height: 60px;
     background: url('../images/concrete_wall.png');
     border-right: 0px;
     border-left: 0px;
 }
+.navbar-nav {
+	background: white;
+}
+.navbar-nav > li {
+	padding: 10px 0 10px 0;
+}
 .dropdown-menu > li > a {
     color: #0099FF;
-}
-.dropdown-menu > li > a.disabled {
-    color: gray;
-    pointer-events: none;
-    font-style: italic;
 }
 a.disabled {
     color: gray;
@@ -70,12 +75,26 @@ a.disabled {
 .bold {
     font-weight: 900;
 }
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+	border: none;
+}
+.dropdown-menu > .list-group-item{
+	border-radius: 0px;
+}
+
 /***************************
 Todo list
 ***************************/
 
 .well {
     background: url('../images/linedpaper.png');
+}
+#noTodos {
+    pointer-events: none;
+}
+input[type='checkbox'] {
+    width: 17px;
+    height: 17px;
 }
 .list-group {
     margin-top: 14px;
@@ -86,13 +105,8 @@ Todo list
     border-top-style: dashed;
     border-bottom-style: dashed;
     font-size: 1.4em;
-    background: rgba(0, 0, 0, 0);
+    background: none;
     line-height: 2em;
-}
-.todododo {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
 }
 .list-group-item span:nth-of-type(2) {
     margin-right: 10px;
@@ -102,10 +116,12 @@ Todo list
     color: #999;
 }
 .remove {
-    float: right;
     font-size: 0.8em;
     opacity: 0.5;
     height: 30px;
+}
+#todoul {
+    word-wrap: break-word;
 }
 /***************************
 Tags
@@ -116,7 +132,6 @@ Tags
 }
 .taglist {
     font-size: 9px;
-    margin-left: -10px;
     margin-top: 0px;
 }
 .tags-head {
@@ -136,23 +151,39 @@ Tags
 .taglist > li > div {
     width: 80%;
 }
-#noTodos {
-    pointer-events: none;
-}
 .badge {
     opacity: 0.7;
     position: absolute;
     top: 30%;
     right: 2%;
 }
-.btn {
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-    outline: none;
-    border: none;
-}
-@media (max-width: 986px) {
+
+/***************************
+Custom breakpoints
+***************************/
+
+
+@media (max-width: 991px) {
+	/*navigation*/
+	.navbar-header {
+        float: none;
+    }
+    .navbar-toggle {
+        display: block;
+        margin-top: 15px;
+    }
+    .navbar-nav {
+        margin-top: 0px;
+    }
+    .navbar-nav>li {
+        float: none;
+    }
+    .navbar-nav>li>a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    /*Create todo forms*/
     .form-horizontal {
         margin-left: 0;
         width: 100%;
@@ -160,30 +191,33 @@ Tags
     .add-todo-fields {
         float: none;
     }
-    .submit {
-    }
-    h1 {
-        margin-top: 10px;
-    }
+
+    /*tags*/
     .taglist {
-        font-size: 12px;
-    }
-    .nav {
-        margin: -26px 0px 10px -23px;
-    }
-    .list-group-item {
-        font-size: 1em;
+        font-size: 10px;
     }
     .main-content {
         margin-top: 76px;
     }
+    
+}
+
+@media (max-width: 788px) {
+    .form-horizontal {
+        margin-left: 4px;
+    }
+    .navbar-nav .open .dropdown-menu {
+        background: white;
+    }
+    .title {
+    	margin-left: 3%;
+    }
 }
 @media (max-width: 630px) {
     .submit {
-    	margin-left: 23px;
+        margin-left: 23px;
     }
 }
-
 @media (max-width: 580px) {
     .submit {
         margin-left: 10px;
@@ -191,39 +225,12 @@ Tags
 }
 @media (max-width: 450px) {
     .submit {
-        margin-left: -10px;
+        margin-left: -5px;
     }
-}
-@media (max-width: 1200px) {
-    .nav {
-    	width: 50%;
-    }
-}
-#mobilenavlinks {
-    font-size: 1.4em;
 }
 
-.navbar-fixed-top > .container > h1 {
-    min-width: 40%;
-}
-.navbar-fixed-top > .container > li {
-    width: 20%;
-    float: right;
-    margin: -65px -30px 0 0;
-}
-.navbar-fixed-top > .container > #accordion1 {
-    width: 40%;
-    float: right;
-    margin: -58px 50px 0 0;
-}
-.glyphicon-tags {
-    margin-left: 100px;
-}
-.dropdown-toggle {
-    color: white;
-}
-.dropdown-menu {
-    margin-left: -150px;
-    font-size: 19px;
-    text-align: center;
-}
+
+
+
+
+
