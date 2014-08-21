@@ -10,23 +10,24 @@
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <script type="text/template" id="todo-template">
     <div <% if (done) {%> class="struck" <%} %> >
+        <span class="handle glyphicon glyphicon-move"></span>
         <input class="toggle" type="checkbox" <% if (done) {%> checked <%} %> >
-      <span class="todododo">
+        <span>
         <%- todoItem %>
-      </span>
+        </span>
       <% _.each(tags, function(t) { %>
-       <span class="label label-info"><%print(t)%></span>
+       <span class="label label-info"><%- t %></span>
       <%})%>
       <button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove" href="#"></button>
     </div>
   </script>
 
   <script type="text/template" id="tag-template">
-    <%- tagName %> <span class="badge"><%- tagCount %></span>
+    <div><%- tagName %></div> <span class="badge"><%- tagCount %></span>
   </script>
 
   <script type="text/template" id="nav-template">
-  <ul class="nav nav-pills">
+  <ul class="nav nav-pills nav-stacked">
     <% _.each(items, function(item) { %>
       <li <% if (item.bold) {%> class="active" <%} %> ><a href="<%- item.href %>" 
       class="<% if (item.disabled) {%> disabled <%} if (item.bold) {%> bold <%} %>">
@@ -61,6 +62,19 @@
 <div class="container">
     <h1>What todo</h1>
     <li class="dropdown visible-sm visible-xs" id="mobilenavlinks"></li>
+    <div class="accordion col-xs-12 visible-sm visible-xs" id="accordion1">
+        <div class="accordion-group">
+            <a class="accordion-toggle" data-toggle="collapse" href=".taglist">
+                <!-- <li class="list-group-item tags-head"> -->
+                    <span class="glyphicon glyphicon-tags"></span>
+                    <!-- tags</li> -->
+            </a>
+                
+                <ul class="list-group taglist accordion-body collapse">
+                  
+                </ul> 
+        </div>
+    </div>
 
 </div>
 
@@ -82,27 +96,22 @@
             </form>
 
         </div>
-        <div class="col-xs-2 col-md-2">
+        <div class="col-xs-2 col-md-2 pull-right">
             <button type="submit" class="btn btn-primary submit disabled">
               <span class="glyphicon glyphicon-plus"></span>
             </button>
         </div>
+
+
     </div>
-    
-  
+    <ul class="list-group col-md-2 taglist visible-md visible-lg">
+      
+
+    </ul>
     <div class="well col-xs-12 col-md-10 pull-right">
           <ul id="todoul" class="list-group"></ul>
     </div>
-    <div class="accordion col-xs-12 col-md-2" id="accordion1">
-        <div class="accordion-group">
-            <a class="accordion-toggle" data-toggle="collapse" href="#taglist">
-                <li class="list-group-item tags-head">
-                    <span class="glyphicon glyphicon-tags"></span>tags</li>
-            </a>
-            
-                <ul id="taglist" class="list-group accordion-body collapse"></ul> 
-        </div>
-    </div>
+
 
 
 
@@ -110,23 +119,6 @@
   <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 
   <script src="bundle.js"></script>
-    <script type="text/javascript" src="components/bootstrap.js"></script>
-    <script type="text/javascript">
-      $(function(){
-    $(window).resize(function() {    // Optional: if you want to detect when the window is resized;
-        processBodies($(window).width());
-    });
-    function processBodies(width) {
-        if(width > 768) {
-            $('.accordion-body').collapse('show');
-        }
-        else {
-            $('.accordion-body').collapse('hide');
-        }
-    }
-    processBodies($(window).width());
-});
-    </script>
-
+    <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 </body>
 </html>

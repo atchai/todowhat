@@ -11,6 +11,11 @@ module.exports = Backbone.View.extend({
     render: function() {
         var html = this.template({
             items: [
+                {
+                    name: 'all',
+                    href: '',
+                    bold: ('' == Backbone.history.fragment)
+                },
                 {   
                     name: 'todo',
                     href: '#todo',
@@ -22,12 +27,8 @@ module.exports = Backbone.View.extend({
                     href: '#done',
                     disabled: (Todos.filterDone(true).length == 0),
                     bold: ('done' == Backbone.history.fragment)
-                },
-                {
-                    name: 'all',
-                    href: '',
-                    bold: ('' == Backbone.history.fragment)
                 }
+                
             ]
         });
         this.$el.html(html);

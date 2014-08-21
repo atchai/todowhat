@@ -12,7 +12,7 @@ Backbone.$ = $;
 module.exports = Backbone.View.extend({
     tagName: 'ul',
 
-    el: $("#taglist"),
+    el: $(".taglist"),
 
     initialize: function() {
         this.listenTo(this.collection, 'reset', this.render);

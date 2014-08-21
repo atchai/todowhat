@@ -17,7 +17,7 @@ module.exports = Backbone.View.extend({
     el: $("body"),
 
     initialize: function() {
-        this.$todoList = $("#todoul");
+        this.$todoList = this.$("#todoul");
         //retrieve any todos and tags in local storage and render them
         Tags.fetch();
         Todos.fetch();
@@ -85,6 +85,7 @@ module.exports = Backbone.View.extend({
     orderPersistance: function() {
         this.$todoList.sortable({
             axis: "y",
+            handle: ".handle",
             update: function(event, ui) {
                 var order = $('#todoul').sortable('toArray'),
                     cidOfDropped = ui.item.context.id,
