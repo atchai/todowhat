@@ -43,31 +43,11 @@
 
   <script type="text/template" id="mobile-nav-template">
             <% _.each(items, function(item) { %>
-              <li>
-                <a href="<%- item.href %>" 
-                class="<% if (item.disabled) {%> disabled <%} %>">
-                <%- item.name %>
-                </a>
-              </li>
+              <li <% if (item.bold) {%> class="active" <% } %> ><a href="<%- item.href %>" 
+      class="<% if (item.disabled) {%> disabled <%} if (item.bold) {%> bold <%} %>">
+        <%- item.name %>
+      </a></li>
             <% }) %>
-  </script>
-
-  <script type="text/template" id="mobile-nav-template-OLDONE">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-     <% _.each(items, function(item) { %>
-      <% if(item.bold) {%> <%- item.name %> <%} %>
-      <% }) %>
-    </a>
-          <ul class="dropdown-menu" role="menu">
-            <% _.each(items, function(item) { %>
-              <li>
-                <a href="<%- item.href %>" 
-                class="<% if (item.disabled) {%> disabled <%} %>">
-                <%- item.name %>
-                </a>
-              </li>
-            <% }) %>
-          </ul>
   </script>
 
   <script type="text/template" id="form-template">
@@ -115,16 +95,14 @@
                     </a>
                     <ul class="dropdown-menu mobilelinks" role="menu">
                     </ul>
-
                   </li>
 
                   <li class="dropdown visible-sm visible-xs">
-                  <div>
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        tags<span class="glyphicon glyphicon-tags"></span> </a>
+                        TAGS<span class="glyphicon glyphicon-tags"></span> 
+                      </a>
                       <ul class="dropdown-menu taglist" role="menu">
                       </ul>
-                  </div>
                   </li>
               </ul>
           </div>
@@ -143,12 +121,14 @@
   <div class="row mainrow">
       <div class="col-sm-2 col-md-2 visible-md visible-lg" id="navlinks"></div>
   </div>
+
   <div class="row second-row">
     <ul class="list-group col-md-2 taglist visible-md visible-lg"></ul>
     <div class="well col-xs-12 col-md-10 pull-right">
       <ul id="todoul" class="list-group"></ul>
     </div>
   </div>
+
 </div>
 
 

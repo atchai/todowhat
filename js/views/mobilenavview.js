@@ -4,6 +4,12 @@ var _ = require('underscore');
 var Todos = require('../collections/todos');
 
 module.exports = Backbone.View.extend({
+    initialize: function() {
+        //listens for change in done status so navigation link can be disabled if necessary
+        this.listenTo(Backbone.eventBus, 'statusChanged', this.render);
+        //listens for change in router so relevant navigation link is given active styling
+        this.listenTo(Backbone.eventBus, 'routeChanged', this.render);
+    },
     template: _.template($('#mobile-nav-template').html()),
 
     render: function() {

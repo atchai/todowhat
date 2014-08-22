@@ -6,23 +6,19 @@ var TagsView = require('./tagsview');
 var Tags = require('../collections/tags')
 
 module.exports = Backbone.View.extend({
-	initialize: function() {
-
-	},
 	events: {
 		"click .submit": "addTodo",
 		"keyup #todofield": "keyPressEventHandler",
         "keyup #tagsfield": "keyPressEventHandler"
 	},
+    
 	template: _.template($('#form-template').html()),
+
 	render: function() {
 		 this.$el.html(this.template);
 		 return this;
 	},
-	tellTodoView: function() {
-		// console.log('hi');
-		Backbone.eventBus.trigger('addingTodo');
-	},
+
 	/**
     * add a todo model (and tags) to the collection(s) using content in
     * input boxes

@@ -47,8 +47,8 @@ Create todo fields
 Navigation
 ***************************/
 
-.nav > li > a {
-    padding: 4px 0px 4px 10px;
+.nav > li {
+    text-align: center;
 }
 .navbar {
     margin: 0;
@@ -59,10 +59,10 @@ Navigation
     border-left: 0px;
 }
 .navbar-nav {
-	background: white;
+	background: #efefef;
 }
 .navbar-nav > li {
-	padding: 10px 0 10px 0;
+	margin: 15px 0 0px 0;
 }
 .dropdown-menu > li > a {
     color: #0099FF;
@@ -159,7 +159,7 @@ Tags
     opacity: 0.7;
     position: absolute;
     top: 30%;
-    right: 2%;
+    right: 12%;
 }
 
 /***************************
@@ -178,6 +178,7 @@ Custom breakpoints
     }
     .navbar-toggle {
         display: block;
+        margin-top: 12px;
     }
     .navbar-collapse {
         border-top: 1px solid transparent;
@@ -188,7 +189,7 @@ Custom breakpoints
     }
     .navbar-nav {
         float: none!important;
-        margin: 7.5px -15px;
+        margin: 0px -15px;
     }
     .navbar-nav>li {
         float: none;
@@ -260,15 +261,20 @@ Custom breakpoints
     }
 }
 
-.dropdown-menu li {
-	background: #333;
-	color: blue;
-}
-.dropdown-menu {
+.dropdown-menu .list-group-item {
     border-radius: 0px;
 }
+.dropdown-menu {
+    color: white;
+}
+.dropdown-menu > div > li{
+    padding: 10px 0 10px 0;
+    text-align: center;word-wrap: break-word;
 
-.dropdown {
-	background: #efefef;
+    background: #333;
+}
+.dropdown-menu > div > li > div {
+    width: 40%;
+    margin-left: 20%;
 }
 

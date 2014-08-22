@@ -5,14 +5,16 @@ var Todos = require('../collections/todos');
 var TodoView = require('./todoview');
 
 module.exports = Backbone.View.extend({
-    tagName: 'ul',
     el: $("#todoul"),
     initialize: function() {
         //changing done state of a model in this collection will rerender view so the todo is removed from view
         this.listenTo(this.collection, 'change', this.render);
-        this.listenTo(this.collection, 'add', this.close);
+        //likewise if the todo is removed from collection
         this.listenTo(this.collection, 'remove', this.render);
-        this.listenTo(Backbone.eventBus, 'stopFilter', this.stopListening);
+        //if a new todo is added to collection, ensure user is routed back to all todos view
+        this.listenTo(this.collection, 'add', this.close);
+        //when user is on all todos view, stop listening to changes in collection to prevent this view rerendering
+        this.listenTo(Backbone.eventBus, 'filterAll', this.stopListening);
     },
     
     /**
@@ -27,17 +29,13 @@ module.exports = Backbone.View.extend({
             });
             this.$el.prepend(todoview.render().el);
         }, this);
+        //if there are no more todos in this filtered view, go back to all todos view
         if (!thing.last()) {
             this.close();
         }
     },
 
-    /**
-    * stops listening to events from the todos collection so that
-    * toggling done states of todos does not cause this view to render again
-    */
     close: function() {
     	Backbone.history.navigate('', true);
-        this.stopListening();
     }
 })

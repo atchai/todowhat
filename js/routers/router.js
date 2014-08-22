@@ -1,11 +1,8 @@
-var $ = require('jquery');
 var Backbone = require('backbone');
-var _ = require('underscore');
-var TodosView = require('../views/todosview');
 var FilterDoneView = require('../views/filterdoneview');
 var FilterTodoView = require('../views/filtertodoview');
 var Todos = require('../collections/todos');
-todoAppView = require('../views/mainview');
+var todoAppView = require('../views/mainview');
 
 module.exports = Backbone.Router.extend({
   routes: {
@@ -29,17 +26,13 @@ module.exports = Backbone.Router.extend({
   * based on the route, the following methods pass the todos collection to appropriate view and renders
   */
   filterAll: function() {
-    Backbone.eventBus.trigger('filterAll');
-    Backbone.eventBus.trigger('stopFilter');
-        
+    Backbone.eventBus.trigger('filterAll');        
   },
   filterDone: function() {
-  	var filteredView = new FilterDoneView({collection: Todos});
-    	filteredView.render();
+    	new FilterDoneView({collection: Todos}).render();
   },
   filterNotDone: function() {
-  	var filteredView = new FilterTodoView({collection: Todos});
-    	filteredView.render();
+    	new FilterTodoView({collection: Todos}).render();
   },
 
   //triggers a custom event to let navigation link view know the route has changed

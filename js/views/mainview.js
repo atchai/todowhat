@@ -26,7 +26,6 @@ module.exports = Backbone.View.extend({
         Todos.fetch();
         this.render();
         this.listenTo(Backbone.eventBus, 'filterAll', this.filterAll);
-
     },
     
     render: function() {
@@ -45,7 +44,7 @@ module.exports = Backbone.View.extend({
     renderLinks: function() {
         this.$('#navlinks').html(new NavView().render().el);
     },
-    
+
     filterAll: function() {
         var thetodosview = new TodosView({collection: Todos});
         thetodosview.render();
