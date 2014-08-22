@@ -10,12 +10,14 @@
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <script type="text/template" id="todo-template">
     <div <% if (done) {%> class="struck" <%} %> >
+
         <span class="handle glyphicon glyphicon-move"></span>
         <input class="toggle" type="checkbox" <% if (done) {%> checked <%} %> >
         <span>
         <%- todoItem %>
         </span>
               <button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove pull-right" href="#"></button>
+
 
       <% _.each(tags, function(t) { %>
        <span class="label label-info"><%- t %></span>
@@ -37,24 +39,6 @@
       </a></li>
     <% }) %>
     </ul>
-  </script>
-  <script type="text/template" id="mobile-nav-template">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-     <% _.each(items, function(item) { %>
-      <% if(item.bold) {%> <%- item.name %> <%} %>
-      <% }) %>
-     <span class="caret"></span>
-    </a>
-          <ul class="dropdown-menu" role="menu">
-            <% _.each(items, function(item) { %>
-              <li>
-                <a href="<%- item.href %>" 
-                class="<% if (item.disabled) {%> disabled <%} %>">
-                <%- item.name %>
-                </a>
-              </li>
-            <% }) %>
-          </ul>
   </script>
 
 
@@ -132,6 +116,8 @@
 </head>
 <body>
 
+
+
 <div class="container main-content">
   <div class="row mainrow">
       <div class="col-sm-2 col-md-2 visible-md visible-lg" id="navlinks"></div>
@@ -144,9 +130,9 @@
     </div>
   </div>
 
-
-
 </div>
+
+
   <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 
   <script src="bundle.js"></script>
