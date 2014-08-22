@@ -15,11 +15,12 @@
         <span>
         <%- todoItem %>
         </span>
+              <button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove pull-right" href="#"></button>
+
       <% _.each(tags, function(t) { %>
        <span class="label label-info"><%- t %></span>
       <%})%>
-      <button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove" href="#"></button>
-    </div>
+      </div>
   </script>
 
   <script type="text/template" id="tag-template">
@@ -27,9 +28,9 @@
   </script>
 
   <script type="text/template" id="nav-template">
-  <ul class="nav nav-pills">
+  <ul class="nav nav-pills nav-stacked">
     <% _.each(items, function(item) { %>
-      <li <% if (item.bold) {%> class="active" <%} %> ><a href="<%- item.href %>" 
+      <li <% if (item.bold) {%> class="active" <% } %> ><a href="<%- item.href %>" 
       class="<% if (item.disabled) {%> disabled <%} if (item.bold) {%> bold <%} %>">
         <%- item.name %>
       </a></li>
@@ -55,63 +56,92 @@
           </ul>
   </script>
 
-</head>
-<body>
 
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-<div class="container">
-    <h1>What todo</h1>
-    <li class="dropdown visible-sm visible-xs" id="mobilenavlinks"></li>
-    <div class="accordion col-xs-12 visible-sm visible-xs" id="accordion1">
-        <div class="accordion-group">
-            <a class="accordion-toggle" data-toggle="collapse" href=".taglist">
-                <!-- <li class="list-group-item tags-head"> -->
-                    <span class="glyphicon glyphicon-tags"></span>
-                    <!-- tags</li> -->
-            </a>
-                
-                <ul class="list-group taglist accordion-body collapse">
-                  
-                </ul> 
-        </div>
+  <script type="text/template" id="mobile-nav-template">
+            <% _.each(items, function(item) { %>
+              <li <% if (item.bold) {%> class="active" <% } %> ><a href="<%- item.href %>" 
+      class="<% if (item.disabled) {%> disabled <%} if (item.bold) {%> bold <%} %>">
+        <%- item.name %>
+      </a></li>
+            <% }) %>
+  </script>
+
+  <script type="text/template" id="form-template">
+<div class="col-xs-12 col-sm-12 col-md-10 row add-todo-fields">
+    <div class="col-xs-10 col-md-10">
+        <form class="form-horizontal" role="form">
+            <div class="form-group form-group-lg">
+                <input class="form-control" type="text" id="todofield" placeholder="Enter your todo here">
+            </div>
+            <div class="form-group form-group-sm">
+                <input class="form-control" type="text" id="tagsfield" placeholder="Put optional tags here, seperated with commas">
+            </div>
+        </form>
+
     </div>
+    <div class="col-xs-2 col-md-2 pull-right">
+        <button type="submit" class="btn btn-primary submit disabled">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+    </div>
+
 
 </div>
 
-</nav>
+  </script>
+
+  <script type="text/template" id="nav-bar-template">
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu-items">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+              <a href="#" class="title">What todo</a>
+          </div>
+          <div class="collapse navbar-collapse" id="menu-items">
+              <ul class="nav navbar-nav">
+                  <li class="dropdown visible-sm visible-xs" id="mobilenavlinks">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                     FILTER STATUS
+                    </a>
+                    <ul class="dropdown-menu mobilelinks" role="menu">
+                    </ul>
+                  </li>
+
+                  <li class="dropdown visible-sm visible-xs">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        TAGS<span class="glyphicon glyphicon-tags"></span> 
+                      </a>
+                      <ul class="dropdown-menu taglist" role="menu">
+                      </ul>
+                  </li>
+              </ul>
+          </div>
+      </div>
+
+  </nav>
+
+  </script>
+
+</head>
+<body>
 
 <div class="container main-content">
-        <div class="col-sm-2 col-md-2 visible-md visible-lg" id="navlinks"></div>
-        <!-- <li class="dropdown visible-sm visible-xs" id="mobilenavlinks"></li> -->
+  <div class="row mainrow">
+      <div class="col-sm-2 col-md-2 visible-md visible-lg" id="navlinks"></div>
+  </div>
 
-    <div class="col-xs-12 col-sm-12 col-md-10 row add-todo-fields">
-        <div class="col-xs-10 col-md-10">
-            <form class="form-horizontal" role="form">
-                <div class="form-group form-group-lg">
-                    <input class="form-control" type="text" id="todofield" placeholder="Enter your todo here">
-                </div>
-                <div class="form-group form-group-sm">
-                    <input class="form-control" type="text" id="tagsfield" placeholder="Put optional tags here, seperated with commas">
-                </div>
-            </form>
-
-        </div>
-        <div class="col-xs-2 col-md-2 pull-right">
-            <button type="submit" class="btn btn-primary submit disabled">
-              <span class="glyphicon glyphicon-plus"></span>
-            </button>
-        </div>
-
-
-    </div>
-    <ul class="list-group col-md-2 taglist visible-md visible-lg">
-      
-
-    </ul>
+  <div class="row second-row">
+    <ul class="list-group col-md-2 taglist visible-md visible-lg"></ul>
     <div class="well col-xs-12 col-md-10 pull-right">
-          <ul id="todoul" class="list-group"></ul>
+      <ul id="todoul" class="list-group"></ul>
     </div>
-
+  </div>
 
 
 
