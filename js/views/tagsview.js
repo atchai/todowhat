@@ -20,12 +20,16 @@ module.exports = Backbone.View.extend({
     */
     render: function() {
         this.$el.empty();
+        this.$el.append('<li class="list-group-item tags-head">Filter by tags</li>');
         Tags.each(function(t) {
             var tagList = new TagView({
                 model: t
             });
             this.$el.append(tagList.render().el);
         }, this);
+        if(!Tags.last()) {
+           this.$el.append('<li class="list-group-item">No tags yet, trying adding one</li>');
+        }
         return this;
     },
 

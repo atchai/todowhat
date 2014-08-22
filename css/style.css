@@ -50,6 +50,9 @@ Navigation
 .nav > li {
     text-align: center;
 }
+.nav-pills > li:first-child {
+    border-bottom: 1px solid #999;
+}
 .navbar {
     margin: 0;
     padding: 0;
@@ -81,7 +84,9 @@ a.disabled {
 .dropdown-menu > .list-group-item{
 	border-radius: 0px;
 }
-
+#navlinks {
+    margin-top: -20px;
+}
 /***************************
 Todo list
 ***************************/
@@ -98,6 +103,7 @@ input[type='checkbox'] {
 }
 .list-group {
     margin-top: 14px;
+    padding: 0px;
 }
 .list-group-item {
     border-color: #d6d6c6;
@@ -141,11 +147,9 @@ Tags
 }
 .tags-head {
     background: url('../images/concrete_wall.png');
-    font-size: 9px;
-    border: 1px solid #E7E7E7;
-    word-wrap: break-word;
-    white-space: nowrap;
-    margin-left: -10px;
+    color: white;
+    border-radius: 0px;
+    text-align: center;
 }
 .taglist li {
     border-radius: 0px;
@@ -181,7 +185,6 @@ Custom breakpoints
         margin-top: 12px;
     }
     .navbar-collapse {
-        border-top: 1px solid transparent;
         box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
     }
     .navbar-collapse.collapse {
@@ -267,14 +270,22 @@ Custom breakpoints
 .dropdown-menu {
     color: white;
 }
+.taglist > div > li {
+    border-top: 1px dashed #999;
+}
 .dropdown-menu > div > li{
     padding: 10px 0 10px 0;
-    text-align: center;word-wrap: break-word;
-
+    text-align: center;
+    word-wrap: break-word;
+    border-top: 1px dashed #999;
     background: #333;
 }
-.dropdown-menu > div > li > div {
+.taglist > div > li:first-child {
+    border-top: none;
+}
+
+.taglist > div > li > div {
     width: 40%;
-    margin-left: 20%;
+    margin-left: 25%;
 }
 
