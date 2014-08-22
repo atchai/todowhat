@@ -4,32 +4,30 @@ var _ = require('underscore');
 var Todos = require('../collections/todos');
 
 module.exports = Backbone.View.extend({
-    el: $('#mobilenavlinks'),
-
     template: _.template($('#mobile-nav-template').html()),
 
     render: function() {
         var html = this.template({
             items: [
+                {
+                    name: 'all',
+                    href: '',
+                    bold: ('' == window.location.hash)
+                },
                 {   
                     name: 'todo',
                     href: '#todo',
                     disabled: (Todos.filterDone(false).length == 0),
-                    bold: ('todo' == Backbone.history.fragment)
+                    bold: ('#todo' == window.location.hash)
                 },
                 {
                     name: 'done',
                     href: '#done',
                     disabled: (Todos.filterDone(true).length == 0),
-                    bold: ('done' == Backbone.history.fragment)
-                },
-                {
-                    name: 'all',
-                    href: '',
-                    bold: ('' == Backbone.history.fragment)
+                    bold: ('#done' == window.location.hash)
                 }
             ],
-            current: Backbone.history.fragment
+            current: window.location.hash
         });
         this.$el.html(html);
         return this;

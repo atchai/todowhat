@@ -262,7 +262,10 @@ Custom breakpoints
 
 .dropdown-menu li {
 	background: #333;
-	color: white;
+	color: blue;
+}
+.dropdown-menu {
+    border-radius: 0px;
 }
 
 .dropdown {

@@ -4,9 +4,8 @@ var _ = require('underscore');
 appRouter = require('./routers/router');
 
 $(document).ready(function() {
-    new appRouter();
-     new todoAppView();
     Backbone.eventBus = _.extend({}, Backbone.Events);
+    new appRouter();
     Backbone.history.start();
     $('#todofield').keyup(function() {
         if ($(this).val() !== "") {

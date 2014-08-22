@@ -10,7 +10,6 @@ module.exports = Backbone.View.extend({
         //changing done state of model will rerender the view of that todo, toggling appropriate styling
         this.listenTo(this.model, 'change', this.render);
         this.$navlinks = $('#navlinks');
-        this.$mobilenavlinks = $('#mobilenavlinks');
     },
 
     tagName: 'li',
@@ -37,12 +36,9 @@ module.exports = Backbone.View.extend({
             tags: this.model.getTags()
         });
         this.$el.html(html);
-        this.$navlinks.empty();
-        this.$mobilenavlinks.empty();
-        var links = new NavView({});
-        this.$navlinks.append(links.render().el);
-        var mobilelinks = new MobileNavView({});
-        this.$mobilenavlinks.append(mobilelinks.render().el);
+        // var links = new NavView({});
+        // this.$navlinks.empty();
+        // this.$navlinks.append(links.render().el);
         return this;
     },
 
@@ -60,5 +56,6 @@ module.exports = Backbone.View.extend({
     toggleDone: function() {
         var done = this.model.get('done');
         this.model.save({'done': !done});
+        Backbone.eventBus.trigger('statusChanged');
     }
 });

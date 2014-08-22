@@ -12,6 +12,7 @@ module.exports = Backbone.View.extend({
         this.listenTo(this.collection, 'change', this.render);
         this.listenTo(this.collection, 'add', this.close);
         this.listenTo(this.collection, 'remove', this.render);
+        this.listenTo(Backbone.eventBus, 'stopFilter', this.stopListening);
     },
     
     /**

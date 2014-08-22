@@ -2,10 +2,12 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
 var TodoView = require('./todoview');
+var TodosView = require('./todosview');
 var Tags = require('../collections/tags')
 var TagsView = require('./tagsview');
 var NavView = require('./navview');
 var FormView = require('./formview');
+var NavBarView = require('./navbarview');
 var $ = require('../jquery')
 Backbone.$ = $;
 module.exports = Backbone.View.extend({
@@ -23,19 +25,32 @@ module.exports = Backbone.View.extend({
         Tags.fetch();
         Todos.fetch();
         this.render();
+        this.listenTo(Backbone.eventBus, 'filterAll', this.filterAll);
+
     },
     
     render: function() {
         this.orderPersistance();
-        var tagsList = new TagsView({collection: Tags});
-        tagsList.render();
-        $(document).ready(function(){
-            $('.navlinks').empty();
-        var links = new NavView({});
-        $('.navlinks').append(links.render().el);
-        })
+        //renders the top navigation bar which contains tag list and navigation links on mobile screens
+        this.$el.prepend(new NavBarView().render().el);
+        //renders the input forms for adding todos
         this.$('.mainrow').append(new FormView().render().el);
+        //renders the tag list on left side (large screens) 
+        this.$('.taglist').html(new TagsView({collection: Tags}).render().el);
+        //renders the navigation links on left side (large screens)
+        // this.$('#navlinks').html(new NavView().render().el);
+        this.renderLinks();
     },
+
+    renderLinks: function() {
+        this.$('#navlinks').html(new NavView().render().el);
+    },
+    
+    filterAll: function() {
+        var thetodosview = new TodosView({collection: Todos});
+        thetodosview.render();
+    },
+
     /**
     * clicks add todo button if enter key is pressed
     */

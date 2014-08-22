@@ -3,17 +3,12 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
 var TodoView = require('./todoview');
-var Tags = require('../collections/tags')
-var TagsView = require('./tagsview');
+var Tags = require('../collections/tags');
 var TagView = require('./tagview');
 var NavView = require('./navview');
 Backbone.$ = $;
 
 module.exports = Backbone.View.extend({
-    tagName: 'ul',
-
-    el: $(".taglist"),
-
     initialize: function() {
         this.listenTo(this.collection, 'reset', this.render);
         this.listenTo(this.collection, 'add', this.render); //so that new tags are added alphabetically
