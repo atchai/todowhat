@@ -17,9 +17,9 @@ module.exports = Backbone.Router.extend({
   * based on the route, the following methods pass the todos collection to appropriate view and renders
   */
   allRoute: function() {
-    if (!this.view) {
-      this.view = new todoAppView();
-    }
+    // if (!this.view) {
+    //   this.view = new todoAppView();
+    // }
   	var thetodosview = new TodosView({collection: Todos});
         thetodosview.render();
         

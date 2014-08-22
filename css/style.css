@@ -120,6 +120,9 @@ input[type='checkbox'] {
     opacity: 0.5;
     height: 30px;
 }
+.handle {
+	color: #777;
+}
 #todoul {
     word-wrap: break-word;
 }
@@ -133,6 +136,8 @@ Tags
 .taglist {
     font-size: 9px;
     margin-top: 0px;
+    border: 4px solid #E7E7E7;
+
 }
 .tags-head {
     background: url('../images/concrete_wall.png');
@@ -143,10 +148,9 @@ Tags
     margin-left: -10px;
 }
 .taglist li {
-    border: 1px solid #E7E7E7;
     border-radius: 0px;
     word-wrap: break-word;
-    background: #eeefff;
+    border: none;
 }
 .taglist > li > div {
     width: 80%;
@@ -161,19 +165,30 @@ Tags
 /***************************
 Custom breakpoints
 ***************************/
-
+@media(min-width: 991px) {
+	.handle {
+		font-size: 0.75em;
+	}
+}
 
 @media (max-width: 991px) {
 	/*navigation*/
-	.navbar-header {
+    .navbar-header {
         float: none;
     }
     .navbar-toggle {
         display: block;
-        margin-top: 15px;
+    }
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .navbar-collapse.collapse {
+        display: none!important;
     }
     .navbar-nav {
-        margin-top: 0px;
+        float: none!important;
+        margin: 7.5px -15px;
     }
     .navbar-nav>li {
         float: none;
@@ -182,7 +197,22 @@ Custom breakpoints
         padding-top: 10px;
         padding-bottom: 10px;
     }
-
+    /* since 3.1.0 */
+    .navbar-collapse.collapse.in { 
+        display: block!important;
+    }
+    .collapsing {
+        overflow: hidden!important;
+    }
+    .navbar-nav .open .dropdown-menu {
+		position: static;
+		float: none;
+		width: auto;
+		margin-top: 0;
+		background-color: transparent;
+		border: 0;
+		box-shadow: none;
+	}
     /*Create todo forms*/
     .form-horizontal {
         margin-left: 0;
@@ -205,9 +235,10 @@ Custom breakpoints
 @media (max-width: 788px) {
     .form-horizontal {
         margin-left: 4px;
+        width: 97%;
     }
-    .navbar-nav .open .dropdown-menu {
-        background: white;
+    .navbar-nav .open {
+        background: #efefef;
     }
     .title {
     	margin-left: 3%;
@@ -225,12 +256,16 @@ Custom breakpoints
 }
 @media (max-width: 450px) {
     .submit {
-        margin-left: -5px;
+        margin-left: -15px;
     }
 }
 
+.dropdown-menu li {
+	background: #333;
+	color: white;
+}
 
-
-
-
+.dropdown {
+	background: #efefef;
+}
 
