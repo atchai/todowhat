@@ -436,8 +436,9 @@ var Todos = require('../collections/todos');
 
 module.exports = Backbone.View.extend({
     initialize: function() {
-        //listens for change in done status so navigation link can be disabled if necessary
+        //listens for change in todos so navigation link can be disabled if necessary
         this.listenTo(Backbone.eventBus, 'statusChanged', this.render);
+        this.listenTo(Todos, 'remove', this.render);
         //listens for change in router so relevant navigation link is given active styling
         this.listenTo(Backbone.eventBus, 'routeChanged', this.render);
     },
@@ -513,8 +514,10 @@ var Todos = require('../collections/todos');
 
 module.exports = Backbone.View.extend({
     initialize: function() {
-        //listens for change in done status so navigation link can be disabled if necessary
+        //listens for change in todos so navigation link can be disabled if necessary
         this.listenTo(Backbone.eventBus, 'statusChanged', this.render);
+        this.listenTo(Todos, 'remove', this.render);
+        this.listenTo(Todos, 'add', this.render);
         //listens for change in router so relevant navigation link is given active styling
         this.listenTo(Backbone.eventBus, 'routeChanged', this.render);
     },
@@ -572,12 +575,16 @@ module.exports = Backbone.View.extend({
     */
     render: function() {
         this.$el.empty();
+        this.$el.append('<li class="list-group-item tags-head">Filter by tags</li>');
         Tags.each(function(t) {
             var tagList = new TagView({
                 model: t
             });
             this.$el.append(tagList.render().el);
         }, this);
+        if(!Tags.last()) {
+           this.$el.append('<li class="list-group-item">No tags yet, trying adding one</li>');
+        }
         return this;
     },
 
