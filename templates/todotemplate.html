@@ -1,0 +1,11 @@
+<div <% if (done) {%> class="struck" <%} %> >
+	<span class="handle glyphicon glyphicon-move"></span>
+	<input class="toggle" type="checkbox" <% if (done) {%> checked <%} %> >
+	<span>
+	<%= todoItem %>
+	</span>
+	<button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove pull-right" href="#"></button>
+	<% tags.forEach(function(tag){ %>
+		<span class="label label-info"><%= tag %></span>
+	<% }) %>     
+</div>

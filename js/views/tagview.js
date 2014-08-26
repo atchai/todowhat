@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
+var template = require('../../templates/tagtemplate.html');
 
 module.exports = Backbone.View.extend({
 	initialize: function() {
@@ -13,15 +14,12 @@ module.exports = Backbone.View.extend({
         return 'tag' + this.model.cid;
     },
 
-	template: _.template($('#tag-template').html()),
-
 	render: function() {		
 		$(this.el).addClass('list-group-item');
-        var html = this.template({
+        this.$el.html(template({
             tagName: this.model.get('name') ,
             tagCount: this.model.get('count')
-        });
-        this.$el.html(html);
+        }));
         return this;
     }
 });

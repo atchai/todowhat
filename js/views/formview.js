@@ -3,7 +3,8 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
 var TagsView = require('./tagsview');
-var Tags = require('../collections/tags')
+var Tags = require('../collections/tags');
+var template = require('../../templates/formtemplate.html');
 
 module.exports = Backbone.View.extend({
 	events: {
@@ -12,10 +13,8 @@ module.exports = Backbone.View.extend({
         "keyup #tagsfield": "keyPressEventHandler"
 	},
     
-	template: _.template($('#form-template').html()),
-
 	render: function() {
-		 this.$el.html(this.template);
+		 this.$el.html(template);
 		 return this;
 	},
 

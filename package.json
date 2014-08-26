@@ -1,50 +1,55 @@
 {
-    "name": "what-todo",
-    "version": "0.0.1",
-    "description": "Todo list application built with Backbone.js",
-    "main": "js/app.js",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ackl/what-todo.git"
+  "name": "what-todo",
+  "version": "0.0.1",
+  "description": "Todo list application built with Backbone.js",
+  "main": "js/app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ackl/what-todo.git"
+  },
+  "dependencies": {
+    "backbone": "1.1.2",
+    "backbone.localstorage": "1.1.13",
+    "jquery": "1.11.1",
+    "jquery-ui": "1.10.5",
+    "jquery-ui-touch-punch": "ackl/jquery-ui-touch-punch",
+    "underscore": "1.6.0"
+  },
+  "author": "Andrew Low",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/ackl/what-todo/issues"
+  },
+  "devDependencies": {
+    "browserify": "<5",
+    "browserify-shim": "3.6.0",
+    "jasmine-node": "1.14.5",
+    "jstify": "^0.4.2",
+    "karma-browserify": "0.2.1",
+    "karma-cli": "0.0.4",
+    "karma-jasmine": "0.1.5",
+    "karma-phantomjs-launcher": "~0.1",
+    "node-underscorify": "0.0.11"
+  },
+  "browserify": {
+    "transform": [
+      "node-underscorify",
+      "browserify-shim"
+    ]
+  },
+  "browser": {
+    "jquery-ui": "./node_modules/jquery-ui/jquery-ui.js",
+    "jquery-ui-touch-punch": "./node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.js"
+  },
+  "browserify-shim": {
+    "jquery-ui": {
+      "depends": "jquery"
     },
-    "dependencies": {
-        "backbone": "1.1.2",
-        "backbone.localstorage": "1.1.13",
-        "jquery": "1.11.1",
-        "jquery-ui": "1.10.5",
-        "jquery-ui-touch-punch": "ackl/jquery-ui-touch-punch",
-        "underscore": "1.6.0"
-    },
-    "author": "Andrew Low",
-    "license": "BSD-2-Clause",
-    "bugs": {
-        "url": "https://github.com/ackl/what-todo/issues"
-    },
-    "devDependencies": {
-        "browserify": "<5",
-        "browserify-shim": "3.6.0",
-        "jasmine-node": "1.14.5",
-        "karma-cli": "0.0.4",
-        "karma-browserify": "0.2.1",
-        "karma-phantomjs-launcher": "~0.1",
-        "karma-jasmine": "0.1.5"
-    },
-    "browserify": {
-        "transform": ["browserify-shim"]
-    },
-    "browser": {
-        "jquery-ui": "./node_modules/jquery-ui/jquery-ui.js",
-        "jquery-ui-touch-punch": "./node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.js"
-    },
-    "browserify-shim": {
-        "jquery-ui": {
-          "depends": "jquery"
-        },
-        "jquery-ui-touch-punch": {
-          "depends": "jquery"
-        }
-      },
-    "scripts": {
-        "test": "./node_modules/.bin/karma start tests/my.conf.js"
+    "jquery-ui-touch-punch": {
+      "depends": "jquery"
     }
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/karma start tests/my.conf.js"
+  }
 }

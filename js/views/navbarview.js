@@ -4,7 +4,8 @@ var _ = require('underscore');
 var Todos = require('../collections/todos');
 var MobileNavView = require('./mobilenavview');
 var TagsView = require('./tagsview');
-var Tags = require('../collections/tags')
+var Tags = require('../collections/tags');
+var template = require('../../templates/navbartemplate.html')
 
 module.exports = Backbone.View.extend({
 	initialize: function() {
@@ -12,11 +13,9 @@ module.exports = Backbone.View.extend({
 		this.listenTo(Backbone.eventBus, 'statusChanged', this.renderMobile);
 
 	},
-
-	template: _.template($('#nav-bar-template').html()),
 	
 	render: function() {
-		this.$el.html(this.template);
+		this.$el.html(template);
         this.renderMobile();
         this.renderTags();
         return this;

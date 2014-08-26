@@ -37,7 +37,6 @@ module.exports = Backbone.View.extend({
         //renders the tag list on left side (large screens) 
         this.$('.taglist').html(new TagsView({collection: Tags}).render().el);
         //renders the navigation links on left side (large screens)
-        // this.$('#navlinks').html(new NavView().render().el);
         this.renderLinks();
     },
 

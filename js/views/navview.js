@@ -2,6 +2,7 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
+var template = require('../../templates/navtemplate.html')
 
 module.exports = Backbone.View.extend({
     initialize: function() {
@@ -12,11 +13,8 @@ module.exports = Backbone.View.extend({
         //listens for change in router so relevant navigation link is given active styling
         this.listenTo(Backbone.eventBus, 'routeChanged', this.render);
     },
-
-    template: _.template($('#nav-template').html()),
-
     render: function() {
-        var html = this.template({
+        this.$el.html(template({
             //data for navigation links
             items: [
                 {
@@ -38,8 +36,7 @@ module.exports = Backbone.View.extend({
                 }
                 
             ]
-        });
-        this.$el.html(html);
+        }));
         return this;
     }
 });
