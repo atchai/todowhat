@@ -126,6 +126,9 @@ module.exports = Backbone.Model.extend({
         if(attrs.content.trim()=='') {
         	return 'mal';
         }
+        if (attrs.content.length > 255) {
+            return 'mal';
+        }
     }
 })
 },{"backbone":20,"jquery":23,"underscore":24}],7:[function(require,module,exports){
@@ -301,7 +304,7 @@ module.exports = Backbone.View.extend({
                     order: Todos.newOrder(),
                     tags: tagsContent
                 }, 
-                { 
+                {   
                     //using .create so we must set wait:true so input can be validated by model 
                     wait: true, 
                     //if todo content was valid, see if tag(s) exists in collection so count can be updated appropriately
@@ -309,8 +312,9 @@ module.exports = Backbone.View.extend({
                         _.each(tagsContent, function(t) {
                             Tags.exist(t);
                         });
-                    } 
+                    }
                 });
+
         this.$todofield.val('');
         this.$tagsfield.val('');
         this.$('.submit').addClass('disabled');
@@ -675,6 +679,9 @@ module.exports = Backbone.View.extend({
     events: {
         "click .remove": "removeTodo",
         "click .toggle": "toggleDone",
+    },
+    handleError: function(model, error) {
+        alert('hi');
     },
     /**
     * renders view of a todo as well as the navigation links

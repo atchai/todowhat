@@ -23,6 +23,9 @@ module.exports = Backbone.View.extend({
         "click .remove": "removeTodo",
         "click .toggle": "toggleDone",
     },
+    handleError: function(model, error) {
+        alert('hi');
+    },
     /**
     * renders view of a todo as well as the navigation links
     *

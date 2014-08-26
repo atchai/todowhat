@@ -39,7 +39,7 @@ module.exports = Backbone.View.extend({
                     order: Todos.newOrder(),
                     tags: tagsContent
                 }, 
-                { 
+                {   
                     //using .create so we must set wait:true so input can be validated by model 
                     wait: true, 
                     //if todo content was valid, see if tag(s) exists in collection so count can be updated appropriately
@@ -47,8 +47,9 @@ module.exports = Backbone.View.extend({
                         _.each(tagsContent, function(t) {
                             Tags.exist(t);
                         });
-                    } 
+                    }
                 });
+
         this.$todofield.val('');
         this.$tagsfield.val('');
         this.$('.submit').addClass('disabled');

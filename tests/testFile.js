@@ -1,30 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var Todo = require('../js/models/todo');
-
-describe("the todo", function(){
- 
-  beforeEach(function(){
-    this.todo = new Todo({
-      content: "A test todo"
-    });
-  });
- 
-  it("should have content", function(){
-    expect(this.todo.get("content")).toBe("A test todo");
-  });
-  it("should not be done yet", function(){
-    expect(this.todo.get("done")).toBe(false);
-  });
-  it("should have no tags yet", function(){
-    expect(this.todo.getTags()).not.toBeTruthy();
-  });
- 
-  // it("should have city", function(){
-  //   expect(this.todo.get("city")).toBe("asdf");
-  // });
- 
-});
-},{"../js/models/todo":2}],2:[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -45,9 +19,12 @@ module.exports = Backbone.Model.extend({
         if(attrs.content.trim()=='') {
         	return 'mal';
         }
+        if (attrs.content.length > 255) {
+            return 'mal';
+        }
     }
 })
-},{"backbone":3,"jquery":4,"underscore":5}],3:[function(require,module,exports){
+},{"backbone":2,"jquery":3,"underscore":4}],2:[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -1657,7 +1634,7 @@ module.exports = Backbone.Model.extend({
 
 }));
 
-},{"underscore":5}],4:[function(require,module,exports){
+},{"underscore":4}],3:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v1.11.1
  * http://jquery.com/
@@ -11967,7 +11944,7 @@ return jQuery;
 
 }));
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 //     Underscore.js 1.6.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -13312,4 +13289,41 @@ return jQuery;
   }
 }).call(this);
 
-},{}]},{},[1]);
+},{}],5:[function(require,module,exports){
+var Todo = require('../js/models/todo');
+
+describe("the todo", function(){
+ 
+  beforeEach(function(){
+    this.todo = new Todo({
+      content: "A test todo"
+    });
+  });
+ 
+  it("should have content", function(){
+    expect(this.todo.get("content")).toBe("A test todo");
+  });
+  it("should not be done yet", function(){
+    expect(this.todo.get("done")).toBe(false);
+  });
+  it("should have no tags yet", function(){
+    expect(this.todo.getTags()).not.toBeTruthy();
+  }); 
+});
+describe("todo blank content", function(){
+  beforeEach(function(){
+    this.todo = new Todo({content: ''});
+  });
+  it("should not create the todo", function(){
+    expect(this.todo.isValid()).not.toBeTruthy();
+  })
+});
+describe("todo content length greater than 255 chars", function(){
+  beforeEach(function(){
+    this.todo = new Todo({content: 'dafskljSadsfasdfafdsakfj;aslkfjsakldjfkaldsjfakdafskljakfj;aslkfjsakldjfkaldsjfakdafskljakfj;aslkfjsakldjfkaldsjfakdafskljakfj;aslkfjsakldjfkaldsjfakdafskljakfj;aslkfjsakldjfkaldsjfakdafskljakfj;aslkfjsakldjfkaldsjfakdafskljakfj;aslkfjsakldjfkaldsjfakdafskljakfj;aslsds'});
+  });
+  it("should not create the todo", function(){
+    expect(this.todo.isValid()).not.toBeTruthy();
+  })
+});
+},{"../js/models/todo":1}]},{},[5]);
