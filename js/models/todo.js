@@ -18,5 +18,8 @@ module.exports = Backbone.Model.extend({
         if(attrs.content.trim()=='') {
         	return 'mal';
         }
+        if (attrs.content.length > 255) {
+            return 'mal';
+        }
     }
 })

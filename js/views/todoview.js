@@ -10,7 +10,6 @@ module.exports = Backbone.View.extend({
     initialize: function(){
         //changing done state of model will rerender the view of that todo, toggling appropriate styling
         this.listenTo(this.model, 'change', this.render);
-        this.$navlinks = $('#navlinks');
     },
 
     tagName: 'li',
