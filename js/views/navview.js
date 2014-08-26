@@ -21,7 +21,7 @@ module.exports = Backbone.View.extend({
             items: [
                 {
                     name: 'all',
-                    href: '',
+                    href: '#',
                     bold: ('' == window.location.hash)
                 },
                 {   

@@ -66,6 +66,8 @@ module.exports = Backbone.View.extend({
         this.$todoList.sortable({
             axis: "y",
             handle: ".handle",
+            containment: "parent",
+            tolerance: 'pointer',
             update: function(event, ui) {
                 var order = $('#todoul').sortable('toArray'),
                     cidOfDropped = ui.item.context.id,
