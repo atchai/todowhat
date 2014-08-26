@@ -318,6 +318,9 @@ Custom breakpoints
     width: 40%;
     margin-left: 25%;
 }
+.handle:hover {
+    cursor: move;
+}
 li.ui-sortable-helper{
     cursor: move;
 }
