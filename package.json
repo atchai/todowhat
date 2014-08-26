@@ -23,18 +23,22 @@
   "devDependencies": {
     "browserify": "<5",
     "browserify-shim": "3.6.0",
+    "gulp": "^3.8.7",
+    "gulp-streamify": "0.0.5",
+    "gulp-uglify": "^0.3.2",
     "jasmine-node": "1.14.5",
     "jstify": "^0.4.2",
     "karma-browserify": "0.2.1",
     "karma-cli": "0.0.4",
     "karma-jasmine": "0.1.5",
     "karma-phantomjs-launcher": "~0.1",
-    "node-underscorify": "0.0.11"
+    "node-underscorify": "0.0.11",
+    "vinyl-source-stream": "^0.1.1"
   },
   "browserify": {
     "transform": [
-      "node-underscorify",
-      "browserify-shim"
+      "browserify-shim",
+      "node-underscorify"
     ]
   },
   "browser": {

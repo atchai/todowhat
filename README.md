@@ -6,5 +6,9 @@ Todo app made with Backbone.js
 ## Installation
 ```
 npm install
-browserify js/app.js -o bundle.js
+gulp
+```
+### Testing
+```
+npm test
 ```
