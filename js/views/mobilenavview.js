@@ -2,6 +2,7 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
+var template = require('../../templates/mobilenavtemplate.html')
 
 module.exports = Backbone.View.extend({
     initialize: function() {
@@ -12,14 +13,13 @@ module.exports = Backbone.View.extend({
         //listens for change in router so relevant navigation link is given active styling
         this.listenTo(Backbone.eventBus, 'routeChanged', this.render);
     },
-    template: _.template($('#mobile-nav-template').html()),
 
     render: function() {
-        var html = this.template({
+        this.$el.html(template({
             items: [
                 {
                     name: 'all',
-                    href: '',
+                    href: '#',
                     bold: ('' == window.location.hash)
                 },
                 {   
@@ -36,8 +36,7 @@ module.exports = Backbone.View.extend({
                 }
             ],
             current: window.location.hash
-        });
-        this.$el.html(html);
+        }));
         return this;
     }
 });

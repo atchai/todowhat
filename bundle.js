@@ -265,7 +265,8 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
 var TagsView = require('./tagsview');
-var Tags = require('../collections/tags')
+var Tags = require('../collections/tags');
+var template = require('../../templates/formtemplate.html');
 
 module.exports = Backbone.View.extend({
     events: {
@@ -274,10 +275,8 @@ module.exports = Backbone.View.extend({
         "keyup #tagsfield": "keyPressEventHandler"
     },
     
-    template: _.template($('#form-template').html()),
-
     render: function() {
-         this.$el.html(this.template);
+         this.$el.html(template);
          return this;
     },
 
@@ -332,7 +331,7 @@ module.exports = Backbone.View.extend({
 
     }
 });
-},{"../collections/tags":2,"../collections/todos":3,"./tagsview":15,"backbone":20,"jquery":23,"underscore":24}],11:[function(require,module,exports){
+},{"../../templates/formtemplate.html":25,"../collections/tags":2,"../collections/todos":3,"./tagsview":15,"backbone":20,"jquery":23,"underscore":24}],11:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
@@ -372,7 +371,6 @@ module.exports = Backbone.View.extend({
         //renders the tag list on left side (large screens) 
         this.$('.taglist').html(new TagsView({collection: Tags}).render().el);
         //renders the navigation links on left side (large screens)
-        // this.$('#navlinks').html(new NavView().render().el);
         this.renderLinks();
     },
 
@@ -435,6 +433,7 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
+var template = require('../../templates/mobilenavtemplate.html')
 
 module.exports = Backbone.View.extend({
     initialize: function() {
@@ -445,14 +444,13 @@ module.exports = Backbone.View.extend({
         //listens for change in router so relevant navigation link is given active styling
         this.listenTo(Backbone.eventBus, 'routeChanged', this.render);
     },
-    template: _.template($('#mobile-nav-template').html()),
 
     render: function() {
-        var html = this.template({
+        this.$el.html(template({
             items: [
                 {
                     name: 'all',
-                    href: '',
+                    href: '#',
                     bold: ('' == window.location.hash)
                 },
                 {   
@@ -469,19 +467,19 @@ module.exports = Backbone.View.extend({
                 }
             ],
             current: window.location.hash
-        });
-        this.$el.html(html);
+        }));
         return this;
     }
 });
-},{"../collections/todos":3,"backbone":20,"jquery":23,"underscore":24}],13:[function(require,module,exports){
+},{"../../templates/mobilenavtemplate.html":26,"../collections/todos":3,"backbone":20,"jquery":23,"underscore":24}],13:[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
 var MobileNavView = require('./mobilenavview');
 var TagsView = require('./tagsview');
-var Tags = require('../collections/tags')
+var Tags = require('../collections/tags');
+var template = require('../../templates/navbartemplate.html')
 
 module.exports = Backbone.View.extend({
     initialize: function() {
@@ -489,11 +487,9 @@ module.exports = Backbone.View.extend({
         this.listenTo(Backbone.eventBus, 'statusChanged', this.renderMobile);
 
     },
-
-    template: _.template($('#nav-bar-template').html()),
     
     render: function() {
-        this.$el.html(this.template);
+        this.$el.html(template);
         this.renderMobile();
         this.renderTags();
         return this;
@@ -509,11 +505,12 @@ module.exports = Backbone.View.extend({
         this.$('.taglist').html(new TagsView({collection: Tags}).render().el);
     }
 });
-},{"../collections/tags":2,"../collections/todos":3,"./mobilenavview":12,"./tagsview":15,"backbone":20,"jquery":23,"underscore":24}],14:[function(require,module,exports){
+},{"../../templates/navbartemplate.html":27,"../collections/tags":2,"../collections/todos":3,"./mobilenavview":12,"./tagsview":15,"backbone":20,"jquery":23,"underscore":24}],14:[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
+var template = require('../../templates/navtemplate.html')
 
 module.exports = Backbone.View.extend({
     initialize: function() {
@@ -524,11 +521,8 @@ module.exports = Backbone.View.extend({
         //listens for change in router so relevant navigation link is given active styling
         this.listenTo(Backbone.eventBus, 'routeChanged', this.render);
     },
-
-    template: _.template($('#nav-template').html()),
-
     render: function() {
-        var html = this.template({
+        this.$el.html(template({
             //data for navigation links
             items: [
                 {
@@ -550,12 +544,11 @@ module.exports = Backbone.View.extend({
                 }
                 
             ]
-        });
-        this.$el.html(html);
+        }));
         return this;
     }
 });
-},{"../collections/todos":3,"backbone":20,"jquery":23,"underscore":24}],15:[function(require,module,exports){
+},{"../../templates/navtemplate.html":28,"../collections/todos":3,"backbone":20,"jquery":23,"underscore":24}],15:[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -603,6 +596,7 @@ module.exports = Backbone.View.extend({
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
+var template = require('../../templates/tagtemplate.html');
 
 module.exports = Backbone.View.extend({
     initialize: function() {
@@ -615,19 +609,16 @@ module.exports = Backbone.View.extend({
         return 'tag' + this.model.cid;
     },
 
-    template: _.template($('#tag-template').html()),
-
     render: function() {        
         $(this.el).addClass('list-group-item');
-        var html = this.template({
+        this.$el.html(template({
             tagName: this.model.get('name') ,
             tagCount: this.model.get('count')
-        });
-        this.$el.html(html);
+        }));
         return this;
     }
 });
-},{"backbone":20,"jquery":23,"underscore":24}],17:[function(require,module,exports){
+},{"../../templates/tagtemplate.html":29,"backbone":20,"jquery":23,"underscore":24}],17:[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -666,6 +657,7 @@ var _ = require('underscore');
 var NavView = require('./navview');
 var MobileNavView = require('./mobilenavview');
 var Tags = require('../collections/tags');
+var template = require('../../templates/todotemplate.html');
 
 module.exports = Backbone.View.extend({
     initialize: function(){
@@ -684,23 +676,17 @@ module.exports = Backbone.View.extend({
         "click .remove": "removeTodo",
         "click .toggle": "toggleDone",
     },
-    template: _.template($('#todo-template').html()),
-
     /**
     * renders view of a todo as well as the navigation links
     *
     */
     render: function() {
         this.$el.addClass('list-group-item');
-        var html = this.template({
+        this.$el.html(template({
             todoItem: this.model.get('content') ,
             done: this.model.get('done'),
             tags: this.model.getTags()
-        });
-        this.$el.html(html);
-        // var links = new NavView({});
-        // this.$navlinks.empty();
-        // this.$navlinks.append(links.render().el);
+        }));
         return this;
     },
 
@@ -722,7 +708,7 @@ module.exports = Backbone.View.extend({
     }
 });
 
-},{"../collections/tags":2,"./mobilenavview":12,"./navview":14,"backbone":20,"jquery":23,"underscore":24}],19:[function(require,module,exports){
+},{"../../templates/todotemplate.html":30,"../collections/tags":2,"./mobilenavview":12,"./navview":14,"backbone":20,"jquery":23,"underscore":24}],19:[function(require,module,exports){
 /**
  * Backbone localStorage Adapter
  * Version 1.1.13
@@ -29452,5 +29438,115 @@ return jQuery;
     });
   }
 }).call(this);
+
+},{}],25:[function(require,module,exports){
+module.exports = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='<div class="col-xs-12 col-sm-12 col-md-10 row add-todo-fields">\n    <div class="col-xs-10 col-md-10">\n        <form class="form-horizontal" role="form">\n            <div class="form-group form-group-lg">\n                <input class="form-control" type="text" id="todofield" placeholder="Enter your todo here">\n            </div>\n            <div class="form-group form-group-sm">\n                <input class="form-control" type="text" id="tagsfield" placeholder="Put optional tags here, seperated with commas">\n            </div>\n        </form>\n\n    </div>\n    <div class="col-xs-2 col-md-2 pull-right">\n        <button type="submit" class="btn btn-primary submit disabled">\n            <span class="glyphicon glyphicon-plus"></span>\n        </button>\n    </div>\n\n\n</div>\n';
+}
+return __p;
+};
+
+},{}],26:[function(require,module,exports){
+module.exports = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='';
+ items.forEach(function(item) { 
+__p+='\n\t<li ';
+ if (item.bold) {
+__p+=' class="active" ';
+ } 
+__p+=' ><a href="'+
+((__t=( item.href ))==null?'':__t)+
+'" \n\tclass="';
+ if (item.disabled) {
+__p+=' disabled ';
+} if (item.bold) {
+__p+=' bold ';
+} 
+__p+='">\n\t'+
+((__t=( item.name ))==null?'':__t)+
+'\n\t</a></li>\n';
+ }) 
+__p+='';
+}
+return __p;
+};
+
+},{}],27:[function(require,module,exports){
+module.exports = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='<nav class="navbar navbar-default navbar-fixed-top" role="navigation">\n      <div class="container">\n\n          <div class="navbar-header">\n              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu-items">\n                  <span class="sr-only">Toggle navigation</span>\n                  <span class="icon-bar"></span>\n                  <span class="icon-bar"></span>\n                  <span class="icon-bar"></span>\n              </button>\n              <a href="#" class="title">What todo</a>\n          </div>\n          <div class="collapse navbar-collapse" id="menu-items">\n              <ul class="nav navbar-nav">\n                  <li class="dropdown visible-sm visible-xs" id="mobilenavlinks">\n                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n                     FILTER STATUS\n                    </a>\n                    <ul class="dropdown-menu mobilelinks" role="menu">\n                    </ul>\n                  </li>\n\n                  <li class="dropdown visible-sm visible-xs">\n                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n                        TAGS<span class="glyphicon glyphicon-tags"></span> \n                      </a>\n                      <ul class="dropdown-menu taglist" role="menu">\n                      </ul>\n                  </li>\n              </ul>\n          </div>\n      </div>\n\n  </nav>\n';
+}
+return __p;
+};
+
+},{}],28:[function(require,module,exports){
+module.exports = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='<ul class="nav nav-pills nav-stacked">\n  <li>Filter by status</li>\n\n    ';
+ items.forEach(function(item) { 
+__p+='\n      <li ';
+ if (item.bold) {
+__p+=' class="active" ';
+ } 
+__p+=' ><a href="'+
+((__t=( item.href ))==null?'':__t)+
+'" \n      class="';
+ if (item.disabled) {
+__p+=' disabled ';
+} if (item.bold) {
+__p+=' bold ';
+} 
+__p+='">\n        '+
+((__t=( item.name ))==null?'':__t)+
+'\n      </a></li>\n    ';
+ }) 
+__p+='\n\n</ul>';
+}
+return __p;
+};
+
+},{}],29:[function(require,module,exports){
+module.exports = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='<div>'+
+((__t=( tagName ))==null?'':__t)+
+'</div> <span class="badge">'+
+((__t=( tagCount ))==null?'':__t)+
+'</span>';
+}
+return __p;
+};
+
+},{}],30:[function(require,module,exports){
+module.exports = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='<div ';
+ if (done) {
+__p+=' class="struck" ';
+} 
+__p+=' >\n\t<span class="handle glyphicon glyphicon-move"></span>\n\t<input class="toggle" type="checkbox" ';
+ if (done) {
+__p+=' checked ';
+} 
+__p+=' >\n\t<span>\n\t'+
+((__t=( todoItem ))==null?'':__t)+
+'\n\t</span>\n\t<button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove pull-right" href="#"></button>\n\t';
+ tags.forEach(function(tag){ 
+__p+='\n\t\t<span class="label label-info">'+
+((__t=( tag ))==null?'':__t)+
+'</span>\n\t';
+ }) 
+__p+='     \n</div>\n';
+}
+return __p;
+};
 
 },{}]},{},[1]);

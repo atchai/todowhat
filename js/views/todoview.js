@@ -4,6 +4,7 @@ var _ = require('underscore');
 var NavView = require('./navview');
 var MobileNavView = require('./mobilenavview');
 var Tags = require('../collections/tags');
+var template = require('../../templates/todotemplate.html');
 
 module.exports = Backbone.View.extend({
     initialize: function(){
@@ -22,23 +23,17 @@ module.exports = Backbone.View.extend({
         "click .remove": "removeTodo",
         "click .toggle": "toggleDone",
     },
-    template: _.template($('#todo-template').html()),
-
     /**
     * renders view of a todo as well as the navigation links
     *
     */
     render: function() {
         this.$el.addClass('list-group-item');
-        var html = this.template({
+        this.$el.html(template({
             todoItem: this.model.get('content') ,
             done: this.model.get('done'),
             tags: this.model.getTags()
-        });
-        this.$el.html(html);
-        // var links = new NavView({});
-        // this.$navlinks.empty();
-        // this.$navlinks.append(links.render().el);
+        }));
         return this;
     },
 

@@ -50,9 +50,6 @@ Navigation
 .nav > li {
     text-align: center;
 }
-/*.nav-pills {
-            background: url('../images/linedpaper.png');
-}*/
 .nav-pills > li:first-child {
     margin-bottom: -4px;
     border-bottom: 1px solid #999;
@@ -146,7 +143,7 @@ input[type='checkbox'] {
 }
 @media(min-width: 991px) {
        .todos {
-        margin-top: -80px;
+        margin-top: -60px;
     }
 }
 
@@ -320,4 +317,7 @@ Custom breakpoints
 .taglist > div > li > div {
     width: 40%;
     margin-left: 25%;
+}
+li.ui-sortable-helper{
+    cursor: move;
 }
