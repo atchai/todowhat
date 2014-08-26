@@ -17,7 +17,7 @@ module.exports = Backbone.View.extend({
         "keyup #tagsfield": "keyPressEventHandler"
     },
 
-    el: $("body"),
+    el: "body",
 
     initialize: function() {
         this.$todoList = this.$("#todoul");
