@@ -8,6 +8,7 @@ module.exports = Backbone.View.extend({
         //listens for change in todos so navigation link can be disabled if necessary
         this.listenTo(Backbone.eventBus, 'statusChanged', this.render);
         this.listenTo(Todos, 'remove', this.render);
+        this.listenTo(Todos, 'add', this.render);
         //listens for change in router so relevant navigation link is given active styling
         this.listenTo(Backbone.eventBus, 'routeChanged', this.render);
     },

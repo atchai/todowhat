@@ -401,6 +401,8 @@ module.exports = Backbone.View.extend({
         this.$todoList.sortable({
             axis: "y",
             handle: ".handle",
+            containment: "parent",
+            tolerance: 'pointer',
             update: function(event, ui) {
                 var order = $('#todoul').sortable('toArray'),
                     cidOfDropped = ui.item.context.id,
@@ -439,6 +441,7 @@ module.exports = Backbone.View.extend({
         //listens for change in todos so navigation link can be disabled if necessary
         this.listenTo(Backbone.eventBus, 'statusChanged', this.render);
         this.listenTo(Todos, 'remove', this.render);
+        this.listenTo(Todos, 'add', this.render);
         //listens for change in router so relevant navigation link is given active styling
         this.listenTo(Backbone.eventBus, 'routeChanged', this.render);
     },
@@ -530,7 +533,7 @@ module.exports = Backbone.View.extend({
             items: [
                 {
                     name: 'all',
-                    href: '',
+                    href: '#',
                     bold: ('' == window.location.hash)
                 },
                 {   
