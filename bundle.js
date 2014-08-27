@@ -198,11 +198,37 @@ module.exports = Backbone.Router.extend({
     Backbone.eventBus.trigger('routeChanged');
   }
 });
+},{"../collections/todos":"/home/andrew/what-todo/js/collections/todos.js","../views/filterdoneview":"/home/andrew/what-todo/js/views/filterdoneview.js","../views/filtertodoview":"/home/andrew/what-todo/js/views/filtertodoview.js","../views/mainview":"/home/andrew/what-todo/js/views/mainview.js","../views/todolistview":"/home/andrew/what-todo/js/views/todolistview.js","backbone":"/home/andrew/what-todo/node_modules/backbone/backbone.js"}],"/home/andrew/what-todo/js/views/editview.js":[function(require,module,exports){
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
+var NavView = require('./navview');
+var MobileNavView = require('./mobilenavview');
+var Tags = require('../collections/tags');
+var template = require('../../templates/edittemplate.html');
 
+module.exports = Backbone.View.extend({
+	tagName: 'span',
+	events: {
+		"click .save": "saveChanges"
+	},
+	render: function() {
+		this.$el.html(template({
+			modalId: 'modal'+this.model.cid,
+            todoItem: this.model.get('content'),
+            tags: this.model.getTags()
+        }));
+        return this;
+	},
 
-
-
-},{"../collections/todos":"/home/andrew/what-todo/js/collections/todos.js","../views/filterdoneview":"/home/andrew/what-todo/js/views/filterdoneview.js","../views/filtertodoview":"/home/andrew/what-todo/js/views/filtertodoview.js","../views/mainview":"/home/andrew/what-todo/js/views/mainview.js","../views/todolistview":"/home/andrew/what-todo/js/views/todolistview.js","backbone":"/home/andrew/what-todo/node_modules/backbone/backbone.js"}],"/home/andrew/what-todo/js/views/filterdoneview.js":[function(require,module,exports){
+	saveChanges: function() {
+        var newContent = this.$('#editfield').val();
+        console.log(this.$el);
+        this.model.save({'content': newContent});
+$('.modal-backdrop').remove();
+    }
+});
+},{"../../templates/edittemplate.html":"/home/andrew/what-todo/templates/edittemplate.html","../collections/tags":"/home/andrew/what-todo/js/collections/tags.js","./mobilenavview":"/home/andrew/what-todo/js/views/mobilenavview.js","./navview":"/home/andrew/what-todo/js/views/navview.js","backbone":"/home/andrew/what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/what-todo/js/views/filterdoneview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -737,6 +763,7 @@ var NavView = require('./navview');
 var MobileNavView = require('./mobilenavview');
 var Tags = require('../collections/tags');
 var template = require('../../templates/todotemplate.html');
+var editView = require('./editview');
 
 module.exports = Backbone.View.extend({
     initialize: function(){
@@ -752,7 +779,7 @@ module.exports = Backbone.View.extend({
 
     events: {
         "click .remove": "removeTodo",
-        "click .toggle": "toggleDone",
+        "click .toggle": "toggleDone"
     },
     /**
     * renders view of a todo as well as the navigation links
@@ -765,6 +792,7 @@ module.exports = Backbone.View.extend({
             done: this.model.get('done'),
             tags: this.model.getTags()
         }));
+        this.$('.edit').html(new editView({model: this.model}).render().el)
         return this;
     },
 
@@ -783,10 +811,14 @@ module.exports = Backbone.View.extend({
         var done = this.model.get('done');
         this.model.save({'done': !done});
         Backbone.eventBus.trigger('statusChanged');
+    },
+    doSomething: function() {
+        alert('hey');
     }
+    
 });
 
-},{"../../templates/todotemplate.html":"/home/andrew/what-todo/templates/todotemplate.html","../collections/tags":"/home/andrew/what-todo/js/collections/tags.js","./mobilenavview":"/home/andrew/what-todo/js/views/mobilenavview.js","./navview":"/home/andrew/what-todo/js/views/navview.js","backbone":"/home/andrew/what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/what-todo/node_modules/backbone.localstorage/backbone.localStorage.js":[function(require,module,exports){
+},{"../../templates/todotemplate.html":"/home/andrew/what-todo/templates/todotemplate.html","../collections/tags":"/home/andrew/what-todo/js/collections/tags.js","./editview":"/home/andrew/what-todo/js/views/editview.js","./mobilenavview":"/home/andrew/what-todo/js/views/mobilenavview.js","./navview":"/home/andrew/what-todo/js/views/navview.js","backbone":"/home/andrew/what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/what-todo/node_modules/backbone.localstorage/backbone.localStorage.js":[function(require,module,exports){
 /**
  * Backbone localStorage Adapter
  * Version 1.1.13
@@ -31642,6 +31674,27 @@ return jQuery;
   }
 }).call(this);
 
+},{}],"/home/andrew/what-todo/templates/edittemplate.html":[function(require,module,exports){
+module.exports = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='<!-- Button trigger modal -->\n<button class="btn btn-primary btn-sm glyphicon editbutton glyphicon-pencil pull-right" data-toggle="modal" data-target="#'+
+((__t=( modalId ))==null?'':__t)+
+'">\n</button>\n\n<!-- Modal -->\n<div class="modal fade" id="'+
+((__t=( modalId ))==null?'':__t)+
+'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">\n  <div class="modal-dialog">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n        <h4 class="modal-title" id="myModalLabel">Edit todo content:</h4>\n      </div>\n      <div class="modal-body">\n        <input class="form-control" type="text" id="editfield" value="'+
+((__t=( todoItem ))==null?'':__t)+
+'">\n        ';
+ tags.forEach(function(tag){ 
+__p+='\n    <span class="label label-info">'+
+((__t=( tag ))==null?'':__t)+
+'</span>\n  ';
+ }) 
+__p+='  \n      </div>\n      <div class="modal-footer">\n        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\n        <button type="button" class="btn btn-primary save">Save changes</button>\n      </div>\n    </div>\n  </div>\n</div>';
+}
+return __p;
+};
+
 },{}],"/home/andrew/what-todo/templates/formtemplate.html":[function(require,module,exports){
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -31741,7 +31794,7 @@ __p+=' checked ';
 } 
 __p+=' >\n\t<span>\n\t'+
 ((__t=( todoItem ))==null?'':__t)+
-'\n\t</span>\n\t<button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove pull-right" href="#"></button>\n\t';
+'\n\t</span>\n\t<button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove pull-right" href="#"></button>\n\t\t<!-- Button trigger modal -->\n\n\t\t<span class="edit"></span>\n\n\t';
  tags.forEach(function(tag){ 
 __p+='\n\t\t<span class="label label-info">'+
 ((__t=( tag ))==null?'':__t)+

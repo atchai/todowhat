@@ -5,6 +5,7 @@ var NavView = require('./navview');
 var MobileNavView = require('./mobilenavview');
 var Tags = require('../collections/tags');
 var template = require('../../templates/todotemplate.html');
+var editView = require('./editview');
 
 module.exports = Backbone.View.extend({
     initialize: function(){
@@ -20,7 +21,7 @@ module.exports = Backbone.View.extend({
 
     events: {
         "click .remove": "removeTodo",
-        "click .toggle": "toggleDone",
+        "click .toggle": "toggleDone"
     },
     /**
     * renders view of a todo as well as the navigation links
@@ -33,6 +34,7 @@ module.exports = Backbone.View.extend({
             done: this.model.get('done'),
             tags: this.model.getTags()
         }));
+        this.$('.edit').html(new editView({model: this.model}).render().el)
         return this;
     },
 
@@ -51,5 +53,9 @@ module.exports = Backbone.View.extend({
         var done = this.model.get('done');
         this.model.save({'done': !done});
         Backbone.eventBus.trigger('statusChanged');
+    },
+    doSomething: function() {
+        alert('hey');
     }
+    
 });

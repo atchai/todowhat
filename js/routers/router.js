@@ -46,6 +46,3 @@ module.exports = Backbone.Router.extend({
     Backbone.eventBus.trigger('routeChanged');
   }
 });
-
-
-

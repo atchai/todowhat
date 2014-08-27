@@ -1,0 +1,25 @@
+<!-- Button trigger modal -->
+<button class="btn btn-primary btn-sm glyphicon editbutton glyphicon-pencil pull-right" data-toggle="modal" data-target="#<%= modalId %>">
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="<%= modalId %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit todo content:</h4>
+      </div>
+      <div class="modal-body">
+        <input class="form-control" type="text" id="editfield" value="<%= todoItem %>">
+        <% tags.forEach(function(tag){ %>
+    <span class="label label-info"><%= tag %></span>
+  <% }) %>  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary save">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
