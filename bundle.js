@@ -155,6 +155,7 @@ var FilterDoneView = require('../views/filterdoneview');
 var FilterTodoView = require('../views/filtertodoview');
 var Todos = require('../collections/todos');
 var todoAppView = require('../views/mainview');
+var todoListView = require('../views/todolistview');
 
 /**
 * Manages which todos view is rendered
@@ -172,6 +173,8 @@ module.exports = Backbone.Router.extend({
   initialize: function() {
     if (!this.view) {
       this.view = new todoAppView();
+      //create a view for the todos collection
+      new todoListView();
     }
     //call change method when anything happens with router
     this.listenTo(this, "all", this.change);
@@ -184,10 +187,10 @@ module.exports = Backbone.Router.extend({
     Backbone.eventBus.trigger('filterAll');        
   },
   filterDone: function() {
-    	new FilterDoneView({collection: Todos}).render();
+    Backbone.eventBus.trigger('filterDone');
   },
   filterNotDone: function() {
-    	new FilterTodoView({collection: Todos}).render();
+    Backbone.eventBus.trigger('filterNotDone');
   },
 
   //triggers a custom event to let navigation link view know the route has changed
@@ -199,7 +202,7 @@ module.exports = Backbone.Router.extend({
 
 
 
-},{"../collections/todos":"/home/andrew/what-todo/js/collections/todos.js","../views/filterdoneview":"/home/andrew/what-todo/js/views/filterdoneview.js","../views/filtertodoview":"/home/andrew/what-todo/js/views/filtertodoview.js","../views/mainview":"/home/andrew/what-todo/js/views/mainview.js","backbone":"/home/andrew/what-todo/node_modules/backbone/backbone.js"}],"/home/andrew/what-todo/js/views/filterdoneview.js":[function(require,module,exports){
+},{"../collections/todos":"/home/andrew/what-todo/js/collections/todos.js","../views/filterdoneview":"/home/andrew/what-todo/js/views/filterdoneview.js","../views/filtertodoview":"/home/andrew/what-todo/js/views/filtertodoview.js","../views/mainview":"/home/andrew/what-todo/js/views/mainview.js","../views/todolistview":"/home/andrew/what-todo/js/views/todolistview.js","backbone":"/home/andrew/what-todo/node_modules/backbone/backbone.js"}],"/home/andrew/what-todo/js/views/filterdoneview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -207,8 +210,8 @@ var Todos = require('../collections/todos');
 var TodoView = require('./todoview');
 
 module.exports = Backbone.View.extend({
-    el: "#todoul",
-
+    tagName: 'ul',
+    id: 'todoul',
     initialize: function() {
         //changing done state of a model in this collection will rerender view so the todo is removed from view
         this.listenTo(this.collection, 'change', this.render);
@@ -216,8 +219,6 @@ module.exports = Backbone.View.extend({
         this.listenTo(this.collection, 'remove', this.render);
         //if a new todo is added to collection, ensure user is routed back to all todos view
         this.listenTo(this.collection, 'add', this.close);
-        //when user is on all todos view, stop listening to changes in collection to prevent this view rerendering
-        this.listenTo(Backbone.eventBus, 'filterAll', this.stopListening);
     },
     
     /**
@@ -236,6 +237,7 @@ module.exports = Backbone.View.extend({
         if (!thing.last()) {
             this.close();
         }
+        return this;
     },
 
     close: function() {
@@ -250,8 +252,8 @@ var Todos = require('../collections/todos');
 var TodoView = require('./todoview');
 
 module.exports = Backbone.View.extend({
-    el: "#todoul",
-
+    tagName: 'ul',
+    id: 'todoul',
     initialize: function() {
         //changing done state of a model in this collection will rerender view so the todo is removed from view
         this.listenTo(this.collection, 'change', this.render);
@@ -259,8 +261,6 @@ module.exports = Backbone.View.extend({
         this.listenTo(this.collection, 'remove', this.render);
         //if a new todo is added to collection, ensure user is routed back to all todos view
         this.listenTo(this.collection, 'add', this.close);
-        //when user is on all todos view, stop listening to changes in collection to prevent this view rerendering
-        this.listenTo(Backbone.eventBus, 'filterAll', this.stopListening);
     },
     
     /**
@@ -279,6 +279,7 @@ module.exports = Backbone.View.extend({
         if (!thing.last()) {
             this.close();
         }
+        return this;
     },
     
     close: function() {
@@ -361,9 +362,6 @@ module.exports = Backbone.View.extend({
 },{"../../templates/formtemplate.html":"/home/andrew/what-todo/templates/formtemplate.html","../collections/tags":"/home/andrew/what-todo/js/collections/tags.js","../collections/todos":"/home/andrew/what-todo/js/collections/todos.js","./tagsview":"/home/andrew/what-todo/js/views/tagsview.js","backbone":"/home/andrew/what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/what-todo/js/views/mainview.js":[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
-var Todos = require('../collections/todos');
-var TodoView = require('./todoview');
-var TodosView = require('./todosview');
 var Tags = require('../collections/tags')
 var TagsView = require('./tagsview');
 var NavView = require('./navview');
@@ -380,16 +378,12 @@ module.exports = Backbone.View.extend({
     el: "body",
 
     initialize: function() {
-        this.$todoList = this.$("#todoul");
-        //retrieve any todos and tags in local storage and render them
+        //retrieve any tags in local storage and render them
         Tags.fetch();
-        Todos.fetch();
         this.render();
-        this.listenTo(Backbone.eventBus, 'filterAll', this.filterAll);
     },
     
     render: function() {
-        this.orderPersistance();
         //renders the top navigation bar which contains tag list and navigation links on mobile screens
         this.$el.prepend(new NavBarView().render().el);
         //renders the input forms for adding todos
@@ -398,55 +392,9 @@ module.exports = Backbone.View.extend({
         this.$('.taglist').html(new TagsView({collection: Tags}).render().el);
         //renders the navigation links on left side (large screens)
         this.$('#navlinks').html(new NavView().render().el);
-    },
-
-    filterAll: function() {
-        var thetodosview = new TodosView({collection: Todos});
-        thetodosview.render();
-    },
-
-    /**
-    * uses jQuery UI to make list items sortable. 
-    * if sorting has occured, order of items is saved to models accordingly.
-    */
-    orderPersistance: function() {
-        this.$todoList.sortable({
-            axis: "y",
-            //only allow list item to be dragged by .handle (a glyphicon)
-            handle: ".handle",
-            //prevents list item being dragged out of parent element, else dragging item down extends the page
-            containment: "parent",
-            tolerance: 'pointer',
-            //this method is called whenever the list has been rearranged
-            update: function(event, ui) {
-                var order = $('#todoul').sortable('toArray'),
-                    cidOfDropped = ui.item.context.id,
-                    itemIndex = ui.item.index();
-
-                //if dropped item is now last in list, change order property to less than that of penultimate
-                if (itemIndex == order.length - 1) { 
-                    var cidOfAbove = order[itemIndex - 1],
-                        orderOfAbove = Todos.get(cidOfAbove).get('order');
-                    Todos.get(cidOfDropped).save({'order': orderOfAbove - 1});
-                } else { //else change the order to more than item below it
-                    Todos.get({cid: cidOfDropped})
-                        .save({'order': Todos.get({cid: order[itemIndex + 1]})
-                            .get('order') + 1});
-
-                    for (var i = 0; i < itemIndex; i++) { //then increase order of those above it
-                        var currentOrder = Todos.get({cid: order[i]}).get('order');
-                        Todos.get({cid: order[i]})
-                            .save({"order": currentOrder + 2});
-                    }
-                }
-                //so that the collection maintains the order without page refresh
-                Todos.sort();
-
-            }
-        });
     }
 });
-},{"../collections/tags":"/home/andrew/what-todo/js/collections/tags.js","../collections/todos":"/home/andrew/what-todo/js/collections/todos.js","../jquery":"/home/andrew/what-todo/js/jquery.js","./formview":"/home/andrew/what-todo/js/views/formview.js","./navbarview":"/home/andrew/what-todo/js/views/navbarview.js","./navview":"/home/andrew/what-todo/js/views/navview.js","./tagsview":"/home/andrew/what-todo/js/views/tagsview.js","./todosview":"/home/andrew/what-todo/js/views/todosview.js","./todoview":"/home/andrew/what-todo/js/views/todoview.js","backbone":"/home/andrew/what-todo/node_modules/backbone/backbone.js","underscore":"/home/andrew/what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/what-todo/js/views/mobilenavview.js":[function(require,module,exports){
+},{"../collections/tags":"/home/andrew/what-todo/js/collections/tags.js","../jquery":"/home/andrew/what-todo/js/jquery.js","./formview":"/home/andrew/what-todo/js/views/formview.js","./navbarview":"/home/andrew/what-todo/js/views/navbarview.js","./navview":"/home/andrew/what-todo/js/views/navview.js","./tagsview":"/home/andrew/what-todo/js/views/tagsview.js","backbone":"/home/andrew/what-todo/node_modules/backbone/backbone.js","underscore":"/home/andrew/what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/what-todo/js/views/mobilenavview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -644,7 +592,108 @@ module.exports = Backbone.View.extend({
         return this;
     }
 });
-},{"../../templates/tagtemplate.html":"/home/andrew/what-todo/templates/tagtemplate.html","backbone":"/home/andrew/what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/what-todo/js/views/todosview.js":[function(require,module,exports){
+},{"../../templates/tagtemplate.html":"/home/andrew/what-todo/templates/tagtemplate.html","backbone":"/home/andrew/what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/what-todo/js/views/todolistview.js":[function(require,module,exports){
+var Backbone = require('backbone');
+var _ = require('underscore');
+var Todos = require('../collections/todos');
+var TodosView = require('./todosview');
+var DoneView = require('./filterdoneview');
+var NotDoneView = require('./filtertodoview');
+var $ = require('../jquery')
+Backbone.$ = $;
+
+/**
+* View for list of todos
+*/
+module.exports = Backbone.View.extend({
+	el: '.todos',
+
+	initialize: function() {
+		//fetch existing todos from local storage
+		Todos.fetch();
+		//if no todo list view exists yet, create view for all todos
+		if (!this.currentView) {
+			this.currentView = new TodosView({collection: Todos});
+		}
+		this.render();
+		
+		this.listenTo(Backbone.eventBus, 'filterAll', this.filterAll);
+		this.listenTo(Backbone.eventBus, 'filterDone', this.filterDone);
+		this.listenTo(Backbone.eventBus, 'filterNotDone', this.filterNotDone);
+
+	},
+
+	/**
+	* Puts the todos list view within the .todos element
+	*/
+	render: function() {
+        this.$el.html(this.currentView.render().el);
+        this.orderPersistance();
+	},
+
+	/**
+	* Following three methods clean up any already existing todos view and renders new ones based on status filter
+	*/
+	filterDone: function() {
+		this.currentView.remove();
+		this.currentView = new DoneView({collection: Todos});
+		this.render();
+	},
+	filterNotDone: function() {
+		this.currentView.remove();
+		this.currentView = new NotDoneView({collection: Todos});
+		this.render();
+	},
+	filterAll: function() {
+		this.currentView.remove();
+		this.currentView = new TodosView({collection: Todos});
+		this.render();
+
+	},
+  	/**
+    * uses jQuery UI to make list items sortable. 
+    * if sorting has occured, order of items is saved to models accordingly.
+    */
+    orderPersistance: function() {
+        this.$('#todoul').sortable({
+            axis: "y",
+            //only allow list item to be dragged by .handle (a glyphicon)
+            handle: ".handle",
+            //prevents list item being dragged out of parent element, else dragging item down extends the page
+            containment: "parent",
+            tolerance: 'pointer',
+            //this method is called whenever the list has been rearranged
+            update: function(event, ui) {
+                var order = $('#todoul').sortable('toArray'),
+                    cidOfDropped = ui.item.context.id,
+                    itemIndex = ui.item.index();
+
+                //if dropped item is now last in list, change order property to less than that of penultimate
+                if (itemIndex == order.length - 1) { 
+                    var cidOfAbove = order[itemIndex - 1],
+                        orderOfAbove = Todos.get(cidOfAbove).get('order');
+                    Todos.get(cidOfDropped).save({'order': orderOfAbove - 1});
+                } else { //else change the order to more than item below it
+                    Todos.get({cid: cidOfDropped})
+                        .save({'order': Todos.get({cid: order[itemIndex + 1]})
+                            .get('order') + 1});
+
+                    for (var i = 0; i < itemIndex; i++) { //then increase order of those above it
+                        var currentOrder = Todos.get({cid: order[i]}).get('order');
+                        Todos.get({cid: order[i]})
+                            .save({"order": currentOrder + 2});
+                    }
+                }
+                //so that the collection maintains the order without page refresh
+                Todos.sort();
+
+            }
+        });
+    }
+
+
+});
+},{"../collections/todos":"/home/andrew/what-todo/js/collections/todos.js","../jquery":"/home/andrew/what-todo/js/jquery.js","./filterdoneview":"/home/andrew/what-todo/js/views/filterdoneview.js","./filtertodoview":"/home/andrew/what-todo/js/views/filtertodoview.js","./todosview":"/home/andrew/what-todo/js/views/todosview.js","backbone":"/home/andrew/what-todo/node_modules/backbone/backbone.js","underscore":"/home/andrew/what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/what-todo/js/views/todosview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -654,15 +703,16 @@ var TodoView = require('./todoview');
 * View for all todos in the collection
 */
 module.exports = Backbone.View.extend({
-    el: "#todoul",
-
+    // el: "#todoul",
+    tagName: 'ul',
+    id: 'todoul',
     initialize: function() {
         this.listenTo(this.collection, 'reset', this.render);
         this.listenTo(this.collection, 'add', this.render);
         this.listenTo(this.collection, 'remove', this.render);
     },
     /**
-     * renders every todo in the app.todos collection
+     * renders every todo in the todos collection
      */
     render: function() {
         this.$el.empty();

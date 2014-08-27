@@ -7,15 +7,16 @@ var TodoView = require('./todoview');
 * View for all todos in the collection
 */
 module.exports = Backbone.View.extend({
-    el: "#todoul",
-
+    // el: "#todoul",
+    tagName: 'ul',
+    id: 'todoul',
     initialize: function() {
         this.listenTo(this.collection, 'reset', this.render);
         this.listenTo(this.collection, 'add', this.render);
         this.listenTo(this.collection, 'remove', this.render);
     },
     /**
-     * renders every todo in the app.todos collection
+     * renders every todo in the todos collection
      */
     render: function() {
         this.$el.empty();
