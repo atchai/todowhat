@@ -30,10 +30,19 @@ Todos = Backbone.Collection.extend({
         }
     },
 
+    search : function(letters) {
+        if(letters == "") return this;
+        var pattern = new RegExp(letters,"gi");
+        return _(this.filter(function(data) {
+            return pattern.test(data.get("content"));
+        }));
+    },
+
     /**
       * Returns todos with a specific tag
       */
     filterTag: function(tag) {
+        console.log(tag);
         return new Todos(
             this.filter(function(todo) {
                 return _.contains(todo.get('tags'), tag);

@@ -4,6 +4,9 @@ var _ = require('underscore');
 var Todos = require('../collections/todos');
 var template = require('../../templates/navtemplate.html')
 
+/**
+* View for navigation links on large screens
+*/
 module.exports = Backbone.View.extend({
     initialize: function() {
         //listens for change in todos so navigation link can be disabled if necessary

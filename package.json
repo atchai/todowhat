@@ -10,6 +10,7 @@
   "dependencies": {
     "backbone": "1.1.2",
     "backbone.localstorage": "1.1.13",
+    "bootstrap": "^3.2.0",
     "jquery": "1.11.1",
     "jquery-ui": "1.10.5",
     "jquery-ui-touch-punch": "ackl/jquery-ui-touch-punch",
@@ -27,13 +28,13 @@
     "gulp-streamify": "0.0.5",
     "gulp-uglify": "^0.3.2",
     "jasmine-node": "1.14.5",
-    "jstify": "^0.4.2",
     "karma-browserify": "0.2.1",
     "karma-cli": "0.0.4",
     "karma-jasmine": "0.1.5",
     "karma-phantomjs-launcher": "~0.1",
     "node-underscorify": "0.0.11",
-    "vinyl-source-stream": "^0.1.1"
+    "vinyl-source-stream": "^0.1.1",
+    "watchify": "0.8.1"
   },
   "browserify": {
     "transform": [
@@ -43,7 +44,8 @@
   },
   "browser": {
     "jquery-ui": "./node_modules/jquery-ui/jquery-ui.js",
-    "jquery-ui-touch-punch": "./node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.js"
+    "jquery-ui-touch-punch": "./node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.js",
+    "bootstrap": "./node_modules/bootstrap/dist/js/bootstrap.js"
   },
   "browserify-shim": {
     "jquery-ui": {
@@ -51,9 +53,13 @@
     },
     "jquery-ui-touch-punch": {
       "depends": "jquery"
+    },
+    "bootstrap": {
+      "exports": "bootstrap",
+      "depends": "jquery"
     }
   },
   "scripts": {
-    "test": "./node_modules/.bin/karma start tests/my.conf.js"
+    "test": "gulp test"
   }
 }

@@ -28,12 +28,7 @@ module.exports = Backbone.View.extend({
     },
 
     activateTag: function(e) {
-        if(this.$el.hasClass('active')) {
-            this.$el.removeClass('active');
-        }
-        else {
-            $('.list-group-item.active').removeClass('active');
-            this.$el.addClass('active');
-        }
+        $('.list-group-item.active').removeClass('active');
+        this.$el.addClass('active');
     }
 });

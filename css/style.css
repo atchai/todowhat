@@ -130,9 +130,9 @@ input[type='checkbox'] {
     text-decoration: line-through;
     color: #999;
 }
-.remove {
+.remove, .editbutton {
     font-size: 0.8em;
-    opacity: 0.5;
+    opacity: 0.7;
     height: 30px;
 }
 .handle {
@@ -140,6 +140,7 @@ input[type='checkbox'] {
 }
 #todoul {
     word-wrap: break-word;
+    padding: 0;
 }
 @media(min-width: 991px) {
        .todos {

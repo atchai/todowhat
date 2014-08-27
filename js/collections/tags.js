@@ -11,26 +11,33 @@ var Tags = Backbone.Collection.extend({
 
 	comparator: 'name', //so that models are inserted into collection alphabetically
 
-	exist: function(tag) { //check if tag with same name exists in collection already
+	/**
+	* Check if tag with same name exists in collection already
+	*/
+	exist: function(tag) {
+		//try and grab the tag we're looking for in the collection by name
 		var existingTag = this.find(function(model) {
 				return model.get('name') == tag;
 			});
 
-		this.pluck('name').length == 0 ? this.create({
-			'name': tag
-		}) :
-			existingTag ?
-			existingTag.addCount() : this.create({
-				'name': tag
-			});
+		//if there are no tags or tags with same name in collection, create new tag
+		if (this.pluck('name').length == 0 || !existingTag) {
+		    this.create({name: tag});
+		} else {//otherwise increase count on the existing tag with same name
+		    existingTag.addCount();
+		}
 
 	},
-
+	/**
+	* Remove a tag/decrease tag count
+	*/
 	removeTag: function(tag) {
 		var existingTag = this.find(function(model) {
 				return model.get('name') == tag;
-			});
-		existingTag.get('count')==1 ? existingTag.destroy() : existingTag.decreaseCount();
+			});	
+		existingTag.get('count') == 1 ? existingTag.destroy() : existingTag.decreaseCount();
 	}
 });
+
+//calling this module from others returns a new tag model
 module.exports = new Tags([]);

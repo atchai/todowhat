@@ -4,7 +4,11 @@ var FilterTodoView = require('../views/filtertodoview');
 var FilterTagView = require('../views/filterTagView');
 var Todos = require('../collections/todos');
 var todoAppView = require('../views/mainview');
+var todoListView = require('../views/todolistview');
 
+/**
+* Manages which todos view is rendered
+*/
 module.exports = Backbone.Router.extend({
   routes: {
   	'': 'filterAll',
@@ -19,6 +23,8 @@ module.exports = Backbone.Router.extend({
   initialize: function() {
     if (!this.view) {
       this.view = new todoAppView();
+      //create a view for the todos collection
+      new todoListView();
     }
     //call change method when anything happens with router
     this.listenTo(this, "all", this.change);
@@ -31,13 +37,13 @@ module.exports = Backbone.Router.extend({
     Backbone.eventBus.trigger('filterAll');
   },
   filterDone: function() {
-    	new FilterDoneView({collection: Todos}).render();
+    Backbone.eventBus.trigger('filterDone');
   },
   filterNotDone: function() {
-    	new FilterTodoView({collection: Todos}).render();
+    Backbone.eventBus.trigger('filterNotDone');
   },
   filterTag: function() {
-        new FilterTagView({collection: Todos}).render();
+    Backbone.eventBus.trigger('filterTag');
   },
 
   //triggers a custom event to let navigation link view know the route has changed
@@ -45,6 +51,3 @@ module.exports = Backbone.Router.extend({
     Backbone.eventBus.trigger('routeChanged');
   }
 });
-
-
-
