@@ -181,6 +181,18 @@ Tags
     right: 12%;
 }
 
+.list-group-item:hover {
+    background-color: white;
+}
+
+.list-group-item.active > .tag {
+    color: white;
+}
+
+.list-group-item.active .badge {
+    background-color: #30353A;
+}
+
 /***************************
 Custom breakpoints
 ***************************/
@@ -223,7 +235,7 @@ Custom breakpoints
         padding-bottom: 10px;
     }
     /* since 3.1.0 */
-    .navbar-collapse.collapse.in { 
+    .navbar-collapse.collapse.in {
         display: block!important;
     }
     .collapsing {
@@ -241,12 +253,12 @@ Custom breakpoints
     /*Create todo forms*/
     .form-horizontal {
         margin-left: 0;
-        
+
     }
     .add-todo-fields {
         float: none;
     }
-    
+
     /*tags*/
     .taglist {
         font-size: 10px;
@@ -257,7 +269,7 @@ Custom breakpoints
       .submit {
         margin-left: 60%;
     }
-    
+
 }
 
 @media (max-width: 767px) {

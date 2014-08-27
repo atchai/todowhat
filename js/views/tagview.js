@@ -4,8 +4,12 @@ var _ = require('underscore');
 var template = require('../../templates/tagtemplate.html');
 
 module.exports = Backbone.View.extend({
+    events: {
+        'click .tag': 'activateTag'
+    },
+
 	initialize: function() {
-		this.listenTo(this.model, 'change', this.render)	
+		this.listenTo(this.model, 'change', this.render)
 	},
 
 	tagName: 'li',
@@ -14,12 +18,22 @@ module.exports = Backbone.View.extend({
         return 'tag' + this.model.cid;
     },
 
-	render: function() {		
+	render: function() {
 		$(this.el).addClass('list-group-item');
         this.$el.html(template({
             tagName: this.model.get('name') ,
             tagCount: this.model.get('count')
         }));
         return this;
+    },
+
+    activateTag: function(e) {
+        if(this.$el.hasClass('active')) {
+            this.$el.removeClass('active');
+        }
+        else {
+            $('.list-group-item.active').removeClass('active');
+            this.$el.addClass('active');
+        }
     }
 });

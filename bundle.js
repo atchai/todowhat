@@ -219,7 +219,12 @@ module.exports = Backbone.View.extend({
     */
     render: function() {
         var tag = Backbone.history.fragment.split("/")[1];
-        var todoList = Todos.filterTag(tag);
+        if (tag === 'all') {
+            var todoList = this.collection;
+        }
+        else {
+            var todoList = Todos.filterTag(tag);
+        }
         this.$el.empty();
         todoList.each(function(c) {
             var todoview = new TodoView({
@@ -256,11 +261,13 @@ module.exports = Backbone.View.extend({
         //when user is on all todos view, stop listening to changes in collection to prevent this view rerendering
         this.listenTo(Backbone.eventBus, 'filterAll', this.stopListening);
     },
-    
+
     /**
     * renders the todos that have been done
     */
     render: function() {
+        // Clear all the filter actives
+        $('.list-group-item.active').removeClass('active');
         var thing = Todos.filterDone(true);
         this.$el.empty();
         thing.each(function(c) {
@@ -298,11 +305,13 @@ module.exports = Backbone.View.extend({
         //when user is on all todos view, stop listening to changes in collection to prevent this view rerendering
         this.listenTo(Backbone.eventBus, 'filterAll', this.stopListening);
     },
-    
+
     /**
     * renders the todos that are yet to be done
     */
     render: function() {
+        // Clear all the filter actives
+        $('.list-group-item.active').removeClass('active');
         var thing = Todos.filterDone(false);
         this.$el.empty();
         thing.each(function(c) {
@@ -316,7 +325,7 @@ module.exports = Backbone.View.extend({
             this.close();
         }
     },
-    
+
     close: function() {
         Backbone.history.navigate('', true);
     }
@@ -424,14 +433,14 @@ module.exports = Backbone.View.extend({
         this.render();
         this.listenTo(Backbone.eventBus, 'filterAll', this.filterAll);
     },
-    
+
     render: function() {
         this.orderPersistance();
         //renders the top navigation bar which contains tag list and navigation links on mobile screens
         this.$el.prepend(new NavBarView().render().el);
         //renders the input forms for adding todos
         this.$('.mainrow').append(new FormView().render().el);
-        //renders the tag list on left side (large screens) 
+        //renders the tag list on left side (large screens)
         this.$('.taglist').html(new TagsView({collection: Tags}).render().el);
         //renders the navigation links on left side (large screens)
         this.renderLinks();
@@ -442,6 +451,8 @@ module.exports = Backbone.View.extend({
     },
 
     filterAll: function() {
+        // Clear all the filter actives
+        $('.list-group-item.active').removeClass('active');
         var thetodosview = new TodosView({collection: Todos});
         thetodosview.render();
     },
@@ -455,7 +466,7 @@ module.exports = Backbone.View.extend({
         }
     },
     /**
-    * uses jQuery UI to make list items sortable. 
+    * uses jQuery UI to make list items sortable.
     * if sorting has occured, order of items is saved to models accordingly.
     */
     orderPersistance: function() {
@@ -470,7 +481,7 @@ module.exports = Backbone.View.extend({
                     itemIndex = ui.item.index();
 
                 //if dropped item is now last in list, change order property to less than that of penultimate
-                if (itemIndex == order.length - 1) { 
+                if (itemIndex == order.length - 1) {
                     var cidOfAbove = order[itemIndex - 1],
                         orderOfAbove = Todos.get(cidOfAbove).get('order');
                     Todos.get(cidOfDropped).save({'order': orderOfAbove - 1});
@@ -620,9 +631,14 @@ var TodoView = require('./todoview');
 var Tags = require('../collections/tags');
 var TagView = require('./tagview');
 var NavView = require('./navview');
+var tagsTemplate = require('../../templates/tagsTemplate.html');
 Backbone.$ = $;
 
 module.exports = Backbone.View.extend({
+    events: {
+        "click .all-todo": "activateAll"
+    },
+
     initialize: function() {
         this.listenTo(this.collection, 'reset', this.render);
         this.listenTo(this.collection, 'add', this.render); //so that new tags are added alphabetically
@@ -634,7 +650,7 @@ module.exports = Backbone.View.extend({
     */
     render: function() {
         this.$el.empty();
-        this.$el.append('<li class="list-group-item tags-head">Filter by tags</li>');
+        this.$el.append(tagsTemplate);
         Tags.each(function(t) {
             var tagList = new TagView({
                 model: t
@@ -653,17 +669,32 @@ module.exports = Backbone.View.extend({
     removeTagView: function(tag) {
         var cid = '#tag' + tag.cid;
         $(cid).remove();
+    },
+
+    activateAll: function() {
+        var $all = this.$('.all-todo').parent();
+        if($all.hasClass('active')) {
+            $all.removeClass('active');
+        }
+        else {
+            $('.list-group-item.active').removeClass('active');
+            $all.addClass('active');
+        }
     }
-})
-},{"../collections/tags":"/home/cavan/sites/what-todo/js/collections/tags.js","../collections/todos":"/home/cavan/sites/what-todo/js/collections/todos.js","./navview":"/home/cavan/sites/what-todo/js/views/navview.js","./tagview":"/home/cavan/sites/what-todo/js/views/tagview.js","./todoview":"/home/cavan/sites/what-todo/js/views/todoview.js","backbone":"/home/cavan/sites/what-todo/node_modules/backbone/backbone.js","jquery":"/home/cavan/sites/what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/cavan/sites/what-todo/node_modules/underscore/underscore.js"}],"/home/cavan/sites/what-todo/js/views/tagview.js":[function(require,module,exports){
+});
+},{"../../templates/tagsTemplate.html":"/home/cavan/sites/what-todo/templates/tagsTemplate.html","../collections/tags":"/home/cavan/sites/what-todo/js/collections/tags.js","../collections/todos":"/home/cavan/sites/what-todo/js/collections/todos.js","./navview":"/home/cavan/sites/what-todo/js/views/navview.js","./tagview":"/home/cavan/sites/what-todo/js/views/tagview.js","./todoview":"/home/cavan/sites/what-todo/js/views/todoview.js","backbone":"/home/cavan/sites/what-todo/node_modules/backbone/backbone.js","jquery":"/home/cavan/sites/what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/cavan/sites/what-todo/node_modules/underscore/underscore.js"}],"/home/cavan/sites/what-todo/js/views/tagview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var template = require('../../templates/tagtemplate.html');
 
 module.exports = Backbone.View.extend({
+    events: {
+        'click .tag': 'activateTag'
+    },
+
 	initialize: function() {
-		this.listenTo(this.model, 'change', this.render)	
+		this.listenTo(this.model, 'change', this.render)
 	},
 
 	tagName: 'li',
@@ -672,13 +703,23 @@ module.exports = Backbone.View.extend({
         return 'tag' + this.model.cid;
     },
 
-	render: function() {		
+	render: function() {
 		$(this.el).addClass('list-group-item');
         this.$el.html(template({
             tagName: this.model.get('name') ,
             tagCount: this.model.get('count')
         }));
         return this;
+    },
+
+    activateTag: function(e) {
+        if(this.$el.hasClass('active')) {
+            this.$el.removeClass('active');
+        }
+        else {
+            $('.list-group-item.active').removeClass('active');
+            this.$el.addClass('active');
+        }
     }
 });
 },{"../../templates/tagtemplate.html":"/home/cavan/sites/what-todo/templates/tagtemplate.html","backbone":"/home/cavan/sites/what-todo/node_modules/backbone/backbone.js","jquery":"/home/cavan/sites/what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/cavan/sites/what-todo/node_modules/underscore/underscore.js"}],"/home/cavan/sites/what-todo/js/views/todosview.js":[function(require,module,exports){
@@ -29575,13 +29616,22 @@ __p+='\n\n</ul>';
 return __p;
 };
 
+},{}],"/home/cavan/sites/what-todo/templates/tagsTemplate.html":[function(require,module,exports){
+module.exports = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='<li class="list-group-item tags-head">Filter by tags</li>\n<li class="list-group-item">\n\t<a href="#tag/all" class="all-todo tag"><div>all</div></a>\n</li>';
+}
+return __p;
+};
+
 },{}],"/home/cavan/sites/what-todo/templates/tagtemplate.html":[function(require,module,exports){
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
 __p+='<a href="#tag/'+
 ((__t=( tagName ))==null?'':__t)+
-'"<div>'+
+'" class="tag"><div>'+
 ((__t=( tagName ))==null?'':__t)+
 '</div> <span class="badge">'+
 ((__t=( tagCount ))==null?'':__t)+

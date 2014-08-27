@@ -22,7 +22,12 @@ module.exports = Backbone.View.extend({
     */
     render: function() {
         var tag = Backbone.history.fragment.split("/")[1];
-        var todoList = Todos.filterTag(tag);
+        if (tag === 'all') {
+            var todoList = this.collection;
+        }
+        else {
+            var todoList = Todos.filterTag(tag);
+        }
         this.$el.empty();
         todoList.each(function(c) {
             var todoview = new TodoView({

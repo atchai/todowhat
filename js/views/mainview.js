@@ -27,14 +27,14 @@ module.exports = Backbone.View.extend({
         this.render();
         this.listenTo(Backbone.eventBus, 'filterAll', this.filterAll);
     },
-    
+
     render: function() {
         this.orderPersistance();
         //renders the top navigation bar which contains tag list and navigation links on mobile screens
         this.$el.prepend(new NavBarView().render().el);
         //renders the input forms for adding todos
         this.$('.mainrow').append(new FormView().render().el);
-        //renders the tag list on left side (large screens) 
+        //renders the tag list on left side (large screens)
         this.$('.taglist').html(new TagsView({collection: Tags}).render().el);
         //renders the navigation links on left side (large screens)
         this.renderLinks();
@@ -45,6 +45,8 @@ module.exports = Backbone.View.extend({
     },
 
     filterAll: function() {
+        // Clear all the filter actives
+        $('.list-group-item.active').removeClass('active');
         var thetodosview = new TodosView({collection: Todos});
         thetodosview.render();
     },
@@ -58,7 +60,7 @@ module.exports = Backbone.View.extend({
         }
     },
     /**
-    * uses jQuery UI to make list items sortable. 
+    * uses jQuery UI to make list items sortable.
     * if sorting has occured, order of items is saved to models accordingly.
     */
     orderPersistance: function() {
@@ -73,7 +75,7 @@ module.exports = Backbone.View.extend({
                     itemIndex = ui.item.index();
 
                 //if dropped item is now last in list, change order property to less than that of penultimate
-                if (itemIndex == order.length - 1) { 
+                if (itemIndex == order.length - 1) {
                     var cidOfAbove = order[itemIndex - 1],
                         orderOfAbove = Todos.get(cidOfAbove).get('order');
                     Todos.get(cidOfDropped).save({'order': orderOfAbove - 1});

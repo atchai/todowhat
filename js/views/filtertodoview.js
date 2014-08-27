@@ -16,11 +16,13 @@ module.exports = Backbone.View.extend({
         //when user is on all todos view, stop listening to changes in collection to prevent this view rerendering
         this.listenTo(Backbone.eventBus, 'filterAll', this.stopListening);
     },
-    
+
     /**
     * renders the todos that are yet to be done
     */
     render: function() {
+        // Clear all the filter actives
+        $('.list-group-item.active').removeClass('active');
         var thing = Todos.filterDone(false);
         this.$el.empty();
         thing.each(function(c) {
@@ -34,7 +36,7 @@ module.exports = Backbone.View.extend({
             this.close();
         }
     },
-    
+
     close: function() {
         Backbone.history.navigate('', true);
     }
