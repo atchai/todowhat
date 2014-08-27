@@ -17,19 +17,34 @@ gulp.task('default', function() {
 
 //this task watches for changes application js files and compiles them
 gulp.task('watch', function(){
+	watch = true;
   browserifySetup('./js/app.js', 'bundle.js', './');
 });
 
 //this task watches for changes application js files and compiles jasmine test specs
-gulp.task('watch-test', function(){
+gulp.task('watch-compile-test', function(){
+	watch = true;
   browserifySetup('./tests/specs.js', 'testFile.js', './tests/');
 });
 
-//this task runs tests with karma after test specs have been bundled
-gulp.task('test', ['watch-test'], function (done) {
+//this task just compiles jasmine test specs
+gulp.task('nowatch-compile-test', function(){
+	watch = false;
+  browserifySetup('./tests/specs.js', 'testFile.js', './tests/');
+});
+
+//this task runs tests with karma after test specs have been bundled and again if changed
+gulp.task('watch-test', ['watch-compile-test'], function (done) {
   karma.start({
     configFile: __dirname + '/tests/my.conf.js',
     action: 'watch'
+  }, done);
+});
+
+//this task runs tests with karma after test specs have been bundled
+gulp.task('test', ['nowatch-compile-test'], function (done) {
+  karma.start({
+    configFile: __dirname + '/tests/my.conf.js'
   }, done);
 });
 
@@ -41,14 +56,16 @@ function browserifySetup(inputFile, outputFile, outputPath){
     packageCache: {},
     fullPaths: true
   });
-  
-  //wrap watchify around browserify
-  b = watchify(b);
+  //use watchify is watch flag set to true
+  if (watch) {
+	  //wrap watchify around browserify
+	  b = watchify(b);
 
-  //compile the files when there is a change saved
-  b.on('update', function(){
-    buildFiles(b, outputFile, outputPath);
-  });
+	  //compile the files when there is a change saved
+	  b.on('update', function(){
+	    buildFiles(b, outputFile, outputPath);
+	  });
+  }
   
   b.add(inputFile);
   buildFiles(b, outputFile, outputPath);
