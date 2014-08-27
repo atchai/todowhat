@@ -43,7 +43,7 @@ module.exports = Backbone.View.extend({
         var thetodosview = new TodosView({collection: Todos});
         thetodosview.render();
     },
-    
+
     /**
     * uses jQuery UI to make list items sortable. 
     * if sorting has occured, order of items is saved to models accordingly.

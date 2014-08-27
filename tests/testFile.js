@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/home/andrew/what-todo/js/models/todo.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -13,18 +13,20 @@ module.exports = Backbone.Model.extend({
     	return this.get('tags');
     },
     /**
-    * validates the content from input field (no empty strings)
+    * validates the content from input field
     */
     validate: function (attrs) {
+        //no empty strings allowed
         if(attrs.content.trim()=='') {
         	return 'mal';
         }
+        //no todo over 255 chars allowed
         if (attrs.content.length > 255) {
             return 'mal';
         }
     }
 })
-},{"backbone":2,"jquery":3,"underscore":4}],2:[function(require,module,exports){
+},{"backbone":"/home/andrew/what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/what-todo/node_modules/backbone/backbone.js":[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -1634,7 +1636,7 @@ module.exports = Backbone.Model.extend({
 
 }));
 
-},{"underscore":4}],3:[function(require,module,exports){
+},{"underscore":"/home/andrew/what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/what-todo/node_modules/jquery/dist/jquery.js":[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v1.11.1
  * http://jquery.com/
@@ -11944,7 +11946,7 @@ return jQuery;
 
 }));
 
-},{}],4:[function(require,module,exports){
+},{}],"/home/andrew/what-todo/node_modules/underscore/underscore.js":[function(require,module,exports){
 //     Underscore.js 1.6.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -13289,7 +13291,7 @@ return jQuery;
   }
 }).call(this);
 
-},{}],5:[function(require,module,exports){
+},{}],"/home/andrew/what-todo/tests/specs.js":[function(require,module,exports){
 var Todo = require('../js/models/todo');
 
 describe("the todo", function(){
@@ -13326,4 +13328,4 @@ describe("todo content length greater than 255 chars", function(){
     expect(this.todo.isValid()).not.toBeTruthy();
   })
 });
-},{"../js/models/todo":1}]},{},[5])
+},{"../js/models/todo":"/home/andrew/what-todo/js/models/todo.js"}]},{},["/home/andrew/what-todo/tests/specs.js"])
