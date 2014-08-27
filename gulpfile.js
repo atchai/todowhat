@@ -22,6 +22,7 @@ gulp.task('browserify-test', function() {
         .pipe(source('testFile.js'))
         .pipe(gulp.dest('./tests/'));
 });
+//this task runs test with karma after test specs have been bundled
 gulp.task('test', ['browserify-test'], function (done) {
   karma.start({
     configFile: __dirname + '/tests/my.conf.js',

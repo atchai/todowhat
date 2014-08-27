@@ -10,13 +10,12 @@ var FormView = require('./formview');
 var NavBarView = require('./navbarview');
 var $ = require('../jquery')
 Backbone.$ = $;
-module.exports = Backbone.View.extend({
-    events: {
-        "click .submit": "addTodo",
-        "keyup #todofield": "keyPressEventHandler",
-        "keyup #tagsfield": "keyPressEventHandler"
-    },
 
+/**
+* Main application view, renders appropriate views upon starting the application
+* i.e. navigation, tag views
+*/
+module.exports = Backbone.View.extend({
     el: "body",
 
     initialize: function() {
@@ -37,10 +36,6 @@ module.exports = Backbone.View.extend({
         //renders the tag list on left side (large screens) 
         this.$('.taglist').html(new TagsView({collection: Tags}).render().el);
         //renders the navigation links on left side (large screens)
-        this.renderLinks();
-    },
-
-    renderLinks: function() {
         this.$('#navlinks').html(new NavView().render().el);
     },
 
@@ -48,15 +43,7 @@ module.exports = Backbone.View.extend({
         var thetodosview = new TodosView({collection: Todos});
         thetodosview.render();
     },
-
-    /**
-    * clicks add todo button if enter key is pressed
-    */
-    keyPressEventHandler: function(event) {
-        if (event.keyCode == 13) {
-            this.$(".submit").click();
-        }
-    },
+    
     /**
     * uses jQuery UI to make list items sortable. 
     * if sorting has occured, order of items is saved to models accordingly.
@@ -64,9 +51,12 @@ module.exports = Backbone.View.extend({
     orderPersistance: function() {
         this.$todoList.sortable({
             axis: "y",
+            //only allow list item to be dragged by .handle (a glyphicon)
             handle: ".handle",
+            //prevents list item being dragged out of parent element, else dragging item down extends the page
             containment: "parent",
             tolerance: 'pointer',
+            //this method is called whenever the list has been rearranged
             update: function(event, ui) {
                 var order = $('#todoul').sortable('toArray'),
                     cidOfDropped = ui.item.context.id,
@@ -88,6 +78,7 @@ module.exports = Backbone.View.extend({
                             .save({"order": currentOrder + 2});
                     }
                 }
+                //so that the collection maintains the order without page refresh
                 Todos.sort();
 
             }

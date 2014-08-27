@@ -6,6 +6,7 @@ var TodoView = require('./todoview');
 
 module.exports = Backbone.View.extend({
     el: "#todoul",
+
     initialize: function() {
         //changing done state of a model in this collection will rerender view so the todo is removed from view
         this.listenTo(this.collection, 'change', this.render);

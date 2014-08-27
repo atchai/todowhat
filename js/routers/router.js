@@ -4,6 +4,9 @@ var FilterTodoView = require('../views/filtertodoview');
 var Todos = require('../collections/todos');
 var todoAppView = require('../views/mainview');
 
+/**
+* Manages which todos view is rendered
+*/
 module.exports = Backbone.Router.extend({
   routes: {
   	'': 'filterAll',

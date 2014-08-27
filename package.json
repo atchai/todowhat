@@ -10,6 +10,7 @@
   "dependencies": {
     "backbone": "1.1.2",
     "backbone.localstorage": "1.1.13",
+    "bootstrap": "^3.2.0",
     "jquery": "1.11.1",
     "jquery-ui": "1.10.5",
     "jquery-ui-touch-punch": "ackl/jquery-ui-touch-punch",
@@ -42,13 +43,18 @@
   },
   "browser": {
     "jquery-ui": "./node_modules/jquery-ui/jquery-ui.js",
-    "jquery-ui-touch-punch": "./node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.js"
+    "jquery-ui-touch-punch": "./node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.js",
+    "bootstrap": "./node_modules/bootstrap/dist/js/bootstrap.js"
   },
   "browserify-shim": {
     "jquery-ui": {
       "depends": "jquery"
     },
     "jquery-ui-touch-punch": {
+      "depends": "jquery"
+    },
+    "bootstrap": {
+      "exports": "bootstrap",
       "depends": "jquery"
     }
   },

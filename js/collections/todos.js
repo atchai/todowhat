@@ -10,6 +10,7 @@ Todos = Backbone.Collection.extend({
 	comparator: 'order',
 	/**
 	* this returns new collection containing only done or not done todos
+	* status argument is boolean value
 	*/
 	filterDone: function(status) {
 		return new Todos(
@@ -28,6 +29,13 @@ Todos = Backbone.Collection.extend({
 		else {
 			return 0;
 		}
-	}
+	},
+	search : function(letters){
+      if(letters == "") return this;
+      var pattern = new RegExp(letters,"gi");
+      return _(this.filter(function(data) {
+          return pattern.test(data.get("content"));
+      }));
+  }
 });
 module.exports = new Todos([]);

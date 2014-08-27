@@ -3,9 +3,10 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var TodoView = require('./todoview');
 
+/**
+* View for all todos in the collection
+*/
 module.exports = Backbone.View.extend({
-    tagName: 'ul',
-
     el: "#todoul",
 
     initialize: function() {

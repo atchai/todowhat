@@ -7,27 +7,29 @@ var TagsView = require('./tagsview');
 var Tags = require('../collections/tags');
 var template = require('../../templates/navbartemplate.html')
 
+/**
+* View for top navigation bar - contains navigation links and tag list for small screens
+*/
 module.exports = Backbone.View.extend({
 	initialize: function() {
-		this.listenTo(Tags, 'add', this.renderTags);
-		this.listenTo(Backbone.eventBus, 'statusChanged', this.renderMobile);
-
+		this.listenTo(Tags, 'add', this.renderMobileTags);
+		this.listenTo(Backbone.eventBus, 'statusChanged', this.renderMobileLinks);
 	},
 	
 	render: function() {
 		this.$el.html(template);
-        this.renderMobile();
-        this.renderTags();
+        this.renderMobileLinks();
+        this.renderMobileTags();
         return this;
 	},
 
 	//renders mobile navigation links
-	renderMobile: function() {
+	renderMobileLinks: function() {
         this.$('.mobilelinks').html(new MobileNavView().render().el);
 	},
 
 	//renders mobile tags list
-	renderTags: function() {
+	renderMobileTags: function() {
         this.$('.taglist').html(new TagsView({collection: Tags}).render().el);
 	}
 });
