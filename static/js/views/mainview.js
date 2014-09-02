@@ -6,6 +6,7 @@ var TagsView = require('./tagsview');
 var NavView = require('./navview');
 var FormView = require('./formview');
 var NavBarView = require('./navbarview');
+var TodosView = require('./todosview');
 var $ = require('../jquery')
 Backbone.$ = $;
 
@@ -21,7 +22,9 @@ module.exports = Backbone.View.extend({
         Tags.fetch();
         this.render();
     },
-
+    events: {
+        "keyup .search-field": "doSearch"
+    },
     render: function() {
         //renders the top navigation bar which contains tag list and navigation links on mobile screens
         this.$el.prepend(new NavBarView().render().el);
@@ -49,40 +52,14 @@ module.exports = Backbone.View.extend({
             this.$(".submit").click();
         }
     },
-    /**
-    * uses jQuery UI to make list items sortable.
-    * if sorting has occured, order of items is saved to models accordingly.
-    */
-    orderPersistance: function() {
-        this.$todoList.sortable({
-            axis: "y",
-            handle: ".handle",
-            containment: "parent",
-            tolerance: 'pointer',
-            update: function(event, ui) {
-                var order = $('#todoul').sortable('toArray'),
-                    cidOfDropped = ui.item.context.id,
-                    itemIndex = ui.item.index();
 
-                //if dropped item is now last in list, change order property to less than that of penultimate
-                if (itemIndex == order.length - 1) {
-                    var cidOfAbove = order[itemIndex - 1],
-                        orderOfAbove = Todos.get(cidOfAbove).get('order');
-                    Todos.get(cidOfDropped).save({'order': orderOfAbove - 1});
-                } else { //else change the order to more than item below it
-                    Todos.get({cid: cidOfDropped})
-                        .save({'order': Todos.get({cid: order[itemIndex + 1]})
-                            .get('order') + 1});
-
-                    for (var i = 0; i < itemIndex; i++) { //then increase order of those above it
-                        var currentOrder = Todos.get({cid: order[i]}).get('order');
-                        Todos.get({cid: order[i]})
-                            .save({"order": currentOrder + 2});
-                    }
-                }
-                Todos.sort();
-
-            }
-        });
+    doSearch: function() {
+        // var thing = this.$('.search-field').val();
+        console.log(this.$('.search-field').val());
+        var thing = Todos.search(this.$('.search-field').val());
+        console.log(thing);
+        var searchedView = new TodosView({collection: thing});
+        this.$('#todoul').html(searchedView.render().el);
+        // Backbone.eventBus, 'filterAll'
     }
 });

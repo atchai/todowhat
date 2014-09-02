@@ -8,17 +8,17 @@ var watchify = require('watchify');
 
 //default gulp task browserifies application js files in bundle and minifies js
 gulp.task('default', function() {
-  var bundleStream = browserify('./js/app.js').bundle()
+  var bundleStream = browserify('./static/js/app.js').bundle()
   bundleStream
     .pipe(source('bundle.js'))
     .pipe(streamify(uglify()))
-    .pipe(gulp.dest('./'))
+    .pipe(gulp.dest('./static/'))
 });
 
 //this task watches for changes application js files and compiles them
 gulp.task('watch', function(){
 	watch = true;
-  browserifySetup('./js/app.js', 'bundle.js', './');
+  browserifySetup('./static/js/app.js', 'bundle.js', './static/');
 });
 
 //this task watches for changes application js files and compiles jasmine test specs

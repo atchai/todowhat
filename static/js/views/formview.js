@@ -31,9 +31,7 @@ module.exports = Backbone.View.extend({
         todoContent = this.$todofield.val();
         tagsContent = this.$tagsfield.val();
         //grabs tag values deliminated by commas and removes whitespace & repeats
-        tagsContent = _.map(this.$tagsfield.val().split(','), function(t) {
-            return t.trim();
-        }).filter(Boolean);
+        tagsContent = Tags.parseTags(this.$tagsfield.val());
         Todos.create(
                 {
                     content: todoContent,

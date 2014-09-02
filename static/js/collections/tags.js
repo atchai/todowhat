@@ -41,6 +41,21 @@ var Tags = Backbone.Collection.extend({
 			});	
 		console.log(existingTag);
 		// existingTag.get('count') == 1 ? existingTag.destroy() : existingTag.decreaseCount();
+	},
+
+	/**
+	* Parse string of tags
+	* Returns array having:
+	*   split by commas
+	*   remove extraneous whitespace (t.trim) and empty strings (filter(Boolean)) 
+	*/
+	parseTags: function(tagString) {
+		var tagsArray = _.map(tagString.split(','), function(t) {
+            return t.trim();
+        }).filter(Boolean);
+		tagsArray = _.uniq(tagsArray, false);
+		return tagsArray;
+
 	}
 });
 

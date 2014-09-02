@@ -33,22 +33,20 @@ module.exports = Backbone.View.extend({
         var newContent = this.$('#editfield').val();
         var newTags = this.$('#edittagfield').val();
         var oldTags = this.model.getTags();
-        var tagsContent = _.map(newTags.split(','), function(t) {
-            return t.trim();
-        }).filter(Boolean);
-        var oldAndNewTags = oldTags.concat(tagsContent);
-        oldAndNewTags = _.uniq(oldAndNewTags, false);
-        oldAndNewTags = _.difference(oldAndNewTags, this.tagsToRemoveArr);
-        console.log('this is the array of old and new tags');
-        console.log(oldAndNewTags);
-        if (newContent == this.model.get('content') && oldAndNewTags == oldTags) {
+        //clean up string of new tags into usable array and concatenate with the old tags
+        var tagsContent = oldTags.concat(Tags.parseTags(newTags));
+        //remove any duplicate tag which may already be in old tags array
+        tagsContent = _.uniq(tagsContent, false);
+        //remove any tags which are to be removed from the todo
+        tagsContent = _.difference(tagsContent, this.tagsToRemoveArr);
+        //if the user did not change anything just close the edit dialog
+        if (newContent == this.model.get('content') && tagsContent == oldTags) {
         	this.$el.find('.modal').modal('hide');
-        }
-        else {
+        } else {
 	        this.model.save(
 	    		{
 	            	content: newContent,
-	            	tags: oldAndNewTags
+	            	tags: tagsContent
 	   			},
 	   			{
 	   				wait: true,
@@ -57,21 +55,18 @@ module.exports = Backbone.View.extend({
 	   					Tags.fetch();
 	   				}
 	   			});
-
-	        if (this.model.validationError) {
-	        	this.$('.alert-danger').toggleClass('hide');
-	    	}
-	    	else {
-	    		$('.modal-backdrop').remove();
-	    	}
+	        (this.model.validationError) ? this.$('.alert-danger').toggleClass('hide') : $('.modal-backdrop').remove()
     	}
     },
+
     showTagField: function() {
         this.$('#edittagfield').toggleClass('hide');
     },
+
     removeTagsMode: function() {
         this.$('.edit-tag').toggleClass('remove-tag-mode');
     },
+
 	removeTag: function(e) {
 		console.log('imhere');
 		var tagToRemove = e.currentTarget.innerHTML;
@@ -80,6 +75,7 @@ module.exports = Backbone.View.extend({
 		console.log(this.tagsToRemoveArr);
 		e.currentTarget.remove();
 	},
+	
 	liveUpdateTodo: function() {
 		var todo = this.$('#editfield').val();
 		this.$el.closest('.list-group-item').find('span:eq(1)').html(todo);
