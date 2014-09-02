@@ -11,15 +11,26 @@
         <h4 class="modal-title" id="myModalLabel">Edit todo content:</h4>
       </div>
       <div class="modal-body">
+      <div class="alert alert-danger alert-dismissible hide" role="alert">
+  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+  <strong>Warning!</strong> Todo field cannot be blank.
+</div>
         <input class="form-control" type="text" id="editfield" value="<%= todoItem %>">
+        <input class="form-control hide" type="text" id="edittagfield" placeholder="New tag here">
+        <button class="glyphicon glyphicon-plus edit-add-tag btn" data-toggle="tooltip" data-placement="bottom" title="Toggle add new tags mode"></button>
+        <button class="glyphicon glyphicon-minus edit-remove-tag btn" data-toggle="tooltip" data-placement="bottom" title="Toggle remove tags mode"></button>
+
         <% tags.forEach(function(tag){ %>
-    <span class="label label-info"><%= tag %></span>
-  <% }) %>  
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary save">Save changes</button>
+    <span class="label label-info edit-tag"><%= tag %></span>
+  <% }) %> 
+        <button type="button" class="btn btn-primary pull-right save">Save changes</button>
       </div>
     </div>
   </div>
 </div>
+
+  <script type="text/javascript">
+  $(function () {
+        $(".glyphicon").tooltip({container: 'body'});
+    });
+  </script>
