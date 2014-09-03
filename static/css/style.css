@@ -334,10 +334,9 @@ Custom breakpoints
 .handle:hover {
     cursor: move;
 }
-li.ui-sortable-helper{
+li.ui-sortable-helper, li.ui-sortable-helper input, li.ui-sortable-helper button{
     cursor: move;
 }
-
 .remove-tag-mode {
     background: #FF4D4D;
 }

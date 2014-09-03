@@ -7,14 +7,14 @@ var Todo = require('../models/todo');
 Todos = Backbone.Collection.extend({
     // localStorage: new Backbone.LocalStorage("StoredTodos"),
     url: '/todos',
-    parse: function(response){
+    parse: function(response) {
         return response.todos;
     },
     model: Todo,
     comparator: 'order',
     /**
-    * this returns new collection containing only done or not done todos
-    */
+     * this returns new collection containing only done or not done todos
+     */
     filterDone: function(status) {
         return new Todos(
             this.filter(function(todo) {
@@ -23,30 +23,29 @@ Todos = Backbone.Collection.extend({
         );
     },
     /**
-    * used to set order property of new model to one more than last existing model in collection
-    */
+     * used to set order property of new model to one more than last existing model in collection
+     */
     newOrder: function() {
         if (this.last()) {
             return this.last().get('order') + 1;
-        }
-        else {
+        } else {
             return 0;
         }
     },
 
-    search : function(letters) {
-        if(letters == "") return this;
-        var pattern = new RegExp(letters,"gi");
+    search: function(letters) {
+        if (letters == "") return this;
+        var pattern = new RegExp(letters, "gi");
         return new Todos(
             this.filter(function(data) {
                 return pattern.test(data.get("content"));
             })
-            );
+        );
     },
 
     /**
-      * Returns todos with a specific tag
-      */
+     * Returns todos with a specific tag
+     */
     filterTag: function(tag) {
         console.log(tag);
         return new Todos(
@@ -58,7 +57,7 @@ Todos = Backbone.Collection.extend({
                 })
                 return _.contains(tagArr, tag);
             })
-            );
+        );
     }
 });
 module.exports = new Todos([]);

@@ -28,13 +28,14 @@ def make_tags(tagsArray):
     populated with tag objects from database.
     If no tag exists already with specified name, a new one is created
     """
+    if len(tagsArray) == 0:
+        return tagsArray
     tagsModels = []
-    if len(tagsArray) > 0:
-        for i in tagsArray:
-            tag = models.Tag.query.filter_by(name=i).first()
-            if tag == None:
-                tag = models.Tag(name=i)
-            tagsModels.append(tag)
+    for i in tagsArray:
+        tag = models.Tag.query.filter_by(name=i).first()
+        if tag == None:
+            tag = models.Tag(name=i)
+        tagsModels.append(tag)
     return tagsModels
 
 
@@ -72,7 +73,7 @@ def delete_todo(todo_id):
     return jsonify({'result': 200})
 
 @app.route("/todos/<int:todo_id>", methods=['POST', 'PUT'])
-def show_todo(todo_id):
+def edit_todo(todo_id):
     """Update an existing todos attributes"""
     if request.method == 'PUT' or 'POST':
         dbTodo = models.Todo.query.get(todo_id)

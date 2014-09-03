@@ -17,17 +17,18 @@ module.exports = Backbone.View.extend({
 
     initialize: function() {
         //fetch existing todos from local storage
-        Todos.fetch({reset: true});
         //if no todo list view exists yet, create view for all todos
         if (!this.currentView) {
             this.currentView = new TodosView({collection: Todos});
         }
         this.render();
-
+        this.listenTo(Todos, 'request', this.yourCallback); //start fetching
+        this.listenTo(Todos, 'sync', this.yourCallback); //finish fetching
         this.listenTo(Backbone.eventBus, 'filterAll', this.filterAll);
         this.listenTo(Backbone.eventBus, 'filterDone', this.filterDone);
         this.listenTo(Backbone.eventBus, 'filterNotDone', this.filterNotDone);
         this.listenTo(Backbone.eventBus, 'filterTag', this.filterTag);
+        Todos.fetch({reset: true});
 
     },
 
@@ -102,6 +103,10 @@ module.exports = Backbone.View.extend({
 
             }
         });
+    },
+
+    yourCallback: function() {
+
     }
 
 

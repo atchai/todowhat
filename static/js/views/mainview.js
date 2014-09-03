@@ -35,6 +35,7 @@ module.exports = Backbone.View.extend({
         //renders the navigation links on left side (large screens)
         Todos.fetch();
         this.$('#navlinks').html(new NavView().render().el);
+        
     },
 
     filterAll: function() {
