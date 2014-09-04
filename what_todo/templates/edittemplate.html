@@ -16,13 +16,19 @@
   <strong>Warning!</strong> Todo field cannot be blank.
 </div>
         <input class="form-control" type="text" id="editfield" value="<%= todoItem %>">
-        <input class="form-control hide" type="text" id="edittagfield" placeholder="New tag here">
+        <input class="form-control" type="text" id="descriptionfield"
+          <%if (description == null || description == '') {%>
+            placeholder="Put a description here"
+            <% } else { %>
+            value="<%=description%>"
+            <% } %>>
+        <input class="form-control hide" type="text" id="edittagfield" placeholder="New tags here, seperate with commas">
         <button class="glyphicon glyphicon-plus edit-add-tag btn" data-toggle="tooltip" data-placement="bottom" title="Toggle add new tags mode"></button>
         <button class="glyphicon glyphicon-minus edit-remove-tag btn" data-toggle="tooltip" data-placement="bottom" title="Toggle remove tags mode"></button>
 
         <% tags.forEach(function(tag){ %>
     <span class="label label-info edit-tag"><%= tag %></span>
-  <% }) %> 
+  <% }) %>
         <button type="button" class="btn btn-primary pull-right save">Save changes</button>
       </div>
     </div>

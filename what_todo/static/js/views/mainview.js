@@ -35,7 +35,7 @@ module.exports = Backbone.View.extend({
         //renders the navigation links on left side (large screens)
         Todos.fetch();
         this.$('#navlinks').html(new NavView().render().el);
-        
+
     },
 
     filterAll: function() {
@@ -54,7 +54,7 @@ module.exports = Backbone.View.extend({
         }
     },
 
-    doSearch: function() {
+    doSearch: _.debounce(function() {
         // var thing = this.$('.search-field').val();
         console.log(this.$('.search-field').val());
         var thing = Todos.search(this.$('.search-field').val());
@@ -62,5 +62,5 @@ module.exports = Backbone.View.extend({
         var searchedView = new TodosView({collection: thing});
         this.$('#todoul').html(searchedView.render().el);
         // Backbone.eventBus, 'filterAll'
-    }
+    }, 1000)
 });

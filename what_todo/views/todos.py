@@ -54,6 +54,8 @@ class TodosView(FlaskView):
             db_todo.order = request_data['order']
         if "done" in request_data:
             db_todo.done = request_data['done']
+        if "description" in request_data:
+            db_todo.description = request_data['description']
         if "tags" in request_data:
             # Remove all current tags on the todo
             for i in db_todo.tags.all():

@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js":[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -3732,7 +3732,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
 
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js"}],"/home/andrew/dev/flask-what-todo/node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.js":[function(require,module,exports){
 (function (global){
 
@@ -3929,7 +3929,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
 })(jQuery);
 }).call(global, module, undefined, undefined);
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js"}],"/home/andrew/dev/flask-what-todo/node_modules/jquery-ui/jquery-ui.js":[function(require,module,exports){
 (function (global){
 
@@ -18943,7 +18943,7 @@ $.widget( "ui.tooltip", {
 
 }).call(global, module, undefined, undefined);
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js"}],"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js":[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v1.11.1
@@ -30599,7 +30599,7 @@ return jQuery;
   }
 }).call(this);
 
-},{}],"/home/andrew/dev/flask-what-todo/static/js/app.js":[function(require,module,exports){
+},{}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/app.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -30610,7 +30610,7 @@ $(document).ready(function() {
     new appRouter();
     Backbone.history.start();
 });
-},{"./routers/router":"/home/andrew/dev/flask-what-todo/static/js/routers/router.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/static/js/collections/tags.js":[function(require,module,exports){
+},{"./routers/router":"/home/andrew/dev/flask-what-todo/what_todo/static/js/routers/router.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/tags.js":[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Tag = require('../models/tag');
@@ -30674,7 +30674,7 @@ var Tags = Backbone.Collection.extend({
 
 //calling this module from others returns a new tag model
 module.exports = new Tags([]);
-},{"../models/tag":"/home/andrew/dev/flask-what-todo/static/js/models/tag.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/static/js/collections/todos.js":[function(require,module,exports){
+},{"../models/tag":"/home/andrew/dev/flask-what-todo/what_todo/static/js/models/tag.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -30739,7 +30739,7 @@ Todos = Backbone.Collection.extend({
 });
 module.exports = new Todos([]);
 
-},{"../models/todo":"/home/andrew/dev/flask-what-todo/static/js/models/todo.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/static/js/jquery.js":[function(require,module,exports){
+},{"../models/todo":"/home/andrew/dev/flask-what-todo/what_todo/static/js/models/todo.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/jquery.js":[function(require,module,exports){
 (function (global){
 var $ = global.jQuery = global.$ = require('jquery')
 
@@ -30748,8 +30748,8 @@ require('jquery-ui-touch-punch')
 require('bootstrap')
 
 module.exports = $;
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"bootstrap":"/home/andrew/dev/flask-what-todo/node_modules/bootstrap/dist/js/bootstrap.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","jquery-ui":"/home/andrew/dev/flask-what-todo/node_modules/jquery-ui/jquery-ui.js","jquery-ui-touch-punch":"/home/andrew/dev/flask-what-todo/node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.js"}],"/home/andrew/dev/flask-what-todo/static/js/models/tag.js":[function(require,module,exports){
+}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"bootstrap":"/home/andrew/dev/flask-what-todo/node_modules/bootstrap/dist/js/bootstrap.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","jquery-ui":"/home/andrew/dev/flask-what-todo/node_modules/jquery-ui/jquery-ui.js","jquery-ui-touch-punch":"/home/andrew/dev/flask-what-todo/node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/models/tag.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -30765,7 +30765,7 @@ module.exports = Backbone.Model.extend({
     	this.save({'count': this.get('count')-1});
     }
 })
-},{"backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/static/js/models/todo.js":[function(require,module,exports){
+},{"backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/models/todo.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -30782,10 +30782,9 @@ module.exports = Backbone.Model.extend({
     /**
     * validates the content from input field
     */
-    validate: function (attrs) {
+    validate: function(attrs) {
         //no empty strings allowed
         if(attrs.content.trim()=='') {
-            // this.trigger(‘invalid:a’, 'Form field a is messed up!', this)
             return 'Todo field cannot be blank';
         }
         //no todo over 255 chars allowed
@@ -30794,7 +30793,7 @@ module.exports = Backbone.Model.extend({
         }
     }
 })
-},{"backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/static/js/routers/router.js":[function(require,module,exports){
+},{"backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/routers/router.js":[function(require,module,exports){
 var Backbone = require('backbone');
 var FilterDoneView = require('../views/filterdoneview');
 var FilterTodoView = require('../views/filtertodoview');
@@ -30849,7 +30848,7 @@ module.exports = Backbone.Router.extend({
   }
 });
 
-},{"../collections/todos":"/home/andrew/dev/flask-what-todo/static/js/collections/todos.js","../views/filterTagView":"/home/andrew/dev/flask-what-todo/static/js/views/filterTagView.js","../views/filterdoneview":"/home/andrew/dev/flask-what-todo/static/js/views/filterdoneview.js","../views/filtertodoview":"/home/andrew/dev/flask-what-todo/static/js/views/filtertodoview.js","../views/mainview":"/home/andrew/dev/flask-what-todo/static/js/views/mainview.js","../views/todolistview":"/home/andrew/dev/flask-what-todo/static/js/views/todolistview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js"}],"/home/andrew/dev/flask-what-todo/static/js/views/editview.js":[function(require,module,exports){
+},{"../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","../views/filterTagView":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/filterTagView.js","../views/filterdoneview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/filterdoneview.js","../views/filtertodoview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/filtertodoview.js","../views/mainview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/mainview.js","../views/todolistview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/todolistview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/editview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -30876,13 +30875,15 @@ module.exports = Backbone.View.extend({
         this.$el.html(template({
             modalId: 'modal' + this.model.cid,
             todoItem: this.model.get('content'),
-            tags: this.model.getTags()
+            tags: this.model.getTags(),
+            description: this.model.get('description')
         }));
         return this;
     },
 
     saveChanges: function() {
         var newContent = this.$('#editfield').val();
+        var description = this.$('#descriptionfield').val();
         var newTags = this.$('#edittagfield').val();
         var oldTags = this.model.getTags();
         //clean up string of new tags into usable array and concatenate with the old tags
@@ -30898,7 +30899,8 @@ module.exports = Backbone.View.extend({
 	        this.model.save(
 	    		{
 	            	content: newContent,
-	            	tags: tagsContent
+	            	tags: tagsContent,
+                    description: description
 	   			},
 	   			{
 	   				wait: true,
@@ -30927,7 +30929,7 @@ module.exports = Backbone.View.extend({
 		console.log(this.tagsToRemoveArr);
 		e.currentTarget.remove();
 	},
-	
+
 	liveUpdateTodo: function() {
 		var todo = this.$('#editfield').val();
 		this.$el.closest('.list-group-item').find('span:eq(1)').html(todo);
@@ -30935,7 +30937,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"../../../templates/edittemplate.html":"/home/andrew/dev/flask-what-todo/templates/edittemplate.html","../collections/tags":"/home/andrew/dev/flask-what-todo/static/js/collections/tags.js","../collections/todos":"/home/andrew/dev/flask-what-todo/static/js/collections/todos.js","./mobilenavview":"/home/andrew/dev/flask-what-todo/static/js/views/mobilenavview.js","./navview":"/home/andrew/dev/flask-what-todo/static/js/views/navview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/static/js/views/filterTagView.js":[function(require,module,exports){
+},{"../../../templates/edittemplate.html":"/home/andrew/dev/flask-what-todo/what_todo/templates/edittemplate.html","../collections/tags":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/tags.js","../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","./mobilenavview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/mobilenavview.js","./navview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/navview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/filterTagView.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -30983,7 +30985,7 @@ module.exports = Backbone.View.extend({
         Backbone.history.navigate('', true);
     }
 });
-},{"../collections/todos":"/home/andrew/dev/flask-what-todo/static/js/collections/todos.js","./todoview":"/home/andrew/dev/flask-what-todo/static/js/views/todoview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/static/js/views/filterdoneview.js":[function(require,module,exports){
+},{"../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","./todoview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/todoview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/filterdoneview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -31027,7 +31029,7 @@ module.exports = Backbone.View.extend({
     	Backbone.history.navigate('', true);
     }
 })
-},{"../collections/todos":"/home/andrew/dev/flask-what-todo/static/js/collections/todos.js","./todoview":"/home/andrew/dev/flask-what-todo/static/js/views/todoview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/static/js/views/filtertodoview.js":[function(require,module,exports){
+},{"../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","./todoview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/todoview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/filtertodoview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -31071,7 +31073,7 @@ module.exports = Backbone.View.extend({
         Backbone.history.navigate('', true);
     }
 })
-},{"../collections/todos":"/home/andrew/dev/flask-what-todo/static/js/collections/todos.js","./todoview":"/home/andrew/dev/flask-what-todo/static/js/views/todoview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/static/js/views/formview.js":[function(require,module,exports){
+},{"../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","./todoview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/todoview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/formview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -31142,7 +31144,7 @@ module.exports = Backbone.View.extend({
 
     }
 });
-},{"../../../templates/formtemplate.html":"/home/andrew/dev/flask-what-todo/templates/formtemplate.html","../collections/tags":"/home/andrew/dev/flask-what-todo/static/js/collections/tags.js","../collections/todos":"/home/andrew/dev/flask-what-todo/static/js/collections/todos.js","./tagsview":"/home/andrew/dev/flask-what-todo/static/js/views/tagsview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/static/js/views/mainview.js":[function(require,module,exports){
+},{"../../../templates/formtemplate.html":"/home/andrew/dev/flask-what-todo/what_todo/templates/formtemplate.html","../collections/tags":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/tags.js","../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","./tagsview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/tagsview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/mainview.js":[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Tags = require('../collections/tags')
@@ -31180,7 +31182,7 @@ module.exports = Backbone.View.extend({
         //renders the navigation links on left side (large screens)
         Todos.fetch();
         this.$('#navlinks').html(new NavView().render().el);
-        
+
     },
 
     filterAll: function() {
@@ -31199,7 +31201,7 @@ module.exports = Backbone.View.extend({
         }
     },
 
-    doSearch: function() {
+    doSearch: _.debounce(function() {
         // var thing = this.$('.search-field').val();
         console.log(this.$('.search-field').val());
         var thing = Todos.search(this.$('.search-field').val());
@@ -31207,9 +31209,9 @@ module.exports = Backbone.View.extend({
         var searchedView = new TodosView({collection: thing});
         this.$('#todoul').html(searchedView.render().el);
         // Backbone.eventBus, 'filterAll'
-    }
+    }, 1000)
 });
-},{"../collections/tags":"/home/andrew/dev/flask-what-todo/static/js/collections/tags.js","../collections/todos":"/home/andrew/dev/flask-what-todo/static/js/collections/todos.js","../jquery":"/home/andrew/dev/flask-what-todo/static/js/jquery.js","./formview":"/home/andrew/dev/flask-what-todo/static/js/views/formview.js","./navbarview":"/home/andrew/dev/flask-what-todo/static/js/views/navbarview.js","./navview":"/home/andrew/dev/flask-what-todo/static/js/views/navview.js","./tagsview":"/home/andrew/dev/flask-what-todo/static/js/views/tagsview.js","./todosview":"/home/andrew/dev/flask-what-todo/static/js/views/todosview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/static/js/views/mobilenavview.js":[function(require,module,exports){
+},{"../collections/tags":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/tags.js","../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","../jquery":"/home/andrew/dev/flask-what-todo/what_todo/static/js/jquery.js","./formview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/formview.js","./navbarview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/navbarview.js","./navview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/navview.js","./tagsview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/tagsview.js","./todosview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/todosview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/mobilenavview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -31255,7 +31257,7 @@ module.exports = Backbone.View.extend({
         return this;
     }
 });
-},{"../../../templates/mobilenavtemplate.html":"/home/andrew/dev/flask-what-todo/templates/mobilenavtemplate.html","../collections/todos":"/home/andrew/dev/flask-what-todo/static/js/collections/todos.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/static/js/views/navbarview.js":[function(require,module,exports){
+},{"../../../templates/mobilenavtemplate.html":"/home/andrew/dev/flask-what-todo/what_todo/templates/mobilenavtemplate.html","../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/navbarview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -31291,7 +31293,7 @@ module.exports = Backbone.View.extend({
         this.$('.taglist').html(new TagsView({collection: Tags}).render().el);
 	}
 });
-},{"../../../templates/navbartemplate.html":"/home/andrew/dev/flask-what-todo/templates/navbartemplate.html","../collections/tags":"/home/andrew/dev/flask-what-todo/static/js/collections/tags.js","../collections/todos":"/home/andrew/dev/flask-what-todo/static/js/collections/todos.js","./mobilenavview":"/home/andrew/dev/flask-what-todo/static/js/views/mobilenavview.js","./tagsview":"/home/andrew/dev/flask-what-todo/static/js/views/tagsview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/static/js/views/navview.js":[function(require,module,exports){
+},{"../../../templates/navbartemplate.html":"/home/andrew/dev/flask-what-todo/what_todo/templates/navbartemplate.html","../collections/tags":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/tags.js","../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","./mobilenavview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/mobilenavview.js","./tagsview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/tagsview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/navview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -31337,7 +31339,7 @@ module.exports = Backbone.View.extend({
         return this;
     }
 });
-},{"../../../templates/navtemplate.html":"/home/andrew/dev/flask-what-todo/templates/navtemplate.html","../collections/todos":"/home/andrew/dev/flask-what-todo/static/js/collections/todos.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/static/js/views/tagsview.js":[function(require,module,exports){
+},{"../../../templates/navtemplate.html":"/home/andrew/dev/flask-what-todo/what_todo/templates/navtemplate.html","../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/tagsview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -31398,7 +31400,7 @@ module.exports = Backbone.View.extend({
         }
     }
 });
-},{"../../../templates/tagsTemplate.html":"/home/andrew/dev/flask-what-todo/templates/tagsTemplate.html","../collections/tags":"/home/andrew/dev/flask-what-todo/static/js/collections/tags.js","../collections/todos":"/home/andrew/dev/flask-what-todo/static/js/collections/todos.js","./navview":"/home/andrew/dev/flask-what-todo/static/js/views/navview.js","./tagview":"/home/andrew/dev/flask-what-todo/static/js/views/tagview.js","./todoview":"/home/andrew/dev/flask-what-todo/static/js/views/todoview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/static/js/views/tagview.js":[function(require,module,exports){
+},{"../../../templates/tagsTemplate.html":"/home/andrew/dev/flask-what-todo/what_todo/templates/tagsTemplate.html","../collections/tags":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/tags.js","../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","./navview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/navview.js","./tagview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/tagview.js","./todoview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/todoview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/tagview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -31433,7 +31435,7 @@ module.exports = Backbone.View.extend({
         this.$el.addClass('active');
     }
 });
-},{"../../../templates/tagtemplate.html":"/home/andrew/dev/flask-what-todo/templates/tagtemplate.html","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/static/js/views/todolistview.js":[function(require,module,exports){
+},{"../../../templates/tagtemplate.html":"/home/andrew/dev/flask-what-todo/what_todo/templates/tagtemplate.html","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/todolistview.js":[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
@@ -31547,7 +31549,7 @@ module.exports = Backbone.View.extend({
 
 
 });
-},{"../collections/todos":"/home/andrew/dev/flask-what-todo/static/js/collections/todos.js","../jquery":"/home/andrew/dev/flask-what-todo/static/js/jquery.js","./filterTagView":"/home/andrew/dev/flask-what-todo/static/js/views/filterTagView.js","./filterdoneview":"/home/andrew/dev/flask-what-todo/static/js/views/filterdoneview.js","./filtertodoview":"/home/andrew/dev/flask-what-todo/static/js/views/filtertodoview.js","./todosview":"/home/andrew/dev/flask-what-todo/static/js/views/todosview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/static/js/views/todosview.js":[function(require,module,exports){
+},{"../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","../jquery":"/home/andrew/dev/flask-what-todo/what_todo/static/js/jquery.js","./filterTagView":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/filterTagView.js","./filterdoneview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/filterdoneview.js","./filtertodoview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/filtertodoview.js","./todosview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/todosview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/todosview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -31586,7 +31588,7 @@ module.exports = Backbone.View.extend({
     }
 
 })
-},{"./todoview":"/home/andrew/dev/flask-what-todo/static/js/views/todoview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/static/js/views/todoview.js":[function(require,module,exports){
+},{"./todoview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/todoview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/todoview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -31650,7 +31652,7 @@ module.exports = Backbone.View.extend({
     
 });
 
-},{"../../../templates/todotemplate.html":"/home/andrew/dev/flask-what-todo/templates/todotemplate.html","../collections/tags":"/home/andrew/dev/flask-what-todo/static/js/collections/tags.js","./editview":"/home/andrew/dev/flask-what-todo/static/js/views/editview.js","./mobilenavview":"/home/andrew/dev/flask-what-todo/static/js/views/mobilenavview.js","./navview":"/home/andrew/dev/flask-what-todo/static/js/views/navview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/templates/edittemplate.html":[function(require,module,exports){
+},{"../../../templates/todotemplate.html":"/home/andrew/dev/flask-what-todo/what_todo/templates/todotemplate.html","../collections/tags":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/tags.js","./editview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/editview.js","./mobilenavview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/mobilenavview.js","./navview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/navview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/templates/edittemplate.html":[function(require,module,exports){
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
@@ -31660,18 +31662,26 @@ __p+='<!-- Button trigger modal -->\n<button class="btn btn-primary btn-sm glyph
 ((__t=( modalId ))==null?'':__t)+
 '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">\n  <div class="modal-dialog">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n        <h4 class="modal-title" id="myModalLabel">Edit todo content:</h4>\n      </div>\n      <div class="modal-body">\n      <div class="alert alert-danger alert-dismissible hide" role="alert">\n  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n  <strong>Warning!</strong> Todo field cannot be blank.\n</div>\n        <input class="form-control" type="text" id="editfield" value="'+
 ((__t=( todoItem ))==null?'':__t)+
-'">\n        <input class="form-control hide" type="text" id="edittagfield" placeholder="New tag here">\n        <button class="glyphicon glyphicon-plus edit-add-tag btn" data-toggle="tooltip" data-placement="bottom" title="Toggle add new tags mode"></button>\n        <button class="glyphicon glyphicon-minus edit-remove-tag btn" data-toggle="tooltip" data-placement="bottom" title="Toggle remove tags mode"></button>\n\n        ';
+'">\n        <input class="form-control" type="text" id="descriptionfield"\n          ';
+if (description == null || description == '') {
+__p+='\n            placeholder="Put a description here"\n            ';
+ } else { 
+__p+='\n            value="'+
+((__t=(description))==null?'':__t)+
+'"\n            ';
+ } 
+__p+='>\n        <input class="form-control hide" type="text" id="edittagfield" placeholder="New tags here, seperate with commas">\n        <button class="glyphicon glyphicon-plus edit-add-tag btn" data-toggle="tooltip" data-placement="bottom" title="Toggle add new tags mode"></button>\n        <button class="glyphicon glyphicon-minus edit-remove-tag btn" data-toggle="tooltip" data-placement="bottom" title="Toggle remove tags mode"></button>\n\n        ';
  tags.forEach(function(tag){ 
 __p+='\n    <span class="label label-info edit-tag">'+
 ((__t=( tag ))==null?'':__t)+
 '</span>\n  ';
  }) 
-__p+=' \n        <button type="button" class="btn btn-primary pull-right save">Save changes</button>\n      </div>\n    </div>\n  </div>\n</div>\n\n  <script type="text/javascript">\n  $(function () {\n        $(".glyphicon").tooltip({container: \'body\'});\n    });\n  </script>';
+__p+='\n        <button type="button" class="btn btn-primary pull-right save">Save changes</button>\n      </div>\n    </div>\n  </div>\n</div>\n\n  <script type="text/javascript">\n  $(function () {\n        $(".glyphicon").tooltip({container: \'body\'});\n    });\n  </script>';
 }
 return __p;
 };
 
-},{}],"/home/andrew/dev/flask-what-todo/templates/formtemplate.html":[function(require,module,exports){
+},{}],"/home/andrew/dev/flask-what-todo/what_todo/templates/formtemplate.html":[function(require,module,exports){
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
@@ -31680,7 +31690,7 @@ __p+='<div class="col-xs-12 col-sm-12 col-md-10 row add-todo-fields">\n    <div 
 return __p;
 };
 
-},{}],"/home/andrew/dev/flask-what-todo/templates/mobilenavtemplate.html":[function(require,module,exports){
+},{}],"/home/andrew/dev/flask-what-todo/what_todo/templates/mobilenavtemplate.html":[function(require,module,exports){
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
@@ -31707,16 +31717,16 @@ __p+='';
 return __p;
 };
 
-},{}],"/home/andrew/dev/flask-what-todo/templates/navbartemplate.html":[function(require,module,exports){
+},{}],"/home/andrew/dev/flask-what-todo/what_todo/templates/navbartemplate.html":[function(require,module,exports){
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='<nav class="navbar navbar-default navbar-fixed-top" role="navigation">\n      <div class="container">\n\n          <div class="navbar-header">\n              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu-items">\n                  <span class="sr-only">Toggle navigation</span>\n                  <span class="icon-bar"></span>\n                  <span class="icon-bar"></span>\n                  <span class="icon-bar"></span>\n              </button>\n              <a href="#" class="title">What todo</a>\n          </div>\n              <a href="/logout" class="logout pull-right">Logout</a>\n          <div class="collapse navbar-collapse" id="menu-items">\n              <ul class="nav navbar-nav">\n                  <li class="dropdown visible-sm visible-xs" id="mobilenavlinks">\n                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n                     FILTER STATUS\n                    </a>\n                    <ul class="dropdown-menu mobilelinks" role="menu">\n                    </ul>\n                  </li>\n\n                  <li class="dropdown visible-sm visible-xs">\n                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n                        TAGS<span class="glyphicon glyphicon-tags"></span> \n                      </a>\n                      <ul class="dropdown-menu taglist" role="menu">\n                      </ul>\n                  </li>\n              </ul>\n          </div>\n      </div>\n      \n\n  </nav>\n';
+__p+='<nav class="navbar navbar-default navbar-fixed-top" role="navigation">\n      <div class="container">\n\n          <div class="navbar-header">\n              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu-items">\n                  <span class="sr-only">Toggle navigation</span>\n                  <span class="icon-bar"></span>\n                  <span class="icon-bar"></span>\n                  <span class="icon-bar"></span>\n              </button>\n              <a href="#" class="title">What todo</a>\n          </div>\n              <a href="/logout" class="logout pull-right visible-md visible-lg">Logout</a>\n          <div class="collapse navbar-collapse" id="menu-items">\n              <ul class="nav navbar-nav">\n                  <li class="dropdown visible-sm visible-xs" id="mobilenavlinks">\n                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n                     FILTER STATUS\n                    </a>\n                    <ul class="dropdown-menu mobilelinks" role="menu">\n                    </ul>\n                  </li>\n\n                  <li class="dropdown visible-sm visible-xs">\n                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n                        TAGS<span class="glyphicon glyphicon-tags"></span>\n                      </a>\n                      <ul class="dropdown-menu taglist" role="menu">\n                      </ul>\n                  </li>\n\n                  <li class="dropdown visible-sm visible-xs">\n                      <a href="/logout">\n                        LOGOUT\n                      </a>\n                  </li>\n              </ul>\n          </div>\n      </div>\n\n\n  </nav>\n';
 }
 return __p;
 };
 
-},{}],"/home/andrew/dev/flask-what-todo/templates/navtemplate.html":[function(require,module,exports){
+},{}],"/home/andrew/dev/flask-what-todo/what_todo/templates/navtemplate.html":[function(require,module,exports){
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
@@ -31743,7 +31753,7 @@ __p+='\n\n</ul>';
 return __p;
 };
 
-},{}],"/home/andrew/dev/flask-what-todo/templates/tagsTemplate.html":[function(require,module,exports){
+},{}],"/home/andrew/dev/flask-what-todo/what_todo/templates/tagsTemplate.html":[function(require,module,exports){
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
@@ -31752,7 +31762,7 @@ __p+='<li class="list-group-item tags-head">Filter by tags</li>\n<li class="list
 return __p;
 };
 
-},{}],"/home/andrew/dev/flask-what-todo/templates/tagtemplate.html":[function(require,module,exports){
+},{}],"/home/andrew/dev/flask-what-todo/what_todo/templates/tagtemplate.html":[function(require,module,exports){
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
@@ -31767,7 +31777,7 @@ __p+='<a href="#tag/'+
 return __p;
 };
 
-},{}],"/home/andrew/dev/flask-what-todo/templates/todotemplate.html":[function(require,module,exports){
+},{}],"/home/andrew/dev/flask-what-todo/what_todo/templates/todotemplate.html":[function(require,module,exports){
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
@@ -31792,4 +31802,4 @@ __p+='     \n</div>\n';
 return __p;
 };
 
-},{}]},{},["/home/andrew/dev/flask-what-todo/static/js/app.js"]);
+},{}]},{},["/home/andrew/dev/flask-what-todo/what_todo/static/js/app.js"])

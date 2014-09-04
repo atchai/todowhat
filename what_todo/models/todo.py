@@ -19,6 +19,7 @@ class Todo(db.Model):
         lazy='dynamic'
     )
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    description = db.Column(db.String(255))
 
     def __repr__(self):
         return '<todo %r, Tags %r>' % (self.content, self.tags)
@@ -31,7 +32,8 @@ class Todo(db.Model):
             'done': self.done,
             'order': self.order,
             'user': self.get_username(),
-            'tags': self.serialize_tags()
+            'tags': self.serialize_tags(),
+            'description': self.description
         }
 
     def get_username(self):

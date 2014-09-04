@@ -24,13 +24,15 @@ module.exports = Backbone.View.extend({
         this.$el.html(template({
             modalId: 'modal' + this.model.cid,
             todoItem: this.model.get('content'),
-            tags: this.model.getTags()
+            tags: this.model.getTags(),
+            description: this.model.get('description')
         }));
         return this;
     },
 
     saveChanges: function() {
         var newContent = this.$('#editfield').val();
+        var description = this.$('#descriptionfield').val();
         var newTags = this.$('#edittagfield').val();
         var oldTags = this.model.getTags();
         //clean up string of new tags into usable array and concatenate with the old tags
@@ -46,7 +48,8 @@ module.exports = Backbone.View.extend({
 	        this.model.save(
 	    		{
 	            	content: newContent,
-	            	tags: tagsContent
+	            	tags: tagsContent,
+                    description: description
 	   			},
 	   			{
 	   				wait: true,
@@ -75,7 +78,7 @@ module.exports = Backbone.View.extend({
 		console.log(this.tagsToRemoveArr);
 		e.currentTarget.remove();
 	},
-	
+
 	liveUpdateTodo: function() {
 		var todo = this.$('#editfield').val();
 		this.$el.closest('.list-group-item').find('span:eq(1)').html(todo);

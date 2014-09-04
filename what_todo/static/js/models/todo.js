@@ -14,10 +14,9 @@ module.exports = Backbone.Model.extend({
     /**
     * validates the content from input field
     */
-    validate: function (attrs) {
+    validate: function(attrs) {
         //no empty strings allowed
         if(attrs.content.trim()=='') {
-            // this.trigger(‘invalid:a’, 'Form field a is messed up!', this)
             return 'Todo field cannot be blank';
         }
         //no todo over 255 chars allowed
