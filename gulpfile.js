@@ -8,35 +8,35 @@ var watchify = require('watchify');
 
 //default gulp task browserifies application js files in bundle and minifies js
 gulp.task('default', function() {
-  var bundleStream = browserify('./static/js/app.js').bundle()
+  var bundleStream = browserify('./what_todo/static/js/app.js').bundle()
   bundleStream
     .pipe(source('bundle.js'))
     .pipe(streamify(uglify()))
-    .pipe(gulp.dest('./static/'))
+    .pipe(gulp.dest('./what_todo/static/'))
 });
 
 //this task watches for changes application js files and compiles them
 gulp.task('watch', function(){
 	watch = true;
-  browserifySetup('./static/js/app.js', 'bundle.js', './static/');
+  browserifySetup('./what_todo/static/js/app.js', 'bundle.js', './what_todo/static/');
 });
 
 //this task watches for changes application js files and compiles jasmine test specs
 gulp.task('watch-compile-test', function(){
 	watch = true;
-  browserifySetup('./tests/specs.js', 'testFile.js', './tests/');
+  browserifySetup('./what_todo/static/tests/specs.js', 'testFile.js', './what_todo/static/tests/');
 });
 
 //this task just compiles jasmine test specs
 gulp.task('nowatch-compile-test', function(){
 	watch = false;
-  browserifySetup('./tests/specs.js', 'testFile.js', './tests/');
+  browserifySetup('./what_todo/static/tests/specs.js', 'testFile.js', './what_todo/static/tests/');
 });
 
 //this task runs tests with karma after test specs have been bundled and again if changed
 gulp.task('watch-test', ['watch-compile-test'], function (done) {
   karma.start({
-    configFile: __dirname + '/tests/my.conf.js',
+    configFile: __dirname + '/what_todo/static/tests/my.conf.js',
     action: 'watch'
   }, done);
 });
@@ -44,7 +44,7 @@ gulp.task('watch-test', ['watch-compile-test'], function (done) {
 //this task runs tests with karma after test specs have been bundled
 gulp.task('test', ['nowatch-compile-test'], function (done) {
   karma.start({
-    configFile: __dirname + '/tests/my.conf.js'
+    configFile: __dirname + '/what_todo/static/tests/my.conf.js'
   }, done);
 });
 
@@ -66,7 +66,7 @@ function browserifySetup(inputFile, outputFile, outputPath){
 	    buildFiles(b, outputFile, outputPath);
 	  });
   }
-  
+
   b.add(inputFile);
   buildFiles(b, outputFile, outputPath);
 }
