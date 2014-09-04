@@ -1,10 +1,11 @@
 from what_todo import db
 from werkzeug import check_password_hash
 
+
 class User(db.Model):
     __tablename__ = "users"
-    id = db.Column(db.Integer , primary_key=True)
-    username = db.Column(db.String(60), unique=True , index=True)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(60), unique=True, index=True)
     pwdhash = db.Column(db.String())
     todos = db.relationship('Todo', backref='user', lazy='dynamic')
 
