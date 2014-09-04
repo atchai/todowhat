@@ -350,5 +350,68 @@ li.ui-sortable-helper, li.ui-sortable-helper input, li.ui-sortable-helper button
     margin: 0;
 }
 .search {
-    margin: -80px 0 80px 0;
+    margin: -80px 0 60px 5px;
 }
+.search-field {
+    width: 103%;
+}
+
+.login-form {
+    margin: 0;
+    width: 30%;
+    margin:auto;
+}
+.login-form .form-group {
+    margin: 0;
+}
+.login {
+    text-align: center;
+
+}
+.login-form input {
+    width: 100%;
+    height: 35px;
+    text-align: center;
+    margin-bottom: 20px;
+    border: none;
+    border-bottom: solid 2px #c9c9c9;
+    transition: border 0.3s;
+}
+.login-form input:focus {
+    border: none;
+    outline: none;
+    border-bottom: solid 2px #969696;
+}
+.login-form .alert {
+    height: 20px;
+    padding: 5px 0 25px 0;
+}
+.controls {
+    padding: 0px 30px 0 30px;
+}
+.controls .btn {
+    height: 150%;
+    width: 35%;
+}
+.controls .btn-success {
+    background: #A9DC4C;
+    color: #628128;
+}
+.controls .btn-primary {
+    background: #668CFF;
+    color: #e1f2fa;
+}
+h1 {
+    font-weight: 900;
+}
+
+.logout {
+    margin-top: 25px;
+color: white;
+font-weight: 700;
+}
+.logout:hover {
+    color: white;
+    text-decoration: none;
+}
+

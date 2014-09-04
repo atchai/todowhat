@@ -1,5 +1,7 @@
 #!flask/bin/python
-import app
+from what_todo import create_app
+
+app = create_app()
 
 if __name__ == "__main__":
-	app.app.run( debug = True )
+	app.run( debug = True )
