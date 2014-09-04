@@ -9,6 +9,6 @@ class LogoutView(FlaskView):
     def index(self):
         logout_user()
         flash('Logged out successfully', 'success')
-        return redirect(url_for('main.MainView:index')) 
+        return redirect(url_for('main.MainView:index'))
 
 LogoutView.register(logout)

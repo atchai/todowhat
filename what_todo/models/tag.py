@@ -10,8 +10,8 @@ class Tag(db.Model):
     def json_view (self):
         """Return this models attributes in json format"""
         return {
-            'id': self.id, 
-            'name': self.name, 
+            'id': self.id,
+            'name': self.name,
             'count': self.todos.count(),
             'todos': self.serialize_todos()
         }

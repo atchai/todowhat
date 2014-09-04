@@ -6,7 +6,7 @@ from werkzeug import generate_password_hash
 from flask.ext.login import LoginManager, login_user , logout_user , current_user , login_required
 
 # Create database and loginmanager object
-db = SQLAlchemy()    
+db = SQLAlchemy()
 login_manager = LoginManager()
 
 # App factory

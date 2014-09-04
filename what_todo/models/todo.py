@@ -11,7 +11,7 @@ class Todo(db.Model):
     content = db.Column(db.String(255))
     done = db.Column(db.Boolean, default = False)
     order = db.Column(db.Integer, default = 0)
-    tags = db.relationship('Tag', 
+    tags = db.relationship('Tag',
             secondary=todo_tags,
             backref=db.backref('todos', lazy='dynamic'),
             lazy='dynamic')
@@ -23,7 +23,7 @@ class Todo(db.Model):
     def json_view (self):
         """Return this models attributes in json format"""
         return {
-            'id': self.id, 
+            'id': self.id,
             'content': self.content,
             'done': self.done,
             'order': self.order,

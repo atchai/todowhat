@@ -11,7 +11,7 @@ class TodosView(FlaskView):
     def index(self):
         todosResponse = Todo.query.filter_by(user_id = g.user.id).all()
         return jsonify(todos=[i.json_view() for i in todosResponse])
-    
+
     def post(self):
         requestData = request.get_json()
         theTags = []
@@ -26,7 +26,7 @@ class TodosView(FlaskView):
     def get(self, id):
         """Get a single todo from the server"""
         id = int(id)
-        dbTodo = Todo.query.get(id)    
+        dbTodo = Todo.query.get(id)
         return jsonify( dbTodo.json_view() ), 200
 
     def put(self, id):
@@ -51,7 +51,7 @@ class TodosView(FlaskView):
                 dbTodo.tags = tagsModels
         db.session.commit()
         return jsonify({'result': 200})
-        
+
     def delete(self, id):
         id = int(id)
         """Delete a todo from the server"""

@@ -15,7 +15,7 @@ class TagsView(FlaskView):
                 if todo.user_id == g.user.id:
                     tagsResponse.append(tag)
         # tagsResponse = Tag.query.all()
-        return jsonify(tags=[i.json_view() for i in tagsResponse])    
+        return jsonify(tags=[i.json_view() for i in tagsResponse])
 
     def get(self, id):
         id = int(id)
