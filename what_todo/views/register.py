@@ -1,6 +1,8 @@
 from flask.ext.classy import FlaskView
 from flask import request, url_for, render_template, flash, redirect, session, Blueprint
+from what_todo import db
 from what_todo.models.user import User
+from werkzeug import generate_password_hash
 
 register = Blueprint('register', __name__)
 class RegisterView(FlaskView):
