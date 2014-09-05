@@ -211,6 +211,19 @@ Custom breakpoints
 	.handle {
 		font-size: 0.75em;
 	}
+    .list-group-item .editbutton, .list-group-item .remove {
+    opacity: 0.1;
+}
+.list-group-item:hover .editbutton, .list-group-item:hover .remove {
+    opacity: 1;
+}
+.input-group-addon {
+    left: 29px;
+position: relative;
+}
+.input-group .form-control:first-child {
+    width: 103%;
+}
 }
 
 @media (max-width: 991px) {
@@ -420,4 +433,6 @@ font-weight: 700;
     color: white;
     text-decoration: none;
 }
-
+.reset-search {
+    cursor: pointer;
+}

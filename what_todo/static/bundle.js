@@ -30801,6 +30801,7 @@ var FilterTagView = require('../views/filterTagView');
 var Todos = require('../collections/todos');
 var todoAppView = require('../views/mainview');
 var todoListView = require('../views/todolistview');
+var searchView = require('../views/searchview');
 
 /**
 * Manages which todos view is rendered
@@ -30821,6 +30822,7 @@ module.exports = Backbone.Router.extend({
       this.view = new todoAppView();
       //create a view for the todos collection
       new todoListView();
+      new searchView();
     }
     //call change method when anything happens with router
     this.listenTo(this, "all", this.change);
@@ -30848,7 +30850,7 @@ module.exports = Backbone.Router.extend({
   }
 });
 
-},{"../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","../views/filterTagView":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/filterTagView.js","../views/filterdoneview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/filterdoneview.js","../views/filtertodoview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/filtertodoview.js","../views/mainview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/mainview.js","../views/todolistview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/todolistview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/editview.js":[function(require,module,exports){
+},{"../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","../views/filterTagView":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/filterTagView.js","../views/filterdoneview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/filterdoneview.js","../views/filtertodoview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/filtertodoview.js","../views/mainview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/mainview.js","../views/searchview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/searchview.js","../views/todolistview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/todolistview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/editview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -31169,9 +31171,6 @@ module.exports = Backbone.View.extend({
         Tags.fetch();
         this.render();
     },
-    events: {
-        "keyup .search-field": "doSearch"
-    },
     render: function() {
         //renders the top navigation bar which contains tag list and navigation links on mobile screens
         this.$el.prepend(new NavBarView().render().el);
@@ -31199,17 +31198,7 @@ module.exports = Backbone.View.extend({
         if (event.keyCode == 13) {
             this.$(".submit").click();
         }
-    },
-
-    doSearch: _.debounce(function() {
-        // var thing = this.$('.search-field').val();
-        console.log(this.$('.search-field').val());
-        var thing = Todos.search(this.$('.search-field').val());
-        console.log(thing);
-        var searchedView = new TodosView({collection: thing});
-        this.$('#todoul').html(searchedView.render().el);
-        // Backbone.eventBus, 'filterAll'
-    }, 1000)
+    }
 });
 },{"../collections/tags":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/tags.js","../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","../jquery":"/home/andrew/dev/flask-what-todo/what_todo/static/js/jquery.js","./formview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/formview.js","./navbarview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/navbarview.js","./navview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/navview.js","./tagsview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/tagsview.js","./todosview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/todosview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/mobilenavview.js":[function(require,module,exports){
 var $ = require('jquery');
@@ -31339,7 +31328,47 @@ module.exports = Backbone.View.extend({
         return this;
     }
 });
-},{"../../../templates/navtemplate.html":"/home/andrew/dev/flask-what-todo/what_todo/templates/navtemplate.html","../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/tagsview.js":[function(require,module,exports){
+},{"../../../templates/navtemplate.html":"/home/andrew/dev/flask-what-todo/what_todo/templates/navtemplate.html","../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/searchview.js":[function(require,module,exports){
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
+var Tags = require('../collections/tags');
+var template = require('../../../templates/searchtemplate.html');
+var Todos = require('../collections/todos');
+var TodosView = require ('./todosview');
+
+
+module.exports = Backbone.View.extend({
+	el: '.search-todos',
+
+	events: {
+		"keyup .search-field": "findTodos",
+		"click .reset-search": "resetSearch"
+	},
+
+	initialize: function() {
+		this.render();
+	},
+
+	render: function() {
+		this.$el.prepend(template());
+        return this;
+	},
+
+	findTodos: _.debounce(function(e) {
+        var searchTerm = e.target.value;
+        var thing = Todos.search(searchTerm);
+        this.searchedView = new TodosView({collection: thing});
+        this.$('#todoul').html(this.searchedView.render().el);
+    }, 800),
+
+    resetSearch: function() {
+    	this.$('.search-field').val('');
+    	this.searchedView.remove();
+    	Backbone.eventBus.trigger('filterAll');
+    }
+})
+},{"../../../templates/searchtemplate.html":"/home/andrew/dev/flask-what-todo/what_todo/templates/searchtemplate.html","../collections/tags":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/tags.js","../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","./todosview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/todosview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/tagsview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -31753,6 +31782,15 @@ __p+='\n\n</ul>';
 return __p;
 };
 
+},{}],"/home/andrew/dev/flask-what-todo/what_todo/templates/searchtemplate.html":[function(require,module,exports){
+module.exports = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='<div class="form-group form-group-sm has-feedback col-md-10 search">\n\t<div class="input-group">\n        <input class="form-control search-field" placeholder="Search for a todo">\n        <span class="input-group-addon reset-search">\n          <span class="glyphicon glyphicon-remove"></span>\n        </span>\n\t</div>\n</div>\n';
+}
+return __p;
+};
+
 },{}],"/home/andrew/dev/flask-what-todo/what_todo/templates/tagsTemplate.html":[function(require,module,exports){
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -31791,13 +31829,13 @@ __p+=' checked ';
 } 
 __p+=' >\n\t<span class="todo-item">\n\t'+
 ((__t=( todoItem ))==null?'':__t)+
-'\n\t</span>\n\t<button class="btn btn-danger btn-xs glyphicon glyphicon-remove remove pull-right" href="#"></button>\n\t\t<!-- Button trigger modal -->\n\n\t\t<span class="edit"></span>\n\n\t';
+'\n\t</span>\n\t<button class="btn btn-danger btn-xs glyphicon glyphicon-trash remove pull-right" href="#"></button>\n\t\t<!-- Button trigger modal -->\n\n\t<span class="edit"></span>\n\n\t';
  tags.forEach(function(tag){ 
 __p+='\n\t\t<span class="label label-info">'+
 ((__t=( tag ))==null?'':__t)+
 '</span>\n\t';
  }) 
-__p+='     \n</div>\n';
+__p+='\n</div>\n';
 }
 return __p;
 };

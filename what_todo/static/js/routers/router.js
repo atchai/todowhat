@@ -5,6 +5,7 @@ var FilterTagView = require('../views/filterTagView');
 var Todos = require('../collections/todos');
 var todoAppView = require('../views/mainview');
 var todoListView = require('../views/todolistview');
+var searchView = require('../views/searchview');
 
 /**
 * Manages which todos view is rendered
@@ -25,6 +26,7 @@ module.exports = Backbone.Router.extend({
       this.view = new todoAppView();
       //create a view for the todos collection
       new todoListView();
+      new searchView();
     }
     //call change method when anything happens with router
     this.listenTo(this, "all", this.change);

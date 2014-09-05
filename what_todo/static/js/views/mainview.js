@@ -22,9 +22,6 @@ module.exports = Backbone.View.extend({
         Tags.fetch();
         this.render();
     },
-    events: {
-        "keyup .search-field": "doSearch"
-    },
     render: function() {
         //renders the top navigation bar which contains tag list and navigation links on mobile screens
         this.$el.prepend(new NavBarView().render().el);
@@ -52,15 +49,5 @@ module.exports = Backbone.View.extend({
         if (event.keyCode == 13) {
             this.$(".submit").click();
         }
-    },
-
-    doSearch: _.debounce(function() {
-        // var thing = this.$('.search-field').val();
-        console.log(this.$('.search-field').val());
-        var thing = Todos.search(this.$('.search-field').val());
-        console.log(thing);
-        var searchedView = new TodosView({collection: thing});
-        this.$('#todoul').html(searchedView.render().el);
-        // Backbone.eventBus, 'filterAll'
-    }, 1000)
+    }
 });
