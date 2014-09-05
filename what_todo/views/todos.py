@@ -58,6 +58,8 @@ class TodosView(FlaskView):
             db_todo.description = request_data['description']
         if "reminder" in request_data:
             db_todo.reminder = request_data['reminder']
+        if "test" in request_data:
+            db_todo.test = request_data['test']
         if "tags" in request_data:
             # Remove all current tags on the todo
             for i in db_todo.tags.all():

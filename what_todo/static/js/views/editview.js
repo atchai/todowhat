@@ -51,7 +51,7 @@ module.exports = Backbone.View.extend({
         tagsContent = _.uniq(tagsContent, false);
         //remove any tags which are to be removed from the todo
         tagsContent = _.difference(tagsContent, this.tagsToRemoveArr);
-
+        console.log('parseContent got done');
         // Go to second step of updating todo model
         this.parseReminder(newContent, tagsContent, description);
 
@@ -63,6 +63,7 @@ module.exports = Backbone.View.extend({
     * Then passes the todo content, tags, description and reminder time to saveChanges method
     */
     parseReminder: function(nC, tC, d) {
+        console.log('parseReminder starting');
         //If the model doesn't already have a time set for reminder
         if (this.model.get('reminder') == null) {
             // get hours and minutes from input
@@ -86,21 +87,23 @@ module.exports = Backbone.View.extend({
             reminderTime = this.model.get('reminder');
             this.$el.find('.modal').modal('hide');
         }
-        this.saveChanges(nC, tC, d, reminderTime);
+        var testfieldval = this.$('#testfield').val();
+        this.saveChanges(nC, tC, d, reminderTime, testfieldval);
 
     },
 
     /**
     * Sends PUT request to server with updated content
     */
-    saveChanges: function(newContent, tagsContent, description, reminderTime) {
+    saveChanges: function(newContent, tagsContent, description, reminderTime, tfv) {
 
 	        this.model.save(
 	    		{
 	            	content: newContent,
 	            	tags: tagsContent,
                     description: description,
-                    reminder: reminderTime
+                    reminder: reminderTime,
+                    test: tfv
 	   			},
 	   			{
 	   				wait: true,
