@@ -5,9 +5,11 @@ Todo app made with Backbone.js
 [Demo on heroku](http://atchai-whattodo.heroku.com)
 ## Installation
 ```
+sudo apt-get install npm python-pip python-dev
 python virtualenv.py flask
-sudo apt-get build-dep python-psycopg2
-flask/bin/pip install -r requirements.txt
+sudo pip install virtualenv
+virtualenv flask && source flask/bin/activate
+pip install -r requirements.txt
 sudo npm install
 gulp
 ./db_create.py
