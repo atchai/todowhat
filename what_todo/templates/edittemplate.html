@@ -15,6 +15,24 @@
   <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
   <strong>Warning!</strong> Todo field cannot be blank.
 </div>
+
+        <% if (reminder == null) { %>
+        <span>Remind me in: </span>
+          <input type="number" name="quantity" id="hours" class="time-input" min="0" max="24">
+          <span> hours and </span>
+          <input type="number" name="quantity" id="minutes" class="time-input" min="0" max="60">
+          <span>minutes</span>
+        <% } else { %>
+        <span>Reminder set for: <%
+        var date = new Date(reminder);
+        print(date.toString().slice(16,21)); %> </span>
+        <span class="glyphicon glyphicon-remove pull-right remove-reminder"></span>
+        <% } %>
+
+
+
+
+
         <input class="form-control" type="text" id="editfield" value="<%= todoItem %>">
         <input class="form-control" type="text" id="descriptionfield"
           <%if (description == null || description == '') {%>

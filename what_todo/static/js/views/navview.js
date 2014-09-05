@@ -25,7 +25,7 @@ module.exports = Backbone.View.extend({
                     href: '#',
                     bold: ('' == window.location.hash)
                 },
-                {   
+                {
                     name: 'todo',
                     href: '#todo',
                     disabled: (Todos.filterDone(false).length == 0),
@@ -37,7 +37,7 @@ module.exports = Backbone.View.extend({
                     disabled: (Todos.filterDone(true).length == 0),
                     bold: ('#done' == window.location.hash)
                 }
-                
+
             ]
         }));
         return this;

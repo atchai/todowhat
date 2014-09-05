@@ -20,6 +20,8 @@ class Todo(db.Model):
     )
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     description = db.Column(db.String(255))
+    deadline = db.Column(db.Integer)
+    reminder = db.Column(db.Integer)
 
     def __repr__(self):
         return '<todo %r, Tags %r>' % (self.content, self.tags)
@@ -33,7 +35,9 @@ class Todo(db.Model):
             'order': self.order,
             'user': self.get_username(),
             'tags': self.serialize_tags(),
-            'description': self.description
+            'description': self.description,
+            'deadline': self.deadline,
+            'reminder': self.reminder
         }
 
     def get_username(self):

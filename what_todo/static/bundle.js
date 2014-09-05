@@ -30867,7 +30867,8 @@ module.exports = Backbone.View.extend({
         "click .edit-add-tag": "showTagField",
         "click .edit-remove-tag": "removeTagsMode",
 		"click .remove-tag-mode": "removeTag",
-		"keyup #editfield": "liveUpdateTodo"
+		"keyup #editfield": "liveUpdateTodo",
+        "click .remove-reminder": "removeReminder"
 
     },
     initialize: function() {
@@ -30878,12 +30879,39 @@ module.exports = Backbone.View.extend({
             modalId: 'modal' + this.model.cid,
             todoItem: this.model.get('content'),
             tags: this.model.getTags(),
-            description: this.model.get('description')
+            description: this.model.get('description'),
+            reminder: this.model.get('reminder')
         }));
         return this;
     },
 
     saveChanges: function() {
+        //Set reminder
+        //If the model doesn't already have a time set for reminder
+        if (this.model.get('reminder') == null) {
+            // get hours and minutes from input
+            var hours = this.$('#hours').val();
+            var minutes = this.$('#minutes').val();
+            // if a reminder time was given
+            if (hours!=='' || minutes!=='') {
+                // calculate time in milliseconds for reminder
+                var deltaTime = (hours*3.6*Math.pow(10,6)) + (minutes*6*Math.pow(10,4));
+                var reminderTime = Date.now() + deltaTime;
+                // Check permissions for notifications has been given
+                if ("Notification" in window) {
+                    if (Notification.permission == "default") {
+                        Notification.requestPermission();
+                    }
+                } else {
+                    alert("Sorry! Your browser doesn't support notfication API");
+                }
+                $('.alert-reminder').toggleClass('hide');
+            }
+        } else {
+            reminderTime = this.model.get('reminder');
+        }
+
+        // Set todo contents
         var newContent = this.$('#editfield').val();
         var description = this.$('#descriptionfield').val();
         var newTags = this.$('#edittagfield').val();
@@ -30902,7 +30930,8 @@ module.exports = Backbone.View.extend({
 	    		{
 	            	content: newContent,
 	            	tags: tagsContent,
-                    description: description
+                    description: description,
+                    reminder: reminderTime
 	   			},
 	   			{
 	   				wait: true,
@@ -30936,7 +30965,13 @@ module.exports = Backbone.View.extend({
 		var todo = this.$('#editfield').val();
 		this.$el.closest('.list-group-item').find('span:eq(1)').html(todo);
 
-	}
+	},
+    removeReminder: function() {
+        this.model.save({
+            reminder: null
+        });
+        $('.modal-backdrop').remove();
+    }
 });
 
 },{"../../../templates/edittemplate.html":"/home/andrew/dev/flask-what-todo/what_todo/templates/edittemplate.html","../collections/tags":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/tags.js","../collections/todos":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/todos.js","./mobilenavview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/mobilenavview.js","./navview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/navview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/filterTagView.js":[function(require,module,exports){
@@ -31310,7 +31345,7 @@ module.exports = Backbone.View.extend({
                     href: '#',
                     bold: ('' == window.location.hash)
                 },
-                {   
+                {
                     name: 'todo',
                     href: '#todo',
                     disabled: (Todos.filterDone(false).length == 0),
@@ -31322,7 +31357,7 @@ module.exports = Backbone.View.extend({
                     disabled: (Todos.filterDone(true).length == 0),
                     bold: ('#done' == window.location.hash)
                 }
-                
+
             ]
         }));
         return this;
@@ -31631,6 +31666,9 @@ module.exports = Backbone.View.extend({
     initialize: function(){
         //changing done state of model will rerender the view of that todo, toggling appropriate styling
         this.listenTo(this.model, 'change', this.render);
+        this.listenTo(this.model, 'change:reminder', this.checkReminder);
+        this.listenTo(this.model, 'change:reminder', this.checkCancelReminder);
+        this.checkReminder();
     },
 
     tagName: 'li',
@@ -31675,10 +31713,44 @@ module.exports = Backbone.View.extend({
         this.model.save({'done': !done});
         Backbone.eventBus.trigger('statusChanged');
     },
-    doSomething: function() {
-        alert('hey');
+
+    checkReminder: function() {
+        var todo = this.model;
+        var reminder = todo.get('reminder');
+        if (reminder !== null) {
+        var notify = this.notifyUser;
+            var self = this;
+            this.myInterval = setInterval(function () {
+                var timeToReminder = (reminder - Date.now())*Math.pow(10,-3);
+                console.log(timeToReminder);
+                  if (Date.now() > reminder) {
+                      notify(todo.get('content'));
+                      clearInterval(self.myInterval);
+                      todo.save({
+                        reminder: null
+                      });
+                   }
+              }, 1000);
+        }
+    },
+
+    notifyUser: function(content) {
+        var notification = new Notification("Have you done this yet?", {
+            "body": content,
+            "icon": "http://i.imgur.com/iD3UXom.png"
+        });
+    },
+
+    checkCancelReminder: function() {
+        var reminder = this.model.get('reminder');
+        if (reminder==null) {
+            console.log('reminder is null');
+            clearInterval(this.myInterval);
+        }
+
     }
-    
+
+
 });
 
 },{"../../../templates/todotemplate.html":"/home/andrew/dev/flask-what-todo/what_todo/templates/todotemplate.html","../collections/tags":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/tags.js","./editview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/editview.js","./mobilenavview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/mobilenavview.js","./navview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/navview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/templates/edittemplate.html":[function(require,module,exports){
@@ -31689,7 +31761,17 @@ __p+='<!-- Button trigger modal -->\n<button class="btn btn-primary btn-sm glyph
 ((__t=( modalId ))==null?'':__t)+
 '">\n</button>\n\n<!-- Modal -->\n<div class="modal fade" id="'+
 ((__t=( modalId ))==null?'':__t)+
-'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">\n  <div class="modal-dialog">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n        <h4 class="modal-title" id="myModalLabel">Edit todo content:</h4>\n      </div>\n      <div class="modal-body">\n      <div class="alert alert-danger alert-dismissible hide" role="alert">\n  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n  <strong>Warning!</strong> Todo field cannot be blank.\n</div>\n        <input class="form-control" type="text" id="editfield" value="'+
+'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">\n  <div class="modal-dialog">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n        <h4 class="modal-title" id="myModalLabel">Edit todo content:</h4>\n      </div>\n      <div class="modal-body">\n      <div class="alert alert-danger alert-dismissible hide" role="alert">\n  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n  <strong>Warning!</strong> Todo field cannot be blank.\n</div>\n\n        ';
+ if (reminder == null) { 
+__p+='\n        <span>Remind me in: </span>\n          <input type="number" name="quantity" id="hours" class="time-input" min="0" max="24">\n          <span> hours and </span>\n          <input type="number" name="quantity" id="minutes" class="time-input" min="0" max="60">\n          <span>minutes</span>\n        ';
+ } else { 
+__p+='\n        <span>Reminder set for: ';
+
+        var date = new Date(reminder);
+        print(date.toString().slice(16,21)); 
+__p+=' </span>\n        <span class="glyphicon glyphicon-remove pull-right remove-reminder"></span>\n        ';
+ } 
+__p+='\n\n\n\n\n\n        <input class="form-control" type="text" id="editfield" value="'+
 ((__t=( todoItem ))==null?'':__t)+
 '">\n        <input class="form-control" type="text" id="descriptionfield"\n          ';
 if (description == null || description == '') {
