@@ -15,7 +15,7 @@ module.exports = Backbone.View.extend({
         // this.listenTo(this.collection, 'add', this.render);
         this.listenTo(this.collection, 'remove', this.render);
     },
-    
+
     /**
      * renders every todo in the todos collection
      */

@@ -436,3 +436,6 @@ font-weight: 700;
 .reset-search {
     cursor: pointer;
 }
+.time-input {
+    height: 32px;
+}

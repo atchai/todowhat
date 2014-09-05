@@ -10,7 +10,7 @@ var Todos = require('../collections/todos');
 module.exports = Backbone.View.extend({
     tagName: 'span',
     events: {
-        "click .save": "saveChanges",
+        "click .save": "parseContent",
         "click .edit-add-tag": "showTagField",
         "click .edit-remove-tag": "removeTagsMode",
 		"click .remove-tag-mode": "removeTag",
@@ -18,7 +18,9 @@ module.exports = Backbone.View.extend({
         "click .remove-reminder": "removeReminder"
 
     },
+
     initialize: function() {
+        //Create empty array to contain any tags that are to be removed
     	this.tagsToRemoveArr = [];
     },
     render: function() {
@@ -32,33 +34,13 @@ module.exports = Backbone.View.extend({
         return this;
     },
 
-    saveChanges: function() {
-        //Set reminder
-        //If the model doesn't already have a time set for reminder
-        if (this.model.get('reminder') == null) {
-            // get hours and minutes from input
-            var hours = this.$('#hours').val();
-            var minutes = this.$('#minutes').val();
-            // if a reminder time was given
-            if (hours!=='' || minutes!=='') {
-                // calculate time in milliseconds for reminder
-                var deltaTime = (hours*3.6*Math.pow(10,6)) + (minutes*6*Math.pow(10,4));
-                var reminderTime = Date.now() + deltaTime;
-                // Check permissions for notifications has been given
-                if ("Notification" in window) {
-                    if (Notification.permission == "default") {
-                        Notification.requestPermission();
-                    }
-                } else {
-                    alert("Sorry! Your browser doesn't support notfication API");
-                }
-                $('.alert-reminder').toggleClass('hide');
-            }
-        } else {
-            reminderTime = this.model.get('reminder');
-        }
-
-        // Set todo contents
+    /**
+    * First step of updating the todo model
+    * This prepares the todo content, tags and description
+    * Then calls the parseReminder method with those as arguments
+    */
+    parseContent: function() {
+        // Get whatever content user provided and assign to variables
         var newContent = this.$('#editfield').val();
         var description = this.$('#descriptionfield').val();
         var newTags = this.$('#edittagfield').val();
@@ -69,10 +51,50 @@ module.exports = Backbone.View.extend({
         tagsContent = _.uniq(tagsContent, false);
         //remove any tags which are to be removed from the todo
         tagsContent = _.difference(tagsContent, this.tagsToRemoveArr);
-        //if the user did not change anything just close the edit dialog
-        if (newContent == this.model.get('content') && tagsContent == oldTags && reminderTime = this.model.get('reminder')) {
-        	this.$el.find('.modal').modal('hide');
-        } else {
+
+        // Go to second step of updating todo model
+        this.parseReminder(newContent, tagsContent, description);
+
+    },
+
+    /**
+    * Second step of updating the todo model
+    * This prepares the requested reminder time (if given)
+    * Then passes the todo content, tags, description and reminder time to saveChanges method
+    */
+    parseReminder: function(nC, tC, d) {
+        //If the model doesn't already have a time set for reminder
+        if (this.model.get('reminder') == null) {
+            // get hours and minutes from input
+            var hours = this.$('#hours').val();
+            var minutes = this.$('#minutes').val();
+            if (hours == 0) {hours = ''}
+            if (minutes == 0) {minutes = ''}
+
+            // If a reminder time was given
+            if (hours!=='' || minutes!=='') {
+                // Calculate time in milliseconds until the reminder
+                var deltaTime = (hours*3.6*Math.pow(10,6)) + (minutes*6*Math.pow(10,4));
+                var reminderTime = Date.now() + deltaTime;
+
+                // Make sure the user has allowed notifications!
+                this.checkNotificationPermission();
+                // Show the success alert for setting reminder
+                $('.alert-reminder').toggleClass('hide');
+            }
+        } else { // Otherwise just set the reminderTime variable to what is on the model
+            reminderTime = this.model.get('reminder');
+            this.$el.find('.modal').modal('hide');
+        }
+        this.saveChanges(nC, tC, d, reminderTime);
+
+    },
+
+    /**
+    * Sends PUT request to server with updated content
+    */
+    saveChanges: function(newContent, tagsContent, description, reminderTime) {
+
 	        this.model.save(
 	    		{
 	            	content: newContent,
@@ -88,17 +110,23 @@ module.exports = Backbone.View.extend({
 	   				}
 	   			});
 	        (this.model.validationError) ? this.$('.alert-danger').toggleClass('hide') : $('.modal-backdrop').remove()
-    	}
     },
 
     showTagField: function() {
         this.$('#edittagfield').toggleClass('hide');
     },
 
+    /**
+    * 'Activates' mode where user can remove tags by clicking them
+    */
     removeTagsMode: function() {
         this.$('.edit-tag').toggleClass('remove-tag-mode');
     },
 
+    /**
+    * This removes tags from the DOM and adds it to an array so all tags
+    * to be removed can be done so at once when user saves changes
+    */
 	removeTag: function(e) {
 		console.log('imhere');
 		var tagToRemove = e.currentTarget.innerHTML;
@@ -113,10 +141,26 @@ module.exports = Backbone.View.extend({
 		this.$el.closest('.list-group-item').find('span:eq(1)').html(todo);
 
 	},
+
+    /**
+    * This resets any reminder the user may have set
+    */
     removeReminder: function() {
         this.model.save({
             reminder: null
         });
         $('.modal-backdrop').remove();
+    },
+
+    checkNotificationPermission: function() {
+        //Check browser supports notifications API
+        if ("Notification" in window) {
+            // Check permissions for notifications has been given
+            if (Notification.permission == "default") {
+                Notification.requestPermission();
+            }
+        } else {
+            alert("Sorry! Your browser doesn't support notfication API");
+        }
     }
 });
