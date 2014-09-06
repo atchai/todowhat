@@ -129,7 +129,7 @@ input[type='checkbox'] {
     line-height: 2em;
 }
 .ui-sortable .list-group-item:last-child {
-    margin-bottom: 30px;
+    padding-bottom: 35px;
 }
 .list-group-item .todo-item {
     margin-right: 10px;
@@ -202,6 +202,20 @@ Tags
     background-color: #30353A;
 }
 
+
+
+.login-form {
+    margin: 0;
+    width: 30%;
+    margin:auto;
+}
+.login-form .form-group {
+    margin: 0;
+}
+.login {
+    text-align: center;
+
+}
 /***************************
 Custom breakpoints
 ***************************/
@@ -298,6 +312,9 @@ position: relative;
     .search-field {
         width: 100%;
     }
+    .login-form {
+        width: 100%;
+    }
 }
 
 @media (max-width: 767px) {
@@ -314,10 +331,16 @@ position: relative;
     .submit {
         margin-left: 35%;
     }
+    .login-form {
+        margin-left: 0%;
+    }
 }
 @media (max-width: 630px) {
     .submit {
         /*margin-left: 23px;*/
+    }
+    .login-form {
+        width: 100%;
     }
 }
 @media (max-width: 580px) {
@@ -378,23 +401,10 @@ li.ui-sortable-helper, li.ui-sortable-helper input, li.ui-sortable-helper button
 }
 
 
-.login-form {
-    margin: 0;
-    width: 30%;
-    margin:auto;
-}
-.login-form .form-group {
-    margin: 0;
-}
-.login {
-    text-align: center;
-
-}
 .form-horizontal input {
     width: 100%;
     height: 35px;
     text-align: center;
-    margin-bottom: 20px;
     border: none;
     border-bottom: solid 2px #c9c9c9;
     transition: border 0.3s;
@@ -411,10 +421,13 @@ input:focus {
     border-bottom: solid 2px;
 }
 .form-control:focus {
-border-color: #66afe9; 
+border-color: none;
 outline: 0;
-/* -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6); */
-/* box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6); */
+ -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+ box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+.modal-body .form-control {
+margin-bottom: 30px;
 }
 .login-form .alert {
     height: 20px;
@@ -453,5 +466,10 @@ font-weight: 700;
 }
 .time-input {
     border: none;
-    width: 34px;
+    margin-left: 13px;
+    width: 42px;
+    height: 39px;
+}
+#username, #password {
+        margin-bottom: 20px;
 }

@@ -38,7 +38,7 @@ var Tags = Backbone.Collection.extend({
 	removeTag: function(tag) {
 		var existingTag = this.find(function(model) {
 				return model.get('name') == tag;
-			});	
+			});
 		console.log(existingTag);
 		// existingTag.get('count') == 1 ? existingTag.destroy() : existingTag.decreaseCount();
 	},
@@ -47,7 +47,7 @@ var Tags = Backbone.Collection.extend({
 	* Parse string of tags
 	* Returns array having:
 	*   split by commas
-	*   remove extraneous whitespace (t.trim) and empty strings (filter(Boolean)) 
+	*   remove extraneous whitespace (t.trim) and empty strings (filter(Boolean))
 	*/
 	parseTags: function(tagString) {
 		var tagsArray = _.map(tagString.split(','), function(t) {
@@ -56,6 +56,15 @@ var Tags = Backbone.Collection.extend({
 		tagsArray = _.uniq(tagsArray, false);
 		return tagsArray;
 
+	},
+
+	parseNewTags: function(newTags, oldTags) {
+		var tagsArray = oldTags.concat(this.parseTags(newTags))
+		//remove any duplicate tag which may already be in old tags array
+        tagsArray = _.uniq(tagsArray, false);
+        //remove any tags which are to be removed from the todo
+        tagsArray = _.difference(tagsArray, tagsToRemoveArr);
+        return tagsArray;
 	}
 });
 

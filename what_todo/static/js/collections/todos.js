@@ -34,11 +34,13 @@ Todos = Backbone.Collection.extend({
     },
 
     search: function(letters) {
-        if (letters == "") return this;
+        if (letters == "") {
+            return this;
+        }
         var pattern = new RegExp(letters, "gi");
         return new Todos(
-            this.filter(function(data) {
-                return pattern.test(data.get("content"));
+            this.filter(function (data) {
+                return pattern.test(data.get("content"))
             })
         );
     },

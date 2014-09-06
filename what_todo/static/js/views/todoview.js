@@ -62,26 +62,30 @@ module.exports = Backbone.View.extend({
     checkReminder: function() {
         var todo = this.model;
         var reminder = todo.get('reminder');
-        if (reminder !== null) {
+        if (reminder) {
+            window.onbeforeunload = function() {
+                return 'You have a reminder set.';
+            };
         var notify = this.notifyUser;
             var self = this;
-            this.myInterval = setInterval(function () {
-                var timeToReminder = (reminder - Date.now())*Math.pow(10,-3);
+            var timeToReminder = reminder - Date.now();
                 console.log(timeToReminder);
+            this.myTimeout = setTimeout(function () {
                   if (Date.now() > reminder) {
                       notify(todo.get('content'));
-                      clearInterval(self.myInterval);
+                      // clearInterval(self.myInterval);
                       todo.save({
                         reminder: null
                       });
+                      window.onbeforeunload=null;
                    }
-              }, 1000);
+              }, reminder);
         }
     },
 
     notifyUser: function(content) {
         var notification = new Notification("Have you done this yet?", {
-            "body": content,
+            "body": "<a>hu</a>",
             "icon": "http://i.imgur.com/iD3UXom.png"
         });
     },
@@ -90,7 +94,7 @@ module.exports = Backbone.View.extend({
         var reminder = this.model.get('reminder');
         if (reminder==null) {
             console.log('reminder is null');
-            clearInterval(this.myInterval);
+            clearTimeout(this.myInterval);
         }
 
     }

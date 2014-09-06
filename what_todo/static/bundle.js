@@ -30669,6 +30669,15 @@ var Tags = Backbone.Collection.extend({
 		tagsArray = _.uniq(tagsArray, false);
 		return tagsArray;
 
+	},
+
+	parseNewTags: function(newTags, oldTags) {
+		var tagsArray = oldTags.concat(this.parseTags(newTags))
+		//remove any duplicate tag which may already be in old tags array
+        tagsArray = _.uniq(tagsArray, false);
+        //remove any tags which are to be removed from the todo
+        tagsArray = _.difference(tagsArray, tagsToRemoveArr);
+        return tagsArray;
 	}
 });
 
@@ -30875,6 +30884,7 @@ module.exports = Backbone.View.extend({
     initialize: function() {
         //Create empty array to contain any tags that are to be removed
     	this.tagsToRemoveArr = [];
+        this.notifySupported = ("Notification" in window);
     },
     render: function() {
         this.$el.html(template({
@@ -30882,7 +30892,8 @@ module.exports = Backbone.View.extend({
             todoItem: this.model.get('content'),
             tags: this.model.getTags(),
             description: this.model.get('description'),
-            reminder: this.model.get('reminder')
+            reminder: this.model.get('reminder'),
+            notifySupported: this.notifySupported
         }));
         return this;
     },
@@ -30898,13 +30909,14 @@ module.exports = Backbone.View.extend({
         var description = this.$('#descriptionfield').val();
         var newTags = this.$('#edittagfield').val();
         var oldTags = this.model.getTags();
-        //clean up string of new tags into usable array and concatenate with the old tags
-        var tagsContent = oldTags.concat(Tags.parseTags(newTags));
-        //remove any duplicate tag which may already be in old tags array
-        tagsContent = _.uniq(tagsContent, false);
-        //remove any tags which are to be removed from the todo
-        tagsContent = _.difference(tagsContent, this.tagsToRemoveArr);
-        console.log('parseContent got done');
+        var tagsContent = Tags.parseNewTags(newTags, oldTags, this.tagsToRemoveArr);
+        // //clean up string of new tags into usable array and concatenate with the old tags
+        // var tagsContent = oldTags.concat(Tags.parseTags(newTags));
+        // //remove any duplicate tag which may already be in old tags array
+        // tagsContent = _.uniq(tagsContent, false);
+        // //remove any tags which are to be removed from the todo
+        // tagsContent = _.difference(tagsContent, this.tagsToRemoveArr);
+        // console.log('parseContent got done');
         // Go to second step of updating todo model
         this.parseReminder(newContent, tagsContent, description);
 
@@ -30927,6 +30939,9 @@ module.exports = Backbone.View.extend({
 
             // If a reminder time was given
             if (hours!=='' || minutes!=='') {
+                window.onbeforeunload = function() {
+                return 'You have a reminder set.';
+            };
                 // Calculate time in milliseconds until the reminder
                 var deltaTime = (hours*3.6*Math.pow(10,6)) + (minutes*6*Math.pow(10,4));
                 var reminderTime = Date.now() + deltaTime;
@@ -30940,23 +30955,21 @@ module.exports = Backbone.View.extend({
             reminderTime = this.model.get('reminder');
             this.$el.find('.modal').modal('hide');
         }
-        var testfieldval = this.$('#testfield').val();
-        this.saveChanges(nC, tC, d, reminderTime, testfieldval);
+        this.saveChanges(nC, tC, d, reminderTime);
 
     },
 
     /**
     * Sends PUT request to server with updated content
     */
-    saveChanges: function(newContent, tagsContent, description, reminderTime, tfv) {
+    saveChanges: function(newContent, tagsContent, description, reminderTime) {
 
 	        this.model.save(
 	    		{
 	            	content: newContent,
 	            	tags: tagsContent,
                     description: description,
-                    reminder: reminderTime,
-                    test: tfv
+                    reminder: reminderTime
 	   			},
 	   			{
 	   				wait: true,
@@ -31011,7 +31024,7 @@ module.exports = Backbone.View.extend({
         //Check browser supports notifications API
         if ("Notification" in window) {
             // Check permissions for notifications has been given
-            if (Notification.permission == "default") {
+            if (Notification.permission == "default" || Notification.permission == "denied") {
                 Notification.requestPermission();
             }
         } else {
@@ -31764,6 +31777,9 @@ module.exports = Backbone.View.extend({
         var todo = this.model;
         var reminder = todo.get('reminder');
         if (reminder !== null) {
+            window.onbeforeunload = function() {
+                return 'You have a reminder set.';
+            };
         var notify = this.notifyUser;
             var self = this;
             this.myInterval = setInterval(function () {
@@ -31775,6 +31791,7 @@ module.exports = Backbone.View.extend({
                       todo.save({
                         reminder: null
                       });
+                      window.onbeforeunload=null;
                    }
               }, 1000);
         }
@@ -31782,7 +31799,7 @@ module.exports = Backbone.View.extend({
 
     notifyUser: function(content) {
         var notification = new Notification("Have you done this yet?", {
-            "body": content,
+            "body": "<a>hu</a>",
             "icon": "http://i.imgur.com/iD3UXom.png"
         });
     },
@@ -31807,7 +31824,9 @@ __p+='<!-- Button trigger modal -->\n<button class="btn btn-primary btn-sm glyph
 ((__t=( modalId ))==null?'':__t)+
 '">\n</button>\n\n<!-- Modal -->\n<div class="modal fade" id="'+
 ((__t=( modalId ))==null?'':__t)+
-'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">\n  <div class="modal-dialog">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n        <h4 class="modal-title" id="myModalLabel">Edit todo content:</h4>\n      </div>\n      <div class="modal-body">\n      <div class="alert alert-danger alert-dismissible hide" role="alert">\n  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n  <strong>Warning!</strong> Todo field cannot be blank.\n</div>\n\n        ';
+'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">\n  <div class="modal-dialog">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n        <h4 class="modal-title" id="myModalLabel">Edit todo content:</h4>\n      </div>\n      <div class="modal-body">\n      <div class="alert alert-danger alert-dismissible hide" role="alert">\n  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n  <strong>Warning!</strong> Todo field cannot be blank.\n</div>\n      ';
+ if (notifySupported) { 
+__p+='\n        ';
  if (reminder == null) { 
 __p+='\n        <span>Remind me in: </span>\n          <input type="number" name="quantity" id="hours" class="time-input" min="0" max="24">\n          <span> hours and </span>\n          <input type="number" name="quantity" id="minutes" class="time-input" min="0" max="60">\n          <span>minutes</span>\n        ';
  } else { 
@@ -31817,9 +31836,11 @@ __p+='\n        <span>Reminder set for: ';
         print(date.toString().slice(16,21)); 
 __p+=' </span>\n        <span class="glyphicon glyphicon-remove pull-right remove-reminder"></span>\n        ';
  } 
-__p+='\n\n        <input class="form-control" type="text" id="editfield" value="'+
+__p+='\n      ';
+ } 
+__p+='\n        <input class="form-control" type="text" id="editfield" value="'+
 ((__t=( todoItem ))==null?'':__t)+
-'">\n        <input class="form-control" type="text" id="testfield">\n        <input class="form-control" type="text" id="descriptionfield"\n          ';
+'">\n        <input class="form-control" type="text" id="descriptionfield"\n          ';
 if (description == null || description == '') {
 __p+='\n            placeholder="Put a description here"\n            ';
  } else { 
@@ -31827,7 +31848,7 @@ __p+='\n            value="'+
 ((__t=(description))==null?'':__t)+
 '"\n            ';
  } 
-__p+='>\n        <input class="form-control hide" type="text" id="edittagfield" placeholder="New tags here, seperate with commas">\n        <button class="glyphicon glyphicon-plus edit-add-tag btn" data-toggle="tooltip" data-placement="bottom" title="Toggle add new tags mode"></button>\n        <button class="glyphicon glyphicon-minus edit-remove-tag btn" data-toggle="tooltip" data-placement="bottom" title="Toggle remove tags mode"></button>\n\n        ';
+__p+='>\n        <input class="form-control hide" type="text" id="edittagfield" placeholder="New tags here, seperate with commas">\n        <button class="glyphicon glyphicon-plus edit-add-tag btn" data-toggle="tooltip" data-placement="bottom" title="Toggle add new tags mode"></button>\n        <button class="glyphicon glyphicon-minus edit-remove-tag btn" data-toggle="tooltip" data-placement="bottom" title="Toggle remove tags mode"></button>\n        ';
  tags.forEach(function(tag){ 
 __p+='\n    <span class="label label-info edit-tag">'+
 ((__t=( tag ))==null?'':__t)+
