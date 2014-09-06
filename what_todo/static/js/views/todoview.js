@@ -13,7 +13,7 @@ module.exports = Backbone.View.extend({
         this.listenTo(this.model, 'change', this.render);
         this.listenTo(this.model, 'change:reminder', this.checkReminder);
         this.listenTo(this.model, 'change:reminder', this.checkCancelReminder);
-        this.checkReminder();
+        // this.checkReminder();
     },
 
     tagName: 'li',
