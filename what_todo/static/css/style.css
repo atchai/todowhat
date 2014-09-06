@@ -128,6 +128,9 @@ input[type='checkbox'] {
     background: none;
     line-height: 2em;
 }
+.ui-sortable .list-group-item:last-child {
+    margin-bottom: 30px;
+}
 .list-group-item .todo-item {
     margin-right: 10px;
 }
@@ -387,7 +390,7 @@ li.ui-sortable-helper, li.ui-sortable-helper input, li.ui-sortable-helper button
     text-align: center;
 
 }
-.login-form input {
+.form-horizontal input {
     width: 100%;
     height: 35px;
     text-align: center;
@@ -395,11 +398,23 @@ li.ui-sortable-helper, li.ui-sortable-helper input, li.ui-sortable-helper button
     border: none;
     border-bottom: solid 2px #c9c9c9;
     transition: border 0.3s;
+    margin-bottom: 0px;
 }
-.login-form input:focus {
+input:focus {
     border: none;
-    outline: none;
-    border-bottom: solid 2px #969696;
+    border-color: #969696 !important;
+ -webkit-box-shadow: none;
+ box-shadow: none;
+    outline: none !important;
+    -webkit-appearance: none !important;
+    -webkit-box-shadow:  none !important;
+    border-bottom: solid 2px;
+}
+.form-control:focus {
+border-color: #66afe9; 
+outline: 0;
+/* -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6); */
+/* box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6); */
 }
 .login-form .alert {
     height: 20px;
@@ -437,5 +452,6 @@ font-weight: 700;
     cursor: pointer;
 }
 .time-input {
-    height: 32px;
+    border: none;
+    width: 34px;
 }

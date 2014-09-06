@@ -31624,7 +31624,7 @@ module.exports = Backbone.View.extend({
             handle: ".handle",
             //prevents list item being dragged out of parent element, else dragging item down extends the page
             containment: "parent",
-            tolerance: 'pointer',
+            tolerance: 'intersect',
             //this method is called whenever the list has been rearranged
             update: function(event, ui) {
                 var order = $('#todoul').sortable('toArray'),

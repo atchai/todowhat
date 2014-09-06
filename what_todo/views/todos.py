@@ -43,7 +43,7 @@ class TodosView(FlaskView):
         # Except for tags attribute because many 2 many
         if "tags" in request_data:
             db_todo.set_tags_attr(request_data['tags'])
-
+        db.session.add(db_todo)
         db.session.commit()
         return jsonify({'result': 200})
 
