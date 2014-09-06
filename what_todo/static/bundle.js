@@ -30651,7 +30651,7 @@ var Tags = Backbone.Collection.extend({
 	removeTag: function(tag) {
 		var existingTag = this.find(function(model) {
 				return model.get('name') == tag;
-			});	
+			});
 		console.log(existingTag);
 		// existingTag.get('count') == 1 ? existingTag.destroy() : existingTag.decreaseCount();
 	},
@@ -30660,7 +30660,7 @@ var Tags = Backbone.Collection.extend({
 	* Parse string of tags
 	* Returns array having:
 	*   split by commas
-	*   remove extraneous whitespace (t.trim) and empty strings (filter(Boolean)) 
+	*   remove extraneous whitespace (t.trim) and empty strings (filter(Boolean))
 	*/
 	parseTags: function(tagString) {
 		var tagsArray = _.map(tagString.split(','), function(t) {
@@ -30671,7 +30671,7 @@ var Tags = Backbone.Collection.extend({
 
 	},
 
-	parseNewTags: function(newTags, oldTags) {
+	parseNewTags: function(newTags, oldTags, tagsToRemoveArr) {
 		var tagsArray = oldTags.concat(this.parseTags(newTags))
 		//remove any duplicate tag which may already be in old tags array
         tagsArray = _.uniq(tagsArray, false);
@@ -30800,6 +30800,22 @@ module.exports = Backbone.Model.extend({
         if (attrs.content.length > 255) {
             return 'mal';
         }
+    },
+
+    parseReminderTime: function(hours, minutes) {
+        if (hours == 0) {hours = ''}
+        if (minutes == 0) {minutes = ''}
+        // If a reminder time was given
+        if (hours || minutes) {
+            // Make user confirm they want to close the window
+            window.onbeforeunload = function() {
+                return 'You have a reminder set.';
+            };
+        // Calculate time in milliseconds until the reminder
+        var deltaTime = (hours*3.6*Math.pow(10,6)) + (minutes*6*Math.pow(10,4));
+        var reminderTime = Date.now() + deltaTime;
+        return reminderTime;
+        }
     }
 })
 },{"backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/routers/router.js":[function(require,module,exports){
@@ -30910,14 +30926,6 @@ module.exports = Backbone.View.extend({
         var newTags = this.$('#edittagfield').val();
         var oldTags = this.model.getTags();
         var tagsContent = Tags.parseNewTags(newTags, oldTags, this.tagsToRemoveArr);
-        // //clean up string of new tags into usable array and concatenate with the old tags
-        // var tagsContent = oldTags.concat(Tags.parseTags(newTags));
-        // //remove any duplicate tag which may already be in old tags array
-        // tagsContent = _.uniq(tagsContent, false);
-        // //remove any tags which are to be removed from the todo
-        // tagsContent = _.difference(tagsContent, this.tagsToRemoveArr);
-        // console.log('parseContent got done');
-        // Go to second step of updating todo model
         this.parseReminder(newContent, tagsContent, description);
 
     },
@@ -30928,31 +30936,22 @@ module.exports = Backbone.View.extend({
     * Then passes the todo content, tags, description and reminder time to saveChanges method
     */
     parseReminder: function(nC, tC, d) {
-        console.log('parseReminder starting');
+        var hours, minutes, reminderTime, oldReminderTime;
         //If the model doesn't already have a time set for reminder
-        if (this.model.get('reminder') == null) {
-            // get hours and minutes from input
-            var hours = this.$('#hours').val();
-            var minutes = this.$('#minutes').val();
-            if (hours == 0) {hours = ''}
-            if (minutes == 0) {minutes = ''}
+        hours = this.$('#hours').val();
+        minutes = this.$('#minutes').val();
+        oldReminderTime = this.model.get('reminder');
 
-            // If a reminder time was given
-            if (hours!=='' || minutes!=='') {
-                window.onbeforeunload = function() {
-                return 'You have a reminder set.';
-            };
-                // Calculate time in milliseconds until the reminder
-                var deltaTime = (hours*3.6*Math.pow(10,6)) + (minutes*6*Math.pow(10,4));
-                var reminderTime = Date.now() + deltaTime;
+        if (!oldReminderTime) {
+            reminderTime = this.model.parseReminderTime(hours, minutes);
+            // Check the user has allowed notifications
+            this.checkNotificationPermission();
+            // Show the success alert for setting reminder
+            $('.alert-reminder').toggleClass('hide');
+        }
 
-                // Make sure the user has allowed notifications!
-                this.checkNotificationPermission();
-                // Show the success alert for setting reminder
-                $('.alert-reminder').toggleClass('hide');
-            }
-        } else { // Otherwise just set the reminderTime variable to what is on the model
-            reminderTime = this.model.get('reminder');
+        else { // Otherwise just set the reminderTime variable to what is on the model
+            reminderTime = oldReminderTime
             this.$el.find('.modal').modal('hide');
         }
         this.saveChanges(nC, tC, d, reminderTime);
@@ -30992,16 +30991,14 @@ module.exports = Backbone.View.extend({
     },
 
     /**
-    * This removes tags from the DOM and adds it to an array so all tags
+    * This removes tags from the DOM and adds tag name to an array so all tags
     * to be removed can be done so at once when user saves changes
     */
 	removeTag: function(e) {
-		console.log('imhere');
-		var tagToRemove = e.currentTarget.innerHTML;
-		console.log(tagToRemove);
-		this.tagsToRemoveArr.push(tagToRemove);
+		var tagToRemove = e.currentTarget
+		this.tagsToRemoveArr.push(tagToRemove.innerHTML);
 		console.log(this.tagsToRemoveArr);
-		e.currentTarget.remove();
+		tagToRemove.remove();
 	},
 
 	liveUpdateTodo: function() {
@@ -31712,11 +31709,8 @@ module.exports = Backbone.View.extend({
 
 })
 },{"./todoview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/todoview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/todoview.js":[function(require,module,exports){
-var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
-var NavView = require('./navview');
-var MobileNavView = require('./mobilenavview');
 var Tags = require('../collections/tags');
 var template = require('../../../templates/todotemplate.html');
 var editView = require('./editview');
@@ -31749,9 +31743,10 @@ module.exports = Backbone.View.extend({
         this.$el.html(template({
             todoItem: this.model.get('content') ,
             done: this.model.get('done'),
-            tags: this.model.get('tags')
+            tags: this.model.get('tags'),
+            reminder: this.model.get('reminder')
         }));
-        this.$('.edit').html(new editView({model: this.model}).render().el)
+        this.$('.edit').html(new editView({model: this.model}).render().el);
         return this;
     },
 
@@ -31759,10 +31754,8 @@ module.exports = Backbone.View.extend({
     * removes model from collection, and decreases count of associated tags
     */
     removeTodo: function() {
-        // _.each(this.model.getTags(), function(tag) {
-        //     Tags.removeTag(tag);
-        // });
         this.model.destroy();
+        // Fetch tags from server so count on view is updated
         Tags.fetch({reset: true});
         this.render();
     },
@@ -31776,47 +31769,41 @@ module.exports = Backbone.View.extend({
     checkReminder: function() {
         var todo = this.model;
         var reminder = todo.get('reminder');
-        if (reminder !== null) {
+        if (reminder) {
             window.onbeforeunload = function() {
-                return 'You have a reminder set.';
-            };
-        var notify = this.notifyUser;
-            var self = this;
-            this.myInterval = setInterval(function () {
-                var timeToReminder = (reminder - Date.now())*Math.pow(10,-3);
-                console.log(timeToReminder);
-                  if (Date.now() > reminder) {
-                      notify(todo.get('content'));
-                      clearInterval(self.myInterval);
-                      todo.save({
-                        reminder: null
-                      });
-                      window.onbeforeunload=null;
-                   }
-              }, 1000);
+                    return 'You have a reminder set.';
+                };
+            var timeToReminder = reminder - Date.now();
+            console.log(timeToReminder);
+            var notify = this.notifyUser;
+            this.reminderTimeout = setTimeout(function() {notify(todo)}, timeToReminder);
         }
-    },
-
-    notifyUser: function(content) {
-        var notification = new Notification("Have you done this yet?", {
-            "body": "<a>hu</a>",
-            "icon": "http://i.imgur.com/iD3UXom.png"
-        });
     },
 
     checkCancelReminder: function() {
         var reminder = this.model.get('reminder');
-        if (reminder==null) {
+        if (!reminder) {
             console.log('reminder is null');
-            clearInterval(this.myInterval);
+            clearTimeout(this.reminderTimeout);
+            window.onbeforeunload=null;
         }
+    },
 
+    notifyUser: function(todo) {
+        var content = todo.get('content')
+        todo.save({reminder: null});
+        window.onbeforeunload = null;
+
+        notification = new Notification("Have you done this yet?",
+            {
+                "body": content,
+                "icon": "http://i.imgur.com/iD3UXom.png"
+            });
     }
-
 
 });
 
-},{"../../../templates/todotemplate.html":"/home/andrew/dev/flask-what-todo/what_todo/templates/todotemplate.html","../collections/tags":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/tags.js","./editview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/editview.js","./mobilenavview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/mobilenavview.js","./navview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/navview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/templates/edittemplate.html":[function(require,module,exports){
+},{"../../../templates/todotemplate.html":"/home/andrew/dev/flask-what-todo/what_todo/templates/todotemplate.html","../collections/tags":"/home/andrew/dev/flask-what-todo/what_todo/static/js/collections/tags.js","./editview":"/home/andrew/dev/flask-what-todo/what_todo/static/js/views/editview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/what_todo/templates/edittemplate.html":[function(require,module,exports){
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
@@ -31827,7 +31814,7 @@ __p+='<!-- Button trigger modal -->\n<button class="btn btn-primary btn-sm glyph
 '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">\n  <div class="modal-dialog">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n        <h4 class="modal-title" id="myModalLabel">Edit todo content:</h4>\n      </div>\n      <div class="modal-body">\n      <div class="alert alert-danger alert-dismissible hide" role="alert">\n  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n  <strong>Warning!</strong> Todo field cannot be blank.\n</div>\n      ';
  if (notifySupported) { 
 __p+='\n        ';
- if (reminder == null) { 
+ if (!reminder) { 
 __p+='\n        <span>Remind me in: </span>\n          <input type="number" name="quantity" id="hours" class="time-input" min="0" max="24">\n          <span> hours and </span>\n          <input type="number" name="quantity" id="minutes" class="time-input" min="0" max="60">\n          <span>minutes</span>\n        ';
  } else { 
 __p+='\n        <span>Reminder set for: ';
@@ -31848,7 +31835,7 @@ __p+='\n            value="'+
 ((__t=(description))==null?'':__t)+
 '"\n            ';
  } 
-__p+='>\n        <input class="form-control hide" type="text" id="edittagfield" placeholder="New tags here, seperate with commas">\n        <button class="glyphicon glyphicon-plus edit-add-tag btn" data-toggle="tooltip" data-placement="bottom" title="Toggle add new tags mode"></button>\n        <button class="glyphicon glyphicon-minus edit-remove-tag btn" data-toggle="tooltip" data-placement="bottom" title="Toggle remove tags mode"></button>\n        ';
+__p+='>\n        <input class="form-control hide" type="text" id="edittagfield" placeholder="New tags here, seperate with commas">\n        <button class="glyphicon glyphicon-plus edit-add-tag btn" data-toggle="tooltip" data-placement="top" title="Toggle add new tags mode"></button>\n        <button class="glyphicon glyphicon-minus edit-remove-tag btn" data-toggle="tooltip" data-placement="top" title="Toggle remove tags mode"></button>\n        ';
  tags.forEach(function(tag){ 
 __p+='\n    <span class="label label-info edit-tag">'+
 ((__t=( tag ))==null?'':__t)+
@@ -31978,7 +31965,11 @@ __p+=' checked ';
 } 
 __p+=' >\n\t<span class="todo-item">\n\t'+
 ((__t=( todoItem ))==null?'':__t)+
-'\n\t</span>\n\t<button class="btn btn-danger btn-xs glyphicon glyphicon-trash remove pull-right" href="#"></button>\n\t\t<!-- Button trigger modal -->\n\n\t<span class="edit"></span>\n\n\t';
+'\n\t</span>\n\t';
+ if (reminder) { 
+__p+='\n\t<span class="glyphicon glyphicon-time"></span>\n\t';
+ } 
+__p+='\n\t<button class="btn btn-danger btn-xs glyphicon glyphicon-trash remove pull-right" href="#"></button>\n\t\t<!-- Button trigger modal -->\n\n\t<span class="edit"></span>\n\n\t';
  tags.forEach(function(tag){ 
 __p+='\n\t\t<span class="label label-info">'+
 ((__t=( tag ))==null?'':__t)+

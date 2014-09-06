@@ -1,8 +1,5 @@
-var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
-var NavView = require('./navview');
-var MobileNavView = require('./mobilenavview');
 var Tags = require('../collections/tags');
 var template = require('../../../templates/todotemplate.html');
 var editView = require('./editview');
@@ -35,9 +32,10 @@ module.exports = Backbone.View.extend({
         this.$el.html(template({
             todoItem: this.model.get('content') ,
             done: this.model.get('done'),
-            tags: this.model.get('tags')
+            tags: this.model.get('tags'),
+            reminder: this.model.get('reminder')
         }));
-        this.$('.edit').html(new editView({model: this.model}).render().el)
+        this.$('.edit').html(new editView({model: this.model}).render().el);
         return this;
     },
 
@@ -45,10 +43,8 @@ module.exports = Backbone.View.extend({
     * removes model from collection, and decreases count of associated tags
     */
     removeTodo: function() {
-        // _.each(this.model.getTags(), function(tag) {
-        //     Tags.removeTag(tag);
-        // });
         this.model.destroy();
+        // Fetch tags from server so count on view is updated
         Tags.fetch({reset: true});
         this.render();
     },
@@ -64,40 +60,34 @@ module.exports = Backbone.View.extend({
         var reminder = todo.get('reminder');
         if (reminder) {
             window.onbeforeunload = function() {
-                return 'You have a reminder set.';
-            };
-        var notify = this.notifyUser;
-            var self = this;
+                    return 'You have a reminder set.';
+                };
             var timeToReminder = reminder - Date.now();
-                console.log(timeToReminder);
-            this.myTimeout = setTimeout(function () {
-                  if (Date.now() > reminder) {
-                      notify(todo.get('content'));
-                      // clearInterval(self.myInterval);
-                      todo.save({
-                        reminder: null
-                      });
-                      window.onbeforeunload=null;
-                   }
-              }, reminder);
+            console.log(timeToReminder);
+            var notify = this.notifyUser;
+            this.reminderTimeout = setTimeout(function() {notify(todo)}, timeToReminder);
         }
-    },
-
-    notifyUser: function(content) {
-        var notification = new Notification("Have you done this yet?", {
-            "body": "<a>hu</a>",
-            "icon": "http://i.imgur.com/iD3UXom.png"
-        });
     },
 
     checkCancelReminder: function() {
         var reminder = this.model.get('reminder');
-        if (reminder==null) {
+        if (!reminder) {
             console.log('reminder is null');
-            clearTimeout(this.myInterval);
+            clearTimeout(this.reminderTimeout);
+            window.onbeforeunload=null;
         }
+    },
 
+    notifyUser: function(todo) {
+        var content = todo.get('content')
+        todo.save({reminder: null});
+        window.onbeforeunload = null;
+
+        notification = new Notification("Have you done this yet?",
+            {
+                "body": content,
+                "icon": "http://i.imgur.com/iD3UXom.png"
+            });
     }
-
 
 });

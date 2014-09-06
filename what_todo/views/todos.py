@@ -3,7 +3,6 @@ from flask import g, request, jsonify, Blueprint
 
 from what_todo import db
 from what_todo.models.todo import Todo
-from what_todo.models.todo import make_todo
 
 todos = Blueprint('todos', __name__)
 
@@ -23,7 +22,7 @@ class TodosView(FlaskView):
     def post(self):
         """Create a new todo"""
         request_data = request.get_json()
-        make_todo(request_data)
+        Todo().make_todo(request_data)
         return jsonify({"result": 200})
 
     def get(self, id):

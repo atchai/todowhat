@@ -24,18 +24,18 @@ class Tag(db.Model):
             todoArr.append({'todo_id': i.id, 'todo_content': i.content})
         return todoArr
 
-def make_tags(tags_array):
-    """
-    Create and return an array, tags_models,
-    populated with tag objects from database.
-    If no tag exists already with specified name, a new one is created
-    """
-    if len(tags_array) == 0:
-        return tags_array
-    tags_models = []
-    for i in tags_array:
-        tag = Tag.query.filter_by(name=i).first()
-        if tag is None:
-            tag = Tag(name=i)
-        tags_models.append(tag)
-    return tags_models
+    def make_tags(self, tags_array):
+        """
+        Create and return an array, tags_models,
+        populated with tag objects from database.
+        If no tag exists already with specified name, a new one is created
+        """
+        if len(tags_array) == 0:
+            return tags_array
+        tags_models = []
+        for i in tags_array:
+            tag = Tag.query.filter_by(name=i).first()
+            if tag is None:
+                tag = Tag(name=i)
+            tags_models.append(tag)
+        return tags_models

@@ -1,7 +1,7 @@
 from flask import g
 
 from what_todo import db
-from what_todo.models.tag import make_tags
+from what_todo.models.tag import Tag
 
 todo_tags = db.Table(
     'todo_tags',
@@ -70,29 +70,28 @@ class Todo(db.Model):
 
     def set_tags_attr(self, tags):
         """
-        Takes an array of tags (strings). Use what_todo.models.tag.make_tags
-        to create an array of tag models from it. Replace tags attribute of
+        Takes an array of tags (strings). Uses what_todo.models.tag.make_tags
+        to create an array of tag models from it. Replaces tags attribute of
         model with new array of tag models.
         """
         for i in self.tags.all():
                 db.session.delete(i)
         db.session.commit()
         # Update with new array of tags returned from make_tags
-        tags_models = make_tags(tags)
+        tags_models = Tag().make_tags(tags)
         if len(tags_models) > 0:
             self.tags = tags_models
 
 
-def make_todo(request_data):
-    """
-    Create new todo in the database.
-    todo_content is string,
-    tags_content is an array of strings,
-    todo_order is an integer.
-    """
-    todo = Todo()
-    todo.user = g.user
-    todo.set_dict_attr(request_data)
-    todo.set_tags_attr(request_data['tags'])
-    db.session.add(todo)
-    db.session.commit()
+    def make_todo(self, request_data):
+        """
+        Creates and saves new todo in the database.
+        Sets user attribute to current user.
+        Passes request_data dictionary to the
+        set_dict_attr method
+        """
+        self.user = g.user
+        self.set_dict_attr(request_data)
+        self.set_tags_attr(request_data['tags'])
+        db.session.add(self)
+        db.session.commit()

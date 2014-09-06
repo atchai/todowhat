@@ -16,7 +16,7 @@
   <strong>Warning!</strong> Todo field cannot be blank.
 </div>
       <% if (notifySupported) { %>
-        <% if (reminder == null) { %>
+        <% if (!reminder) { %>
         <span>Remind me in: </span>
           <input type="number" name="quantity" id="hours" class="time-input" min="0" max="24">
           <span> hours and </span>
@@ -37,8 +37,8 @@
             value="<%=description%>"
             <% } %>>
         <input class="form-control hide" type="text" id="edittagfield" placeholder="New tags here, seperate with commas">
-        <button class="glyphicon glyphicon-plus edit-add-tag btn" data-toggle="tooltip" data-placement="bottom" title="Toggle add new tags mode"></button>
-        <button class="glyphicon glyphicon-minus edit-remove-tag btn" data-toggle="tooltip" data-placement="bottom" title="Toggle remove tags mode"></button>
+        <button class="glyphicon glyphicon-plus edit-add-tag btn" data-toggle="tooltip" data-placement="top" title="Toggle add new tags mode"></button>
+        <button class="glyphicon glyphicon-minus edit-remove-tag btn" data-toggle="tooltip" data-placement="top" title="Toggle remove tags mode"></button>
         <% tags.forEach(function(tag){ %>
     <span class="label label-info edit-tag"><%= tag %></span>
   <% }) %>

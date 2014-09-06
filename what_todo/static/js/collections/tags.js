@@ -58,7 +58,7 @@ var Tags = Backbone.Collection.extend({
 
 	},
 
-	parseNewTags: function(newTags, oldTags) {
+	parseNewTags: function(newTags, oldTags, tagsToRemoveArr) {
 		var tagsArray = oldTags.concat(this.parseTags(newTags))
 		//remove any duplicate tag which may already be in old tags array
         tagsArray = _.uniq(tagsArray, false);

@@ -38,5 +38,6 @@ module.exports = Backbone.Model.extend({
         var deltaTime = (hours*3.6*Math.pow(10,6)) + (minutes*6*Math.pow(10,4));
         var reminderTime = Date.now() + deltaTime;
         return reminderTime;
+        }
     }
 })
