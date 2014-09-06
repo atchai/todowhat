@@ -73,6 +73,10 @@ function browserifySetup(inputFile, outputFile, outputPath){
 
 function buildFiles(b, outputFile, outputPath) {
   b.bundle()
+    .on('error', function(err){
+        console.log(err.message);
+        this.end();
+      })
     .pipe(source(outputFile))
     .pipe(gulp.dest(outputPath));
 }
