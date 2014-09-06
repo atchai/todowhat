@@ -108,7 +108,6 @@ module.exports = Backbone.View.extend({
 	   			{
 	   				wait: true,
 	   				success: function() {
-	   					Todos.fetch();
 	   					Tags.fetch();
 	   				}
 	   			});
