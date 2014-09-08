@@ -1,9 +1,7 @@
 from flask.ext.classy import FlaskView
-from flask import g, jsonify, Blueprint
+from flask import g, jsonify
 
 from what_todo.models.tag import Tag
-
-tags = Blueprint('tags', __name__)
 
 
 class TagsView(FlaskView):
@@ -28,5 +26,3 @@ class TagsView(FlaskView):
         if dbTag is None:
             return jsonify({'response': 404}), 404
         return jsonify(dbTag.json_view()), 200
-
-TagsView.register(tags)

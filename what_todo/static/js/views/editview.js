@@ -69,7 +69,6 @@ module.exports = Backbone.View.extend({
             // Check the user has allowed notifications
             this.checkNotificationPermission();
             // Show the success alert for setting reminder
-            $('.alert-reminder').toggleClass('hide');
         }
 
         else { // Otherwise just set the reminderTime variable to what is on the model

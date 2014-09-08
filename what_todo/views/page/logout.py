@@ -1,8 +1,6 @@
 from flask.ext.classy import FlaskView
-from flask import url_for, flash, redirect, Blueprint
+from flask import url_for, flash, redirect
 from flask.ext.login import logout_user
-
-logout = Blueprint('logout', __name__)
 
 
 class LogoutView(FlaskView):
@@ -10,6 +8,4 @@ class LogoutView(FlaskView):
         """Log a user out and redirect to login page"""
         logout_user()
         flash('Logged out successfully', 'success')
-        return redirect(url_for('login.LoginView:index'))
-
-LogoutView.register(logout)
+        return redirect(url_for('page.LoginView:index'))

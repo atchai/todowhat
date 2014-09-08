@@ -17,7 +17,7 @@ def create_app():
 
     # Setup login manager
     login_manager.init_app(app)
-    login_manager.login_view = 'login.LoginView:index'
+    login_manager.login_view = 'page.LoginView:index'
     login_manager.login_message = ''
 
     # Create instance of user
@@ -33,20 +33,12 @@ def create_app():
         g.user = current_user
 
     # Import blueprints from views modules
-    from what_todo.views.main import main
-    from what_todo.views.todos import todos
-    from what_todo.views.tags import tags
-    from what_todo.views.register import register
-    from what_todo.views.login import login
-    from what_todo.views.logout import logout
+    from what_todo.views.page import page
+    from what_todo.views.api import api
 
     # Register blueprints
-    app.register_blueprint(login)
-    app.register_blueprint(logout)
-    app.register_blueprint(register)
-    app.register_blueprint(tags)
-    app.register_blueprint(todos)
-    app.register_blueprint(main)
+    app.register_blueprint(page)
+    app.register_blueprint(api)
 
     # Setup database
     db.init_app(app)

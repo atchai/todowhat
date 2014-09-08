@@ -12,7 +12,7 @@ module.exports = Backbone.View.extend({
 		"keyup #todofield": "keyPressEventHandler",
         "keyup #tagsfield": "keyPressEventHandler"
 	},
-    
+
 	render: function() {
 		 this.$el.html(template);
 		 return this;
@@ -22,7 +22,7 @@ module.exports = Backbone.View.extend({
     * add a todo model (and tags) to the collection(s) using content in
     * input boxes
     */
-	addTodo: function(e) { 
+	addTodo: function(e) {
         e.preventDefault();
         //cache input fields
         this.$todofield = this.$('#todofield');
@@ -37,10 +37,10 @@ module.exports = Backbone.View.extend({
                     content: todoContent,
                     order: Todos.newOrder(),
                     tags: tagsContent
-                }, 
-                {   
-                    //using .create so we must set wait:true so input can be validated by model 
-                    wait: true, 
+                },
+                {
+                    //using .create so we must set wait:true so input can be validated by model
+                    wait: true,
                     //if todo content was valid, see if tag(s) exists in collection so count can be updated appropriately
                     success: function() {
                         Todos.fetch({reset: true});

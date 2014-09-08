@@ -30814,6 +30814,7 @@ module.exports = Backbone.Model.extend({
         // Calculate time in milliseconds until the reminder
         var deltaTime = (hours*3.6*Math.pow(10,6)) + (minutes*6*Math.pow(10,4));
         var reminderTime = Date.now() + deltaTime;
+        $('.alert-reminder').toggleClass('hide');
         return reminderTime;
         }
     }
@@ -30947,7 +30948,6 @@ module.exports = Backbone.View.extend({
             // Check the user has allowed notifications
             this.checkNotificationPermission();
             // Show the success alert for setting reminder
-            $('.alert-reminder').toggleClass('hide');
         }
 
         else { // Otherwise just set the reminderTime variable to what is on the model
@@ -31181,7 +31181,7 @@ module.exports = Backbone.View.extend({
 		"keyup #todofield": "keyPressEventHandler",
         "keyup #tagsfield": "keyPressEventHandler"
 	},
-    
+
 	render: function() {
 		 this.$el.html(template);
 		 return this;
@@ -31191,7 +31191,7 @@ module.exports = Backbone.View.extend({
     * add a todo model (and tags) to the collection(s) using content in
     * input boxes
     */
-	addTodo: function(e) { 
+	addTodo: function(e) {
         e.preventDefault();
         //cache input fields
         this.$todofield = this.$('#todofield');
@@ -31206,10 +31206,10 @@ module.exports = Backbone.View.extend({
                     content: todoContent,
                     order: Todos.newOrder(),
                     tags: tagsContent
-                }, 
-                {   
-                    //using .create so we must set wait:true so input can be validated by model 
-                    wait: true, 
+                },
+                {
+                    //using .create so we must set wait:true so input can be validated by model
+                    wait: true,
                     //if todo content was valid, see if tag(s) exists in collection so count can be updated appropriately
                     success: function() {
                         Todos.fetch({reset: true});
@@ -31820,7 +31820,7 @@ __p+='\n        <span>Remind me in: </span>\n          <input type="number" name
 __p+='\n        <span>Reminder set for: ';
 
         var date = new Date(reminder);
-        print(date.toString().slice(16,21)); 
+        print(date.toString().slice(16,25)); 
 __p+=' </span>\n        <span class="glyphicon glyphicon-remove pull-right remove-reminder"></span>\n        ';
  } 
 __p+='\n      ';

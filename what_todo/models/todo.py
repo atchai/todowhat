@@ -82,7 +82,6 @@ class Todo(db.Model):
         if len(tags_models) > 0:
             self.tags = tags_models
 
-
     def make_todo(self, request_data):
         """
         Creates and saves new todo in the database.

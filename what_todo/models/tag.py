@@ -4,6 +4,7 @@ from what_todo import db
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120))
+    colour = db.Column(db.String(10))
 
     def __repr__(self):
         return '<Tag %r>' % self.name

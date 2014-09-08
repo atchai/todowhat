@@ -1,10 +1,10 @@
 from flask.ext.classy import FlaskView
-from flask import g, request, jsonify, Blueprint
+from flask import g, request, jsonify
 
 from what_todo import db
 from what_todo.models.todo import Todo
 
-todos = Blueprint('todos', __name__)
+# todos = Blueprint('todos', __name__)
 
 #
 # Todos API
@@ -57,5 +57,3 @@ class TodosView(FlaskView):
                 db.session.delete(tag)
         db.session.commit()
         return jsonify({'response': 200})
-
-TodosView.register(todos)

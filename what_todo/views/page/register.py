@@ -1,11 +1,9 @@
 from flask.ext.classy import FlaskView
-from flask import request, url_for, render_template, flash, redirect, Blueprint
+from flask import request, url_for, render_template, flash, redirect
 from werkzeug import generate_password_hash
 
 from what_todo import db
 from what_todo.models.user import User
-
-register = Blueprint('register', __name__)
 
 
 class RegisterView(FlaskView):
@@ -30,10 +28,8 @@ class RegisterView(FlaskView):
             db.session.add(user)
             db.session.commit()
             flash('User successfully registered', 'info')
-            return redirect(url_for('login.LoginView:index'))
+            return redirect(url_for('page.LoginView:index'))
 
         # Otherwise show error message
         flash('Username already taken', 'info')
-        return redirect(url_for('register.RegisterView:index'))
-
-RegisterView.register(register)
+        return redirect(url_for('page.RegisterView:index'))

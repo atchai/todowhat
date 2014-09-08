@@ -1,8 +1,6 @@
 from flask.ext.login import login_required
-from flask import render_template, Blueprint
+from flask import render_template
 from flask.ext.classy import FlaskView
-
-main = Blueprint('main', __name__)
 
 
 class MainView(FlaskView):
@@ -11,5 +9,3 @@ class MainView(FlaskView):
 
     def index(self):
         return render_template('index.html')
-
-MainView.register(main)
