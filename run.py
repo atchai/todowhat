@@ -1,4 +1,4 @@
-#!flask/bin/python
+#!python2
 from what_todo import create_app
 
 app = create_app()

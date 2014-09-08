@@ -5,7 +5,7 @@ var Todos = require('../collections/todos');
 var MobileNavView = require('./mobilenavview');
 var TagsView = require('./tagsview');
 var Tags = require('../collections/tags');
-var template = require('../../../templates/navbartemplate.html')
+var template = require('../../templates/navbartemplate.html')
 
 /**
 * View for top navigation bar - contains navigation links and tag list for small screens

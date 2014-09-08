@@ -4,7 +4,7 @@ var _ = require('underscore');
 var NavView = require('./navview');
 var MobileNavView = require('./mobilenavview');
 var Tags = require('../collections/tags');
-var template = require('../../../templates/edittemplate.html');
+var template = require('../../templates/edittemplate.html');
 var Todos = require('../collections/todos');
 
 module.exports = Backbone.View.extend({

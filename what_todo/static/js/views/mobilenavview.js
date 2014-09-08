@@ -2,7 +2,7 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
-var template = require('../../../templates/mobilenavtemplate.html')
+var template = require('../../templates/mobilenavtemplate.html')
 
 /**
 * View for navigation links on small screens

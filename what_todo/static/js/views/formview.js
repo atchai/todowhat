@@ -4,7 +4,7 @@ var _ = require('underscore');
 var Todos = require('../collections/todos');
 var TagsView = require('./tagsview');
 var Tags = require('../collections/tags');
-var template = require('../../../templates/formtemplate.html');
+var template = require('../../templates/formtemplate.html');
 
 module.exports = Backbone.View.extend({
 	events: {

@@ -2,7 +2,7 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Tags = require('../collections/tags');
-var template = require('../../../templates/searchtemplate.html');
+var template = require('../../templates/searchtemplate.html');
 var Todos = require('../collections/todos');
 var TodosView = require ('./todosview');
 

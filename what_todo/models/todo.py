@@ -59,13 +59,15 @@ class Todo(db.Model):
         Takes a dictionary of the request data,
         If an attribute of the model matches a key
         of the dictionary, the attribute is updated.
+        Model attributes are given by self.__table__.columns
+        which does not include the tags column.
         Tags attribute is handled seperately by
         set_tags_attr because of many to many relationship.
         """
-
         for attr in self.__table__.columns:
-            if attr.name in request_data and attr.name != 'tags':
-                print attr.name
+            if (attr.name in request_data
+                    and attr.name is not 'id'
+                    and attr.name is not 'user_id'):
                 setattr(self, attr.name, request_data[attr.name])
 
     def set_tags_attr(self, tags):

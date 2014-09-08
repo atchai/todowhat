@@ -6,7 +6,7 @@ var TodoView = require('./todoview');
 var Tags = require('../collections/tags');
 var TagView = require('./tagview');
 var NavView = require('./navview');
-var tagsTemplate = require('../../../templates/tagsTemplate.html');
+var tagsTemplate = require('../../templates/tagsTemplate.html');
 Backbone.$ = $;
 
 module.exports = Backbone.View.extend({

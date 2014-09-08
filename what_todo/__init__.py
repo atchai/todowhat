@@ -1,4 +1,4 @@
-#!flask/bin/python
+#!python2
 from flask import Flask, g
 from flask.ext.login import LoginManager, current_user
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -42,5 +42,4 @@ def create_app():
 
     # Setup database
     db.init_app(app)
-
     return app

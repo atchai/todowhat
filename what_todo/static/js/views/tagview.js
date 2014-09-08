@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
-var template = require('../../../templates/tagtemplate.html');
+var template = require('../../templates/tagtemplate.html');
 
 module.exports = Backbone.View.extend({
     events: {

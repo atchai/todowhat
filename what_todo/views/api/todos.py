@@ -1,10 +1,9 @@
 from flask.ext.classy import FlaskView
 from flask import g, request, jsonify
+from flask.ext.login import login_required
 
 from what_todo import db
 from what_todo.models.todo import Todo
-
-# todos = Blueprint('todos', __name__)
 
 #
 # Todos API
@@ -13,6 +12,7 @@ from what_todo.models.todo import Todo
 
 class TodosView(FlaskView):
     trailing_slash = False
+    decorators = [login_required]
 
     def index(self):
         """Get all todos belonging to the user and return them"""
@@ -23,7 +23,7 @@ class TodosView(FlaskView):
         """Create a new todo"""
         request_data = request.get_json()
         Todo().make_todo(request_data)
-        return jsonify({"result": 200})
+        return jsonify({"result": 201}), 201
 
     def get(self, id):
         """Get a single todo from the server"""
@@ -34,7 +34,6 @@ class TodosView(FlaskView):
         """Update an existing todos attributes"""
         # Get the relevant todo from database
         db_todo = Todo.query.get(int(id))
-
         # Obtain the data from HTTP request
         request_data = request.get_json()
         # Update attributes of model with the request data
@@ -44,7 +43,7 @@ class TodosView(FlaskView):
             db_todo.set_tags_attr(request_data['tags'])
         db.session.add(db_todo)
         db.session.commit()
-        return jsonify({'result': 200})
+        return jsonify({'result': 200}), 200
 
     def delete(self, id):
         """Delete a todo from the server"""

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu-items">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="#" class="title">What todo</a>
+
+            </div>
+        </div>
+
+
+    </nav>
+    <div class="container main-content login">
+        {% block title %} {% endblock %}
+        <form class="form-horizontal login-form" role="form" method="post">
+            {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}
+            </div>
+            {% endfor %} {% endif %} {% endwith %}
+            <div class="form-group form-group-lg">
+                <input type="text" id="username" name="username" placeholder="Enter Username" value="{{ request.form.username }}" required>
+            </div>
+            <div class="form-group form-group-lg">
+                <input type="password" id="password" name="password" placeholder="Enter Password" value="{{ request.form.password }}" required>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    {% block controls %} {% endblock %}
+                </div>
+            </div>
+        </form>
+
+    </div>
+</body>
+
+</html>

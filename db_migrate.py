@@ -1,4 +1,4 @@
-#!flask/bin/python
+#!python2
 import imp
 from migrate.versioning import api
 from what_todo import db
