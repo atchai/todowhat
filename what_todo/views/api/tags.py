@@ -1,11 +1,13 @@
 from flask.ext.classy import FlaskView
 from flask import g, jsonify
+from flask.ext.login import login_required
 
 from what_todo.models.tag import Tag
 
 
 class TagsView(FlaskView):
     trailing_slash = False
+    decorators = [login_required]
 
     def index(self):
         """Get all tags from todos belonging to user from the server"""

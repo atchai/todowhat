@@ -47,7 +47,6 @@ Todos = Backbone.Collection.extend({
      * Returns todos with a specific tag
      */
     filterTag: function(tag) {
-        console.log(tag);
         return new Todos(
             this.filter(function(todo) {
                 var tagArr = [];

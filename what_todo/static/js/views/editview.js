@@ -118,7 +118,6 @@ module.exports = Backbone.View.extend({
 	removeTag: function(e) {
 		var tagToRemove = e.currentTarget
 		this.tagsToRemoveArr.push(tagToRemove.innerHTML);
-		console.log(this.tagsToRemoveArr);
 		tagToRemove.remove();
 	},
 

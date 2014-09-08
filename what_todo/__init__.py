@@ -1,4 +1,4 @@
-#!python2
+#!/usr/bin/env python
 from flask import Flask, g
 from flask.ext.login import LoginManager, current_user
 from flask.ext.sqlalchemy import SQLAlchemy

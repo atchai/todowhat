@@ -30652,7 +30652,6 @@ var Tags = Backbone.Collection.extend({
 		var existingTag = this.find(function(model) {
 				return model.get('name') == tag;
 			});
-		console.log(existingTag);
 		// existingTag.get('count') == 1 ? existingTag.destroy() : existingTag.decreaseCount();
 	},
 
@@ -30733,7 +30732,6 @@ Todos = Backbone.Collection.extend({
      * Returns todos with a specific tag
      */
     filterTag: function(tag) {
-        console.log(tag);
         return new Todos(
             this.filter(function(todo) {
                 var tagArr = [];
@@ -30997,7 +30995,6 @@ module.exports = Backbone.View.extend({
 	removeTag: function(e) {
 		var tagToRemove = e.currentTarget
 		this.tagsToRemoveArr.push(tagToRemove.innerHTML);
-		console.log(this.tagsToRemoveArr);
 		tagToRemove.remove();
 	},
 
@@ -31505,7 +31502,6 @@ module.exports = Backbone.View.extend({
     */
     removeTagView: function(tag) {
         var cid = '#tag' + tag.cid;
-        console.log(cid);
         $(cid).remove();
     },
 
@@ -31774,7 +31770,6 @@ module.exports = Backbone.View.extend({
                     return 'You have a reminder set.';
                 };
             var timeToReminder = reminder - Date.now();
-            console.log(timeToReminder);
             var notify = this.notifyUser;
             this.reminderTimeout = setTimeout(function() {notify(todo)}, timeToReminder);
         }
@@ -31783,7 +31778,6 @@ module.exports = Backbone.View.extend({
     checkCancelReminder: function() {
         var reminder = this.model.get('reminder');
         if (!reminder) {
-            console.log('reminder is null');
             clearTimeout(this.reminderTimeout);
             window.onbeforeunload=null;
         }

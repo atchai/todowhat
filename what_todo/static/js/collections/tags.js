@@ -39,7 +39,6 @@ var Tags = Backbone.Collection.extend({
 		var existingTag = this.find(function(model) {
 				return model.get('name') == tag;
 			});
-		console.log(existingTag);
 		// existingTag.get('count') == 1 ? existingTag.destroy() : existingTag.decreaseCount();
 	},
 

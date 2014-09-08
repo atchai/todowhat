@@ -43,7 +43,6 @@ module.exports = Backbone.View.extend({
     */
     removeTagView: function(tag) {
         var cid = '#tag' + tag.cid;
-        console.log(cid);
         $(cid).remove();
     },
 

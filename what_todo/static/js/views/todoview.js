@@ -63,7 +63,6 @@ module.exports = Backbone.View.extend({
                     return 'You have a reminder set.';
                 };
             var timeToReminder = reminder - Date.now();
-            console.log(timeToReminder);
             var notify = this.notifyUser;
             this.reminderTimeout = setTimeout(function() {notify(todo)}, timeToReminder);
         }
@@ -72,7 +71,6 @@ module.exports = Backbone.View.extend({
     checkCancelReminder: function() {
         var reminder = this.model.get('reminder');
         if (!reminder) {
-            console.log('reminder is null');
             clearTimeout(this.reminderTimeout);
             window.onbeforeunload=null;
         }
