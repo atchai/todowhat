@@ -31,7 +31,7 @@ class Tag(db.Model):
         populated with tag objects from database.
         If no tag exists already with specified name, a new one is created
         """
-        if len(tags_array) == 0:
+        if not tags_array:
             return tags_array
         tags_models = []
         for i in tags_array:

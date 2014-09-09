@@ -37,7 +37,7 @@ class TodosView(FlaskView):
         # Obtain the data from HTTP request
         request_data = request.get_json()
         # Update attributes of model with the request data
-        db_todo.set_dict_attr(request_data)
+        db_todo.set_dict_attr(request_data, 'id', 'user_id')
         # Except for tags attribute because many 2 many
         if "tags" in request_data:
             db_todo.set_tags_attr(request_data['tags'])
@@ -52,7 +52,7 @@ class TodosView(FlaskView):
         db.session.commit()
         # If the deleted todo held the last reference to a tag, delete that tag
         for tag in db_todo.tags.all():
-            if tag.todos.count() == 0:
+            if not tag.todos.count():
                 db.session.delete(tag)
         db.session.commit()
-        return jsonify({'response': 200})
+        return jsonify({'response': 200}), 200

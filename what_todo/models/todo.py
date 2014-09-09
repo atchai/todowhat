@@ -49,25 +49,19 @@ class Todo(db.Model):
 
     def serialize_tags(self):
         """Return this todos tags in easily serializeable format"""
-        tagArr = []
-        for i in self.tags.all():
-            tagArr.append(i.name)
-        return tagArr
+        return [i.name for i in self.tags.all()]
 
-    def set_dict_attr(self, request_data):
+    def set_dict_attr(self, request_data, *args):
         """
-        Takes a dictionary of the request data,
-        If an attribute of the model matches a key
-        of the dictionary, the attribute is updated.
-        Model attributes are given by self.__table__.columns
-        which does not include the tags column.
-        Tags attribute is handled seperately by
-        set_tags_attr because of many to many relationship.
+        *args are strings of model attributes which are not
+        to be manipulated by client requests.
+        Model attributes are given by self.__table__.columns.
+        If an attribute name of the model matches a key
+        of the request_data dictionary, the attribute is updated.
+        Tags are handled seperately by set_tags_attr as it is a relationship.
         """
         for attr in self.__table__.columns:
-            if (attr.name in request_data
-                    and attr.name is not 'id'
-                    and attr.name is not 'user_id'):
+            if (attr.name in request_data and attr.name not in args):
                 setattr(self, attr.name, request_data[attr.name])
 
     def set_tags_attr(self, tags):
@@ -81,7 +75,7 @@ class Todo(db.Model):
         db.session.commit()
         # Update with new array of tags returned from make_tags
         tags_models = Tag().make_tags(tags)
-        if len(tags_models) > 0:
+        if tags_models:
             self.tags = tags_models
 
     def make_todo(self, request_data):
