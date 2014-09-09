@@ -3,6 +3,7 @@ var _ = require('underscore');
 var Tags = require('../collections/tags')
 var GuestTags = require('../collections/guesttags')
 var Todos = require('../collections/todos')
+var GuestTodos = require('../collections/guesttodos')
 var TagsView = require('./tagsview');
 var NavView = require('./navview');
 var FormView = require('./formview');
@@ -35,6 +36,8 @@ module.exports = Backbone.View.extend({
         this.$('.taglist').html(new TagsView({collection: Tags}).render().el);
         //renders the navigation links on left side (large screens)
         Todos.fetch();
+        GuestTodos.fetch();
+        // Todos.sync();
         this.$('#navlinks').html(new NavView().render().el);
     },
 

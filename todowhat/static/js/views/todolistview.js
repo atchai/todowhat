@@ -30,8 +30,6 @@ module.exports = Backbone.View.extend({
         this.listenTo(Backbone.eventBus, 'filterDone', this.filterDone);
         this.listenTo(Backbone.eventBus, 'filterNotDone', this.filterNotDone);
         this.listenTo(Backbone.eventBus, 'filterTag', this.filterTag);
-        Todos.fetch({reset: true});
-
     },
 
     /**

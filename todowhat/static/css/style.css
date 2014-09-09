@@ -4,8 +4,10 @@ body {
 .title {
 	font-size: 3em;
 	color: #fff;
-	pointer-events: none;
-
+}
+.title:hover {
+    text-decoration: none;
+    color: #fff;
 }
 .main-content {
     margin-top: 100px;

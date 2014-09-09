@@ -3,6 +3,7 @@ var FilterDoneView = require('../views/filterdoneview');
 var FilterTodoView = require('../views/filtertodoview');
 var FilterTagView = require('../views/filterTagView');
 var Todos = require('../collections/todos');
+var GuestTodos = require('../collections/guesttodos');
 var todoAppView = require('../views/mainview');
 var todoListView = require('../views/todolistview');
 var searchView = require('../views/searchview');
@@ -29,6 +30,17 @@ module.exports = Backbone.Router.extend({
       new todoListView();
       new searchView();
     }
+    Todos.fetch({
+            success: function(){
+                    GuestTodos.toJSON().forEach(function(guestTodo) {
+                      guestTodo.id = null;
+                      Todos.create(guestTodo);
+                    });
+                    GuestTodos.each(function(gt) {
+                      gt.destroy();
+                    });
+              }
+        });
     //call change method when anything happens with router
     this.listenTo(this, "all", this.change);
   },

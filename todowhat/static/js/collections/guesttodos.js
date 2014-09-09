@@ -6,6 +6,9 @@ Backbone.LocalStorage = require('backbone.localstorage')
 
 GuestTodos = Backbone.Collection.extend({
     localStorage: new Backbone.LocalStorage("StoredGuestTodos"),
+    parse: function(response) {
+        return response;
+    },
     model: Todo,
     comparator: 'order',
     /**

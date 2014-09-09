@@ -1,4 +1,4 @@
-# What Todo
+# TodoWhat
 Todo app made with Backbone.js
 
 ## Demo

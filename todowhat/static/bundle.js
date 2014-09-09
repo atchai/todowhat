@@ -30944,6 +30944,9 @@ Backbone.LocalStorage = require('backbone.localstorage')
 
 GuestTodos = Backbone.Collection.extend({
     localStorage: new Backbone.LocalStorage("StoredGuestTodos"),
+    parse: function(response) {
+        return response;
+    },
     model: Todo,
     comparator: 'order',
     /**
@@ -31208,6 +31211,7 @@ var FilterDoneView = require('../views/filterdoneview');
 var FilterTodoView = require('../views/filtertodoview');
 var FilterTagView = require('../views/filterTagView');
 var Todos = require('../collections/todos');
+var GuestTodos = require('../collections/guesttodos');
 var todoAppView = require('../views/mainview');
 var todoListView = require('../views/todolistview');
 var searchView = require('../views/searchview');
@@ -31234,6 +31238,17 @@ module.exports = Backbone.Router.extend({
       new todoListView();
       new searchView();
     }
+    Todos.fetch({
+            success: function(){
+                    GuestTodos.toJSON().forEach(function(guestTodo) {
+                      guestTodo.id = null;
+                      Todos.create(guestTodo);
+                    });
+                    GuestTodos.each(function(gt) {
+                      gt.destroy();
+                    });
+              }
+        });
     //call change method when anything happens with router
     this.listenTo(this, "all", this.change);
   },
@@ -31274,7 +31289,7 @@ module.exports = Backbone.Router.extend({
   }
 });
 
-},{"../collections/todos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/todos.js","../views/filterTagView":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filterTagView.js","../views/filterdoneview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filterdoneview.js","../views/filtertodoview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filtertodoview.js","../views/mainview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/mainview.js","../views/searchview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/searchview.js","../views/todolistview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/todolistview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/editview.js":[function(require,module,exports){
+},{"../collections/guesttodos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/guesttodos.js","../collections/todos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/todos.js","../views/filterTagView":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filterTagView.js","../views/filterdoneview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filterdoneview.js","../views/filtertodoview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filtertodoview.js","../views/mainview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/mainview.js","../views/searchview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/searchview.js","../views/todolistview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/todolistview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/editview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -31660,6 +31675,7 @@ var _ = require('underscore');
 var Tags = require('../collections/tags')
 var GuestTags = require('../collections/guesttags')
 var Todos = require('../collections/todos')
+var GuestTodos = require('../collections/guesttodos')
 var TagsView = require('./tagsview');
 var NavView = require('./navview');
 var FormView = require('./formview');
@@ -31692,6 +31708,8 @@ module.exports = Backbone.View.extend({
         this.$('.taglist').html(new TagsView({collection: Tags}).render().el);
         //renders the navigation links on left side (large screens)
         Todos.fetch();
+        GuestTodos.fetch();
+        // Todos.sync();
         this.$('#navlinks').html(new NavView().render().el);
     },
 
@@ -31704,7 +31722,7 @@ module.exports = Backbone.View.extend({
         }
     }
 });
-},{"../collections/guesttags":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/guesttags.js","../collections/tags":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/tags.js","../collections/todos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/todos.js","../jquery":"/home/andrew/dev/flask-what-todo/todowhat/static/js/jquery.js","./formview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/formview.js","./navbarview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/navbarview.js","./navview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/navview.js","./tagsview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/tagsview.js","./todosview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/todosview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/mobilenavview.js":[function(require,module,exports){
+},{"../collections/guesttags":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/guesttags.js","../collections/guesttodos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/guesttodos.js","../collections/tags":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/tags.js","../collections/todos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/todos.js","../jquery":"/home/andrew/dev/flask-what-todo/todowhat/static/js/jquery.js","./formview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/formview.js","./navbarview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/navbarview.js","./navview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/navview.js","./tagsview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/tagsview.js","./todosview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/todosview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/mobilenavview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -32018,8 +32036,6 @@ module.exports = Backbone.View.extend({
         this.listenTo(Backbone.eventBus, 'filterDone', this.filterDone);
         this.listenTo(Backbone.eventBus, 'filterNotDone', this.filterNotDone);
         this.listenTo(Backbone.eventBus, 'filterTag', this.filterTag);
-        Todos.fetch({reset: true});
-
     },
 
     /**
@@ -32141,7 +32157,6 @@ module.exports = Backbone.View.extend({
         }, this);
         if (!this.collection.last()) { //if collection is empty
             this.$el.append('<li id="noTodos" class="list-group-item">Nothing to do</li>');
-            console.log('hiya m8');
         }
         return this;
     }

@@ -31,7 +31,6 @@ module.exports = Backbone.View.extend({
         }, this);
         if (!this.collection.last()) { //if collection is empty
             this.$el.append('<li id="noTodos" class="list-group-item">Nothing to do</li>');
-            console.log('hiya m8');
         }
         return this;
     }
