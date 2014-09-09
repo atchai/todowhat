@@ -8,35 +8,35 @@ var watchify = require('watchify');
 
 //default gulp task browserifies application js files in bundle and minifies js
 gulp.task('default', function() {
-  var bundleStream = browserify('./what_todo/static/js/app.js').bundle()
+  var bundleStream = browserify('./todowhat/static/js/app.js').bundle()
   bundleStream
     .pipe(source('bundle.js'))
     .pipe(streamify(uglify()))
-    .pipe(gulp.dest('./what_todo/static/'))
+    .pipe(gulp.dest('./todowhat/static/'))
 });
 
 //this task watches for changes application js files and compiles them
 gulp.task('watch', function(){
 	watch = true;
-  browserifySetup('./what_todo/static/js/app.js', 'bundle.js', './what_todo/static/');
+  browserifySetup('./todowhat/static/js/app.js', 'bundle.js', './todowhat/static/');
 });
 
 //this task watches for changes application js files and compiles jasmine test specs
 gulp.task('watch-compile-test', function(){
 	watch = true;
-  browserifySetup('./what_todo/static/tests/specs.js', 'testFile.js', './what_todo/static/tests/');
+  browserifySetup('./todowhat/static/tests/specs.js', 'testFile.js', './todowhat/static/tests/');
 });
 
 //this task just compiles jasmine test specs
 gulp.task('nowatch-compile-test', function(){
 	watch = false;
-  browserifySetup('./what_todo/static/tests/specs.js', 'testFile.js', './what_todo/static/tests/');
+  browserifySetup('./todowhat/static/tests/specs.js', 'testFile.js', './todowhat/static/tests/');
 });
 
 //this task runs tests with karma after test specs have been bundled and again if changed
 gulp.task('watch-test', ['watch-compile-test'], function (done) {
   karma.start({
-    configFile: __dirname + '/what_todo/static/tests/my.conf.js',
+    configFile: __dirname + '/todowhat/static/tests/my.conf.js',
     action: 'watch'
   }, done);
 });
@@ -44,7 +44,7 @@ gulp.task('watch-test', ['watch-compile-test'], function (done) {
 //this task runs tests with karma after test specs have been bundled
 gulp.task('test', ['nowatch-compile-test'], function (done) {
   karma.start({
-    configFile: __dirname + '/what_todo/static/tests/my.conf.js'
+    configFile: __dirname + '/todowhat/static/tests/my.conf.js'
   }, done);
 });
 

@@ -1,3 +1,3 @@
-from what_todo import create_app
+from todowhat import create_app
 
 app = create_app()

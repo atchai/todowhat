@@ -4,7 +4,7 @@ from config import SQLALCHEMY_DATABASE_URI
 from config import SQLALCHEMY_MIGRATE_REPO
 import os.path
 
-from what_todo import db
+from todowhat import db
 from app import app
 
 with app.app_context():
