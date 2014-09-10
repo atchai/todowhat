@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 from flask import Flask, g
 from flask.ext.login import LoginManager, current_user
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -35,10 +35,12 @@ def create_app():
     # Import blueprints from views modules
     from todowhat.views.page import page
     from todowhat.views.api import api
+    from todowhat.views.error import error
 
     # Register blueprints
     app.register_blueprint(page)
     app.register_blueprint(api)
+    app.register_blueprint(error)
 
     # Setup database
     db.init_app(app)

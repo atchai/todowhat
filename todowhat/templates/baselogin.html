@@ -44,10 +44,10 @@
             </div>
             {% endfor %} {% endif %} {% endwith %}
             <div class="form-group form-group-lg">
-                <input type="text" id="username" name="username" placeholder="Enter Username" value="{{ request.form.username }}" required>
+                <input type="text" id="username" name="username" placeholder="Enter Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Username'" value="{{ request.form.username }}" required>
             </div>
             <div class="form-group form-group-lg">
-                <input type="password" id="password" name="password" placeholder="Enter Password" value="{{ request.form.password }}" required>
+                <input type="password" id="password" name="password" placeholder="Enter Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Password'" value="{{ request.form.password }}" required>
             </div>
             <div class="control-group">
                 <div class="controls">

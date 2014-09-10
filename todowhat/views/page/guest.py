@@ -7,4 +7,4 @@ class GuestView(FlaskView):
     decorators = []
 
     def index(self):
-        return render_template('index.html')
+        return render_template('index.html', guest=True)

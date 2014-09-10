@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 import imp
 from migrate.versioning import api
 from todowhat import db

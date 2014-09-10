@@ -24,7 +24,11 @@ class RegisterView(FlaskView):
 
         # If not, create a new user and redirect to login page
         if user is None:
-            user = User(username=username, pwdhash=pwdhash)
+            try:
+                user = User(username=username, pwdhash=pwdhash)
+            except AssertionError:
+                flash('Forbidden character detected in username', 'warning')
+                return redirect(url_for('page.RegisterView:index'))
             db.session.add(user)
             db.session.commit()
             flash('User successfully registered', 'info')
