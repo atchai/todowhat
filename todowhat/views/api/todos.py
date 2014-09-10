@@ -1,5 +1,5 @@
 from flask.ext.classy import FlaskView
-from flask import g, request, jsonify
+from flask import g, request, jsonify, abort
 from flask.ext.login import login_required
 
 from todowhat import db
@@ -27,26 +27,41 @@ class TodosView(FlaskView):
 
     def get(self, id):
         """Get a single todo from the server"""
+        # Get the relevant todo from database
         db_todo = Todo.query.get(int(id))
-        return jsonify(db_todo.json_view()), 200
+        if self.check_auth(db_todo):
+            return jsonify(db_todo.json_view()), 200
 
     def put(self, id):
         """Update an existing todos attributes"""
         # Get the relevant todo from database
         db_todo = Todo.query.get(int(id))
-        # Obtain the data from HTTP request
-        request_data = request.get_json()
-        # Update attributes of model with the request data
-        db_todo.set_dict_attr(request_data)
-        db.session.add(db_todo)
-        db.session.commit()
-        return jsonify({'result': 200}), 200
+        if self.check_auth(db_todo):
+            # Obtain the data from HTTP request
+            request_data = request.get_json()
+            # Update attributes of model with the request data
+            db_todo.set_dict_attr(request_data)
+            db.session.add(db_todo)
+            db.session.commit()
+            return jsonify({'result': 200}), 200
 
     def delete(self, id):
         """Delete a todo from the server"""
+        # Get the relevant todo from database
         db_todo = Todo.query.get(int(id))
-        db_todo.clear_tags()
-        db.session.delete(db_todo)
-        db.session.commit()
-        # If the deleted todo held the last reference to a tag, delete that tag
-        return jsonify({'response': 200}), 200
+        if self.check_auth(db_todo):
+            db_todo.clear_tags()
+            db.session.delete(db_todo)
+            db.session.commit()
+            # If deleted todo held the last reference to a tag, delete that tag
+            return jsonify({'response': 200}), 200
+
+    def check_auth(self, db_todo):
+        # If no todo exists with requested id return 404 error
+        if not db_todo:
+            abort(404)
+        # If todo belongs to logged in user return True
+        if db_todo.user_id == g.user.id:
+            return True
+        # Else return 404 error
+        return abort(401)

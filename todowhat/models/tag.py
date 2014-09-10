@@ -22,11 +22,10 @@ class Tag(db.Model):
         """Return this tags todos in easily serializeable format"""
         return [{'todo_id': i.id, 'todo_content': i.content} for i in self.todos.all()]
 
-    def create(self, tags_array):
+    def create(self, tags_list):
         """
-        Create and return an array, populated with tag objects from database.
+        Create and return an list, populated with tag objects from database.
         If no tag exists already with specified name, a new one is created
         """
-        # create dictionary of existing tags where key is tag name, value is tag model itself
-        tags_dict = {i.name: i for i in Tag.query.filter(Tag.name.in_(tags_array)).all()}
-        return [tags_dict[key] if key in tags_dict else Tag(name=key) for key in tags_array]
+        tags_dict = {i.name: i for i in Tag.query.filter(Tag.name.in_(tags_list)).all()}
+        return [tags_dict[key] if key in tags_dict else Tag(name=key) for key in tags_list]

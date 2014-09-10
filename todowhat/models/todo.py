@@ -1,4 +1,5 @@
 from flask import g
+from sqlalchemy.orm import validates
 
 from todowhat import db
 from todowhat.models.tag import Tag
@@ -26,6 +27,11 @@ class Todo(db.Model):
     reminder = db.Column(db.String)
 
     ignore_columns = ['id', 'user_id']
+
+    @validates('content')
+    def validate_content(self, key, todo_content):
+        assert todo_content is not ''
+        return todo_content
 
     def __repr__(self):
         return '<todo %r, Tags %r>' % (self.content, self.tags)
@@ -55,29 +61,27 @@ class Todo(db.Model):
 
     def set_dict_attr(self, request_data):
         """
-        *args are strings of model attributes which are not
-        to be manipulated by client requests.
-        Model attributes are given by self.__table__.columns.
-        If an attribute name of the model matches a key
-        of the request_data dictionary, the attribute is updated.
+        Sets attributes of a todo model with client request dictionary.
+        Only model attributes with valid names are updated.
         Tags are handled seperately by set_tags_attr as it is a relationship.
         """
         for attr in self.__table__.columns:
-            if (attr.name in request_data and attr.name not in self.ignore_columns):
+            if (attr.name in request_data and
+                    attr.name not in self.ignore_columns):
                 setattr(self, attr.name, request_data[attr.name])
         if "tags" in request_data:
             self.set_tags_attr(request_data['tags'])
 
     def set_tags_attr(self, tags):
         """
-        Takes an array of tags (strings). Uses todowhat.models.tag.make_tags
-        to create an array of tag models from it. Replaces tags attribute of
-        model with new array of tag models.
+        Takes an list of tags (strings). Uses todowhat.models.tag.make_tags
+        to create an list of tag models from it. Replaces tags attribute of
+        model with new list of tag models.
         """
         for i in self.tags.all():
                 db.session.delete(i)
         db.session.commit()
-        # Update with new array of tags returned from make_tags
+        # Update with new list of tags returned from make_tags
         tags_models = Tag().create(tags)
         if tags_models:
             self.tags = tags_models
