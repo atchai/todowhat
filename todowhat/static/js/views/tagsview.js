@@ -15,16 +15,15 @@ module.exports = Backbone.View.extend({
 
     initialize: function() {
         this.listenTo(Backbone.eventBus, 'guestMode', this.guestMode);
+        this.listenTo(Backbone.eventBus, 'userMode', this.userMode);
         this.listenTo(this.collection, 'reset', this.render);
         this.listenTo(this.collection, 'add', this.render); //so that new tags are added alphabetically
         this.listenTo(this.collection, 'remove', this.removeTagView);
         Tags.fetch();
-        // GuestTags.fetch();
-        // GuestTags.each(function(g){g.destroy()});
     },
 
     /**
-    * renders list of all tags in collection
+    * Renders list of all tags in collection.
     */
     render: function() {
         this.$el.empty();
@@ -40,13 +39,36 @@ module.exports = Backbone.View.extend({
         }
         return this;
     },
+
+    /**
+    * Renders the guest tags from local storage instead of
+    * tags associated with a user from the server
+    */
     guestMode: function() {
+        // Set Tags variable to GuestTags collection
         Tags = GuestTags;
+        // Fetch the guest tags from localStorage
+        Tags.fetch();
+        // Render the collection
+        this.render();
+    },
+
+    /**
+    * When logged in, make sure the guest tags collection is cleared.
+    * Render the users own tags from the server.
+    */
+    userMode: function() {
+        GuestTags.fetch();
+        var length = GuestTags.length;
+        for (var i = length - 1; i >= 0; i--) {
+            GuestTags.at(i).destroy();
+        }
         Tags.fetch();
         this.render();
     },
+
     /**
-    * removes a tag from the list if no longer in the collection
+    * Removes a tag from the list if no longer in the collection.
     */
     removeTagView: function(tag) {
         var cid = '#tag' + tag.cid;

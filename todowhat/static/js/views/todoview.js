@@ -10,7 +10,6 @@ module.exports = Backbone.View.extend({
         //changing done state of model will rerender the view of that todo, toggling appropriate styling
         this.listenTo(this.model, 'change', this.render);
         this.listenTo(this.model, 'change:reminder', this.checkReminder);
-        this.listenTo(this.model, 'change:reminder', this.checkCancelReminder);
         // this.checkReminder();
     },
 
@@ -41,29 +40,40 @@ module.exports = Backbone.View.extend({
     },
 
     /**
-    * removes model from collection, and decreases count of associated tags
+    * Removes model from collection, and decreases count of associated tags.
     */
     removeTodo: function() {
         var todoTags = this.model.get('tags');
+        // Decrease count/remove model for each tag of the todo (for guests)
         todoTags.forEach(function(tag) {
             GuestTags.removeTag(tag);
         })
+        // Destroy the model, automatically removes tags for a user on the backend
         this.model.destroy();
         // Fetch tags from server so count on view is updated
         Tags.fetch({reset: true});
         this.render();
     },
 
+    /**
+    * Change the done status of a todo
+    */
     toggleDone: function() {
         var done = this.model.get('done');
         this.model.save({'done': !done});
         Backbone.eventBus.trigger('statusChanged');
     },
 
+    /**
+    * Check if a user has set a reminder.
+    * If reminder was set, a timeout is set for the requested
+    * reminder time where the notifyUser function is called.
+    */
     checkReminder: function() {
         var todo = this.model;
         var reminder = todo.get('reminder');
         if (reminder) {
+            // Make sure user doesn't accidentally close the window if a reminder was set.
             window.onbeforeunload = function() {
                     return 'You have a reminder set.';
                 };
@@ -71,16 +81,15 @@ module.exports = Backbone.View.extend({
             var notify = this.notifyUser;
             this.reminderTimeout = setTimeout(function() {notify(todo)}, timeToReminder);
         }
-    },
-
-    checkCancelReminder: function() {
-        var reminder = this.model.get('reminder');
-        if (!reminder) {
+        else {
             clearTimeout(this.reminderTimeout);
             window.onbeforeunload=null;
         }
     },
 
+    /**
+    * Reminds user of a todo with the Notification API
+    */
     notifyUser: function(todo) {
         var content = todo.get('content')
         todo.save({reminder: null});

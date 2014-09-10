@@ -31212,6 +31212,7 @@ var FilterTodoView = require('../views/filtertodoview');
 var FilterTagView = require('../views/filterTagView');
 var Todos = require('../collections/todos');
 var GuestTodos = require('../collections/guesttodos');
+var GuestTags = require('../collections/guesttags');
 var todoAppView = require('../views/mainview');
 var todoListView = require('../views/todolistview');
 var searchView = require('../views/searchview');
@@ -31244,9 +31245,11 @@ module.exports = Backbone.Router.extend({
                       guestTodo.id = null;
                       Todos.create(guestTodo);
                     });
-                    GuestTodos.each(function(gt) {
-                      gt.destroy();
-                    });
+                    var length = GuestTodos.length;
+                    for (var i = length - 1; i >= 0; i--) {
+                      GuestTodos.at(i).destroy();
+                    }
+                    // GuestTodos.each(function(g){g.destroy()});
               }
         });
     //call change method when anything happens with router
@@ -31273,23 +31276,26 @@ module.exports = Backbone.Router.extend({
   change: function() {
     Backbone.eventBus.trigger('routeChanged');
   },
+
+  /**
+  *
+  */
   checkUser: function(callback) {
    var that = this;
 
    $.ajax("/auth", {
      type: "GET",
      success: function() {
-      console.log('logged in FROM DA MAN');
+      Backbone.eventBus.trigger('userMode');
      },
      error: function() {
-      console.log('not logged in');
       Backbone.eventBus.trigger('guestMode');
      }
    });
   }
 });
 
-},{"../collections/guesttodos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/guesttodos.js","../collections/todos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/todos.js","../views/filterTagView":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filterTagView.js","../views/filterdoneview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filterdoneview.js","../views/filtertodoview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filtertodoview.js","../views/mainview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/mainview.js","../views/searchview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/searchview.js","../views/todolistview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/todolistview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/editview.js":[function(require,module,exports){
+},{"../collections/guesttags":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/guesttags.js","../collections/guesttodos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/guesttodos.js","../collections/todos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/todos.js","../views/filterTagView":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filterTagView.js","../views/filterdoneview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filterdoneview.js","../views/filtertodoview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filtertodoview.js","../views/mainview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/mainview.js","../views/searchview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/searchview.js","../views/todolistview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/todolistview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/editview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -31380,6 +31386,9 @@ module.exports = Backbone.View.extend({
             this.model.get('tags').forEach(function(tag) {
                 GuestTags.removeTag(tag);
             })
+            tagsContent.forEach(function(tag){
+                GuestTags.exist(tag);
+            });
 
             this.model.save(
                 {
@@ -31394,10 +31403,6 @@ module.exports = Backbone.View.extend({
                         Tags.fetch();
                     }
                 });
-            console.log(tagsContent);
-            tagsContent.forEach(function(tag){
-                GuestTags.exist(tag);
-            });
 	        (this.model.validationError) ? this.$('.alert-danger').toggleClass('hide') : $('.modal-backdrop').remove()
     },
 
@@ -31888,6 +31893,10 @@ module.exports = Backbone.View.extend({
         return this;
 	},
 
+	/**
+	* Debounced function to filter Todos collection to those
+	* containing the search term.
+	*/
 	findTodos: _.debounce(function(e) {
         var searchTerm = e.target.value;
         var thing = Todos.search(searchTerm);
@@ -31895,6 +31904,10 @@ module.exports = Backbone.View.extend({
         this.$('#todoul').html(this.searchedView.render().el);
     }, 800),
 
+	/**
+	* Removes the search term from input box and removes the filtered
+	* todos view.
+	*/
     resetSearch: function() {
     	this.$('.search-field').val('');
     	this.searchedView.remove();
@@ -31919,16 +31932,15 @@ module.exports = Backbone.View.extend({
 
     initialize: function() {
         this.listenTo(Backbone.eventBus, 'guestMode', this.guestMode);
+        this.listenTo(Backbone.eventBus, 'userMode', this.userMode);
         this.listenTo(this.collection, 'reset', this.render);
         this.listenTo(this.collection, 'add', this.render); //so that new tags are added alphabetically
         this.listenTo(this.collection, 'remove', this.removeTagView);
         Tags.fetch();
-        // GuestTags.fetch();
-        // GuestTags.each(function(g){g.destroy()});
     },
 
     /**
-    * renders list of all tags in collection
+    * Renders list of all tags in collection.
     */
     render: function() {
         this.$el.empty();
@@ -31944,13 +31956,36 @@ module.exports = Backbone.View.extend({
         }
         return this;
     },
+
+    /**
+    * Renders the guest tags from local storage instead of
+    * tags associated with a user from the server
+    */
     guestMode: function() {
+        // Set Tags variable to GuestTags collection
         Tags = GuestTags;
+        // Fetch the guest tags from localStorage
+        Tags.fetch();
+        // Render the collection
+        this.render();
+    },
+
+    /**
+    * When logged in, make sure the guest tags collection is cleared.
+    * Render the users own tags from the server.
+    */
+    userMode: function() {
+        GuestTags.fetch();
+        var length = GuestTags.length;
+        for (var i = length - 1; i >= 0; i--) {
+            GuestTags.at(i).destroy();
+        }
         Tags.fetch();
         this.render();
     },
+
     /**
-    * removes a tag from the list if no longer in the collection
+    * Removes a tag from the list if no longer in the collection.
     */
     removeTagView: function(tag) {
         var cid = '#tag' + tag.cid;
@@ -32008,6 +32043,7 @@ var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
 var GuestTodos = require('../collections/guesttodos');
+var GuestTags = require('../collections/guesttags');
 var TodosView = require('./todosview');
 var DoneView = require('./filterdoneview');
 var NotDoneView = require('./filtertodoview');
@@ -32029,8 +32065,6 @@ module.exports = Backbone.View.extend({
             this.currentView = new TodosView({collection: Todos});
         }
         this.render();
-        this.listenTo(Todos, 'request', this.yourCallback); //start fetching
-        this.listenTo(Todos, 'sync', this.yourCallback); //finish fetching
         this.listenTo(Backbone.eventBus, 'guestMode', this.guestMode);
         this.listenTo(Backbone.eventBus, 'filterAll', this.filterAll);
         this.listenTo(Backbone.eventBus, 'filterDone', this.filterDone);
@@ -32047,7 +32081,7 @@ module.exports = Backbone.View.extend({
     },
 
     /**
-    * Following three methods clean up any already existing todos view and renders new ones based on status filter
+    * Following methods clean up any already existing todos view and renders new ones based on status filter
     */
     filterDone: function() {
         this.currentView.remove();
@@ -32070,60 +32104,60 @@ module.exports = Backbone.View.extend({
         this.render();
 
     },
+
+    /**
+    * If no user is logged in, only show the guest todos/tags
+    * saved in localStorage.
+    */
     guestMode: function() {
-        console.log('in guest view mode');
         Todos = GuestTodos;
         GuestTodos.fetch({reset: true});
+        GuestTags.fetch({reset: true});
         this.filterAll();
     },
     /**
-    * uses jQuery UI to make list items sortable.
-    * if sorting has occured, order of items is saved to models accordingly.
+    * Uses jQuery UI to make list items sortable.
+    * If sorting has occured, order of items is saved to models accordingly.
     */
     orderPersistance: function() {
         this.$('#todoul').sortable({
             axis: "y",
-            //only allow list item to be dragged by .handle (a glyphicon)
+            // only allow list item to be dragged by .handle (a glyphicon)
             handle: ".handle",
-            //prevents list item being dragged out of parent element, else dragging item down extends the page
+            // prevents list item being dragged out of parent element, else dragging item down extends the page
             containment: "parent",
             tolerance: 'intersect',
-            //this method is called whenever the list has been rearranged
+            // this method is called whenever the list has been rearranged
             update: function(event, ui) {
                 var order = $('#todoul').sortable('toArray'),
                     cidOfDropped = ui.item.context.id,
                     itemIndex = ui.item.index();
 
-                //if dropped item is now last in list, change order property to less than that of penultimate
+                // if dropped item is now last in list, change order property to less than that of penultimate
                 if (itemIndex == order.length - 1) {
                     var cidOfAbove = order[itemIndex - 1],
                         orderOfAbove = Todos.get(cidOfAbove).get('order');
                     Todos.get(cidOfDropped).save({'order': orderOfAbove - 1});
-                } else { //else change the order to more than item below it
+                } else { // else change the order to more than item below it
                     Todos.get({cid: cidOfDropped})
                         .save({'order': Todos.get({cid: order[itemIndex + 1]})
                             .get('order') + 1});
 
-                    for (var i = 0; i < itemIndex; i++) { //then increase order of those above it
+                    for (var i = 0; i < itemIndex; i++) { // then increase order of those above it
                         var currentOrder = Todos.get({cid: order[i]}).get('order');
                         Todos.get({cid: order[i]})
                             .save({"order": currentOrder + 2});
                     }
                 }
-                //so that the collection maintains the order without page refresh
+                // so that the collection maintains the order without page refresh
                 Todos.sort();
 
             }
         });
-    },
-
-    yourCallback: function() {
-
     }
 
-
 });
-},{"../collections/guesttodos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/guesttodos.js","../collections/todos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/todos.js","../jquery":"/home/andrew/dev/flask-what-todo/todowhat/static/js/jquery.js","./filterTagView":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filterTagView.js","./filterdoneview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filterdoneview.js","./filtertodoview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filtertodoview.js","./todosview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/todosview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/todosview.js":[function(require,module,exports){
+},{"../collections/guesttags":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/guesttags.js","../collections/guesttodos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/guesttodos.js","../collections/todos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/todos.js","../jquery":"/home/andrew/dev/flask-what-todo/todowhat/static/js/jquery.js","./filterTagView":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filterTagView.js","./filterdoneview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filterdoneview.js","./filtertodoview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filtertodoview.js","./todosview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/todosview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/todosview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -32143,8 +32177,8 @@ module.exports = Backbone.View.extend({
     },
 
     /**
-     * renders every todo in the todos collection
-     */
+    * Renders every todo in the todos collection.
+    */
     render: function() {
         // Clear all the filter actives
         $('.list-group-item.active').removeClass('active');
@@ -32175,7 +32209,6 @@ module.exports = Backbone.View.extend({
         //changing done state of model will rerender the view of that todo, toggling appropriate styling
         this.listenTo(this.model, 'change', this.render);
         this.listenTo(this.model, 'change:reminder', this.checkReminder);
-        this.listenTo(this.model, 'change:reminder', this.checkCancelReminder);
         // this.checkReminder();
     },
 
@@ -32206,29 +32239,40 @@ module.exports = Backbone.View.extend({
     },
 
     /**
-    * removes model from collection, and decreases count of associated tags
+    * Removes model from collection, and decreases count of associated tags.
     */
     removeTodo: function() {
         var todoTags = this.model.get('tags');
+        // Decrease count/remove model for each tag of the todo (for guests)
         todoTags.forEach(function(tag) {
             GuestTags.removeTag(tag);
         })
+        // Destroy the model, automatically removes tags for a user on the backend
         this.model.destroy();
         // Fetch tags from server so count on view is updated
         Tags.fetch({reset: true});
         this.render();
     },
 
+    /**
+    * Change the done status of a todo
+    */
     toggleDone: function() {
         var done = this.model.get('done');
         this.model.save({'done': !done});
         Backbone.eventBus.trigger('statusChanged');
     },
 
+    /**
+    * Check if a user has set a reminder.
+    * If reminder was set, a timeout is set for the requested
+    * reminder time where the notifyUser function is called.
+    */
     checkReminder: function() {
         var todo = this.model;
         var reminder = todo.get('reminder');
         if (reminder) {
+            // Make sure user doesn't accidentally close the window if a reminder was set.
             window.onbeforeunload = function() {
                     return 'You have a reminder set.';
                 };
@@ -32236,16 +32280,15 @@ module.exports = Backbone.View.extend({
             var notify = this.notifyUser;
             this.reminderTimeout = setTimeout(function() {notify(todo)}, timeToReminder);
         }
-    },
-
-    checkCancelReminder: function() {
-        var reminder = this.model.get('reminder');
-        if (!reminder) {
+        else {
             clearTimeout(this.reminderTimeout);
             window.onbeforeunload=null;
         }
     },
 
+    /**
+    * Reminds user of a todo with the Notification API
+    */
     notifyUser: function(todo) {
         var content = todo.get('content')
         todo.save({reminder: null});
@@ -32349,7 +32392,13 @@ __p+='\n                <a href="/logout" class="logout pull-right visible-md vi
  } else { 
 __p+='\n                <a href="/login" class="logout pull-right visible-md visible-lg">Login or create an account</a>\n              ';
  } 
-__p+='\n          <div class="collapse navbar-collapse" id="menu-items">\n              <ul class="nav navbar-nav">\n                  <li class="dropdown visible-sm visible-xs" id="mobilenavlinks">\n                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n                     FILTER STATUS\n                    </a>\n                    <ul class="dropdown-menu mobilelinks" role="menu">\n                    </ul>\n                  </li>\n\n                  <li class="dropdown visible-sm visible-xs">\n                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n                        TAGS<span class="glyphicon glyphicon-tags"></span>\n                      </a>\n                      <ul class="dropdown-menu taglist" role="menu">\n                      </ul>\n                  </li>\n\n                  <li class="dropdown visible-sm visible-xs">\n                      <a href="/logout">\n                        LOGOUT\n                      </a>\n                  </li>\n              </ul>\n          </div>\n      </div>\n\n\n  </nav>\n';
+__p+='\n          <div class="collapse navbar-collapse" id="menu-items">\n              <ul class="nav navbar-nav">\n                  <li class="dropdown visible-sm visible-xs" id="mobilenavlinks">\n                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n                     FILTER STATUS\n                    </a>\n                    <ul class="dropdown-menu mobilelinks" role="menu">\n                    </ul>\n                  </li>\n\n                  <li class="dropdown visible-sm visible-xs">\n                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n                        TAGS<span class="glyphicon glyphicon-tags"></span>\n                      </a>\n                      <ul class="dropdown-menu taglist" role="menu">\n                      </ul>\n                  </li>\n\n                  <li class="dropdown visible-sm visible-xs">\n                  ';
+ if (guest) { 
+__p+='\n                    <a href="/login">LOGIN or REGISTER</a>\n                  ';
+ } else { 
+__p+='\n                    <a href="/logout">LOGOUT</a>\n                  ';
+ } 
+__p+='\n                  </li>\n              </ul>\n          </div>\n      </div>\n\n\n  </nav>\n';
 }
 return __p;
 };

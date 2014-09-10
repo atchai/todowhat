@@ -494,3 +494,13 @@ font-weight: 700;
 .login-link {
     font-size: 1.1em;
 }
+
+.visitor-info {
+    text-align: center;
+    /*width: 50%;*/
+    font-size: 1.2em;
+    margin: -30px auto 30px auto;
+    background: #dfdfdf;
+    padding: 1em;
+    color: #666;
+}

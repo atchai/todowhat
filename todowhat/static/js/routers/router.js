@@ -4,6 +4,7 @@ var FilterTodoView = require('../views/filtertodoview');
 var FilterTagView = require('../views/filterTagView');
 var Todos = require('../collections/todos');
 var GuestTodos = require('../collections/guesttodos');
+var GuestTags = require('../collections/guesttags');
 var todoAppView = require('../views/mainview');
 var todoListView = require('../views/todolistview');
 var searchView = require('../views/searchview');
@@ -36,9 +37,11 @@ module.exports = Backbone.Router.extend({
                       guestTodo.id = null;
                       Todos.create(guestTodo);
                     });
-                    GuestTodos.each(function(gt) {
-                      gt.destroy();
-                    });
+                    var length = GuestTodos.length;
+                    for (var i = length - 1; i >= 0; i--) {
+                      GuestTodos.at(i).destroy();
+                    }
+                    // GuestTodos.each(function(g){g.destroy()});
               }
         });
     //call change method when anything happens with router
@@ -65,16 +68,19 @@ module.exports = Backbone.Router.extend({
   change: function() {
     Backbone.eventBus.trigger('routeChanged');
   },
+
+  /**
+  *
+  */
   checkUser: function(callback) {
    var that = this;
 
    $.ajax("/auth", {
      type: "GET",
      success: function() {
-      console.log('logged in FROM DA MAN');
+      Backbone.eventBus.trigger('userMode');
      },
      error: function() {
-      console.log('not logged in');
       Backbone.eventBus.trigger('guestMode');
      }
    });

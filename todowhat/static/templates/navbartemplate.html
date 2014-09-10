@@ -34,9 +34,11 @@
                   </li>
 
                   <li class="dropdown visible-sm visible-xs">
-                      <a href="/logout">
-                        LOGOUT
-                      </a>
+                  <% if (guest) { %>
+                    <a href="/login">LOGIN or REGISTER</a>
+                  <% } else { %>
+                    <a href="/logout">LOGOUT</a>
+                  <% } %>
                   </li>
               </ul>
           </div>

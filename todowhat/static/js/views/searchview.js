@@ -24,6 +24,10 @@ module.exports = Backbone.View.extend({
         return this;
 	},
 
+	/**
+	* Debounced function to filter Todos collection to those
+	* containing the search term.
+	*/
 	findTodos: _.debounce(function(e) {
         var searchTerm = e.target.value;
         var thing = Todos.search(searchTerm);
@@ -31,6 +35,10 @@ module.exports = Backbone.View.extend({
         this.$('#todoul').html(this.searchedView.render().el);
     }, 800),
 
+	/**
+	* Removes the search term from input box and removes the filtered
+	* todos view.
+	*/
     resetSearch: function() {
     	this.$('.search-field').val('');
     	this.searchedView.remove();

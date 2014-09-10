@@ -88,6 +88,9 @@ module.exports = Backbone.View.extend({
             this.model.get('tags').forEach(function(tag) {
                 GuestTags.removeTag(tag);
             })
+            tagsContent.forEach(function(tag){
+                GuestTags.exist(tag);
+            });
 
             this.model.save(
                 {
@@ -102,10 +105,6 @@ module.exports = Backbone.View.extend({
                         Tags.fetch();
                     }
                 });
-            console.log(tagsContent);
-            tagsContent.forEach(function(tag){
-                GuestTags.exist(tag);
-            });
 	        (this.model.validationError) ? this.$('.alert-danger').toggleClass('hide') : $('.modal-backdrop').remove()
     },
 

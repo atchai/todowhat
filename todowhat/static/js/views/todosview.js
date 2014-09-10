@@ -17,8 +17,8 @@ module.exports = Backbone.View.extend({
     },
 
     /**
-     * renders every todo in the todos collection
-     */
+    * Renders every todo in the todos collection.
+    */
     render: function() {
         // Clear all the filter actives
         $('.list-group-item.active').removeClass('active');
