@@ -7,4 +7,5 @@ $(document).ready(function() {
     Backbone.eventBus = _.extend({}, Backbone.Events);
     new appRouter();
     Backbone.history.start();
+    console.log(Backbone.history.fragment);
 });

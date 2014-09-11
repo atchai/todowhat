@@ -30864,8 +30864,97 @@ $(document).ready(function() {
     Backbone.eventBus = _.extend({}, Backbone.Events);
     new appRouter();
     Backbone.history.start();
+    console.log(Backbone.history.fragment);
 });
-},{"./routers/router":"/home/andrew/dev/flask-what-todo/todowhat/static/js/routers/router.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/guesttags.js":[function(require,module,exports){
+},{"./routers/router":"/home/andrew/dev/flask-what-todo/todowhat/static/js/routers/router.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/basetodos.js":[function(require,module,exports){
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
+var Todo = require('../models/todo');
+
+module.exports = Backbone.Collection.extend({
+
+    model: Todo,
+
+    comparator: 'order',
+
+    /**
+     * This returns new collection containing only done or not done todos.
+     */
+    filterDone: function(status) {
+        return new this.constructor(
+            this.filter(function(todo) {
+                return todo.get('done') === status;
+            })
+        );
+    },
+
+    /**
+     * Return 'order' attribute of the last todo in collection incremented by 1.
+     * This ensures new todos will be above old todos
+     */
+    newOrder: function() {
+        if (this.last()) {
+            return this.last().get('order') + 1;
+        } else {
+            return 0;
+        }
+    },
+
+    /**
+    * Returns a subcollection with todos matching the search pattern
+    */
+    search: function(letters) {
+        if (!letters) {
+            return this;
+        }
+        var pattern = new RegExp(letters, "gi");
+        return new this.constructor(
+            this.filter(function(data) {
+                return pattern.test(data.get("content"));
+            })
+        );
+    },
+
+    /**
+     * Returns todos with a specific tag
+     */
+    filterTag: function(tag) {
+        return new this.constructor(
+            this.filter(function(todo) {
+                var tagArr = [];
+                var tagList = todo.getTags();
+                tagList.forEach(function(t) {
+                    tagArr.push(t);
+                })
+                return _.contains(tagArr, tag);
+            })
+        );
+    },
+
+    sortableOrder: function(order, cidOfDropped, itemIndex) {
+        if (itemIndex == order.length - 1) {
+            var cidOfAbove = order[itemIndex - 1],
+                orderOfAbove = this.get(cidOfAbove).get('order');
+            this.get(cidOfDropped).save({'order': orderOfAbove - 1});
+        } else { // else change the order to more than item below it
+            this.get({cid: cidOfDropped})
+                .save({'order': this.get({cid: order[itemIndex + 1]})
+                    .get('order') + 1});
+
+            for (var i = 0; i < itemIndex; i++) { // then increase order of those above it
+                var currentOrder = this.get({cid: order[i]}).get('order');
+                this.get({cid: order[i]})
+                    .save({"order": currentOrder + 2});
+            }
+        }
+        this.sort();
+    }
+});
+
+// module.exports = new BaseTodos([]);
+
+},{"../models/todo":"/home/andrew/dev/flask-what-todo/todowhat/static/js/models/todo.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/guesttags.js":[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Tag = require('../models/tag');
@@ -30873,22 +30962,22 @@ Backbone.$ = window.$;
 Backbone.LocalStorage = require('backbone.localstorage');
 
 var GuestTags = Backbone.Collection.extend({
-	localStorage: new Backbone.LocalStorage("StoredTags"),
+	localStorage: new Backbone.LocalStorage("StoredGuestTags"),
 
 	model: Tag,
 
-	comparator: 'name', //so that models are inserted into collection alphabetically
+	comparator: 'name', // so that models are inserted into collection alphabetically
 
 	/**
 	* Check if tag with same name exists in collection already
 	*/
 	exist: function(tag) {
-		//try and grab the tag we're looking for in the collection by name
+		// Try and grab the tag we're looking for in the collection by name.
 		var existingTag = this.find(function(model) {
 				return model.get('name') == tag;
 			});
 
-		//if there are no tags or tags with same name in collection, create new tag
+		// if there are no tags or tags with same name in collection, create new tag
 		if (this.pluck('name').length == 0 || !existingTag) {
 		    this.create({name: tag});
 		} else {//otherwise increase count on the existing tag with same name
@@ -30925,80 +31014,30 @@ var GuestTags = Backbone.Collection.extend({
 
 	parseNewTags: function(newTags, oldTags, tagsToRemoveArr) {
 		var tagsArray = oldTags.concat(this.parseTags(newTags))
-		//remove any duplicate tag which may already be in old tags array
+		// remove any duplicate tag which may already be in old tags array
         tagsArray = _.uniq(tagsArray, false);
-        //remove any tags which are to be removed from the todo
+        // remove any tags which are to be removed from the todo
         tagsArray = _.difference(tagsArray, tagsToRemoveArr);
         return tagsArray;
 	}
 });
 
-//calling this module from others returns a new tag model
+// calling this module from others returns a new tag model
 module.exports = new GuestTags([]);
 },{"../models/tag":"/home/andrew/dev/flask-what-todo/todowhat/static/js/models/tag.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","backbone.localstorage":"/home/andrew/dev/flask-what-todo/node_modules/backbone.localstorage/backbone.localStorage.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/guesttodos.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Todo = require('../models/todo');
+var BaseTodos = require('./basetodos');
 Backbone.LocalStorage = require('backbone.localstorage')
 
-GuestTodos = Backbone.Collection.extend({
-    localStorage: new Backbone.LocalStorage("StoredGuestTodos"),
-    parse: function(response) {
-        return response;
-    },
-    model: Todo,
-    comparator: 'order',
-    /**
-     * this returns new collection containing only done or not done todos
-     */
-    filterDone: function(status) {
-        return new GuestTodos(
-            this.filter(function(todo) {
-                return todo.get('done') === status;
-            })
-        );
-    },
-    /**
-     * used to set order property of new model to one more than last existing model in collection
-     */
-    newOrder: function() {
-        if (this.last()) {
-            return this.last().get('order') + 1;
-        } else {
-            return 0;
-        }
-    },
-
-    search: function(letters) {
-        if (letters == "") return this;
-        var pattern = new RegExp(letters, "gi");
-        return new GuestTodos(
-            this.filter(function(data) {
-                return pattern.test(data.get("content"));
-            })
-        );
-    },
-
-    /**
-     * Returns todos with a specific tag
-     */
-    filterTag: function(tag) {
-        return new GuestTodos(
-            this.filter(function(todo) {
-                var tagArr = [];
-                var tagList = todo.getTags();
-                tagList.forEach(function(t) {
-                    tagArr.push(t);
-                })
-                return _.contains(tagArr, tag);
-            })
-        );
-    }
+GuestTodos = BaseTodos.extend({
+    localStorage: new Backbone.LocalStorage("StoredGuestTodos")
 });
 module.exports = new GuestTodos([]);
 
-},{"../models/todo":"/home/andrew/dev/flask-what-todo/todowhat/static/js/models/todo.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","backbone.localstorage":"/home/andrew/dev/flask-what-todo/node_modules/backbone.localstorage/backbone.localStorage.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/tags.js":[function(require,module,exports){
+},{"../models/todo":"/home/andrew/dev/flask-what-todo/todowhat/static/js/models/todo.js","./basetodos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/basetodos.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","backbone.localstorage":"/home/andrew/dev/flask-what-todo/node_modules/backbone.localstorage/backbone.localStorage.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/tags.js":[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Tag = require('../models/tag');
@@ -31075,66 +31114,19 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Todo = require('../models/todo');
-// Backbone.LocalStorage = require('backbone.localstorage')
+var BaseTodos = require('./basetodos');
 
-Todos = Backbone.Collection.extend({
-    // localStorage: new Backbone.LocalStorage("StoredTodos"),
+Todos = BaseTodos.extend({
     url: '/todos',
+
     parse: function(response) {
         return response.todos;
-    },
-    model: Todo,
-    comparator: 'order',
-    /**
-     * this returns new collection containing only done or not done todos
-     */
-    filterDone: function(status) {
-        return new Todos(
-            this.filter(function(todo) {
-                return todo.get('done') === status;
-            })
-        );
-    },
-    /**
-     * used to set order property of new model to one more than last existing model in collection
-     */
-    newOrder: function() {
-        if (this.last()) {
-            return this.last().get('order') + 1;
-        } else {
-            return 0;
-        }
-    },
-
-    search: function(letters) {
-        if (letters == "") return this;
-        var pattern = new RegExp(letters, "gi");
-        return new Todos(
-            this.filter(function(data) {
-                return pattern.test(data.get("content"));
-            })
-        );
-    },
-
-    /**
-     * Returns todos with a specific tag
-     */
-    filterTag: function(tag) {
-        return new Todos(
-            this.filter(function(todo) {
-                var tagArr = [];
-                var tagList = todo.getTags();
-                tagList.forEach(function(t) {
-                    tagArr.push(t);
-                })
-                return _.contains(tagArr, tag);
-            })
-        );
     }
 });
+
 module.exports = new Todos([]);
 
-},{"../models/todo":"/home/andrew/dev/flask-what-todo/todowhat/static/js/models/todo.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/jquery.js":[function(require,module,exports){
+},{"../models/todo":"/home/andrew/dev/flask-what-todo/todowhat/static/js/models/todo.js","./basetodos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/basetodos.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/jquery.js":[function(require,module,exports){
 (function (global){
 var $ = global.jQuery = global.$ = require('jquery')
 
@@ -31239,19 +31231,6 @@ module.exports = Backbone.Router.extend({
       new todoListView();
       new searchView();
     }
-    Todos.fetch({
-            success: function(){
-                    GuestTodos.toJSON().forEach(function(guestTodo) {
-                      guestTodo.id = null;
-                      Todos.create(guestTodo);
-                    });
-                    var length = GuestTodos.length;
-                    for (var i = length - 1; i >= 0; i--) {
-                      GuestTodos.at(i).destroy();
-                    }
-                    // GuestTodos.each(function(g){g.destroy()});
-              }
-        });
     //call change method when anything happens with router
     this.listenTo(this, "all", this.change);
   },
@@ -31260,6 +31239,7 @@ module.exports = Backbone.Router.extend({
   * based on the route, the following methods pass the todos collection to appropriate view and renders
   */
   filterAll: function() {
+    console.log('firing filterAll from router');
     Backbone.eventBus.trigger('filterAll');
   },
   filterDone: function() {
@@ -31315,7 +31295,8 @@ module.exports = Backbone.View.extend({
         "click .edit-remove-tag": "removeTagsMode",
 		"click .remove-tag-mode": "removeTag",
 		"keyup #editfield": "liveUpdateTodo",
-        "click .remove-reminder": "removeReminder"
+        "click .remove-reminder": "removeReminder",
+        "click .activate-reminder-mode": "activateReminderMode"
 
     },
 
@@ -31336,6 +31317,9 @@ module.exports = Backbone.View.extend({
         return this;
     },
 
+    activateReminderMode: function() {
+        this.$('.set-reminder').toggleClass('hide');
+    },
     /**
     * First step of updating the todo model
     * This prepares the todo content, tags and description
@@ -31375,8 +31359,8 @@ module.exports = Backbone.View.extend({
             reminderTime = oldReminderTime
             this.$el.find('.modal').modal('hide');
         }
-        this.saveChanges(nC, tC, d, reminderTime);
 
+        this.saveChanges(nC, tC, d, reminderTime);
     },
 
     /**
@@ -31385,7 +31369,7 @@ module.exports = Backbone.View.extend({
     saveChanges: function(newContent, tagsContent, description, reminderTime) {
             this.model.get('tags').forEach(function(tag) {
                 GuestTags.removeTag(tag);
-            })
+            });
             tagsContent.forEach(function(tag){
                 GuestTags.exist(tag);
             });
@@ -31618,6 +31602,7 @@ module.exports = Backbone.View.extend({
 		 return this;
 	},
     guestMode: function() {
+        console.log('on formview guestmode');
         Todos = GuestTodos;
         Tags = GuestTags;
     },
@@ -31649,8 +31634,8 @@ module.exports = Backbone.View.extend({
                     wait: true,
                     //if todo content was valid, see if tag(s) exists in collection so count can be updated appropriately
                     success: function() {
-                        Todos.fetch({reset: true});
-                        Tags.fetch({reset: true});
+                        Todos.fetch();
+                        Tags.fetch();
                     }
                 });
 
@@ -31701,8 +31686,7 @@ module.exports = Backbone.View.extend({
         this.render();
     },
     guestMode: function() {
-        Tags = GuestTags;
-        this.$('.taglist').html(new TagsView({collection: Tags}).render().el);
+        this.$('.taglist').html(new TagsView({collection: GuestTags}).render().el);
     },
     render: function() {
         //renders the top navigation bar which contains tag list and navigation links on mobile screens
@@ -31712,9 +31696,6 @@ module.exports = Backbone.View.extend({
         //renders the tag list on left side (large screens)
         this.$('.taglist').html(new TagsView({collection: Tags}).render().el);
         //renders the navigation links on left side (large screens)
-        Todos.fetch();
-        GuestTodos.fetch();
-        // Todos.sync();
         this.$('#navlinks').html(new NavView().render().el);
     },
 
@@ -31834,6 +31815,8 @@ module.exports = Backbone.View.extend({
         //listens for change in router so relevant navigation link is given active styling
         this.listenTo(Backbone.eventBus, 'routeChanged', this.render);
         // this.render();
+        GuestTodos.fetch();
+        Todos.fetch();
     },
     render: function() {
         this.$el.html(template({
@@ -31932,7 +31915,6 @@ module.exports = Backbone.View.extend({
 
     initialize: function() {
         this.listenTo(Backbone.eventBus, 'guestMode', this.guestMode);
-        this.listenTo(Backbone.eventBus, 'userMode', this.userMode);
         this.listenTo(this.collection, 'reset', this.render);
         this.listenTo(this.collection, 'add', this.render); //so that new tags are added alphabetically
         this.listenTo(this.collection, 'remove', this.removeTagView);
@@ -31967,20 +31949,6 @@ module.exports = Backbone.View.extend({
         // Fetch the guest tags from localStorage
         Tags.fetch();
         // Render the collection
-        this.render();
-    },
-
-    /**
-    * When logged in, make sure the guest tags collection is cleared.
-    * Render the users own tags from the server.
-    */
-    userMode: function() {
-        GuestTags.fetch();
-        var length = GuestTags.length;
-        for (var i = length - 1; i >= 0; i--) {
-            GuestTags.at(i).destroy();
-        }
-        Tags.fetch();
         this.render();
     },
 
@@ -32042,6 +32010,7 @@ module.exports = Backbone.View.extend({
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
+var Tags = require('../collections/tags');
 var GuestTodos = require('../collections/guesttodos');
 var GuestTags = require('../collections/guesttags');
 var TodosView = require('./todosview');
@@ -32059,19 +32028,36 @@ module.exports = Backbone.View.extend({
     el: '.todos',
 
     initialize: function() {
-        //fetch existing todos from local storage
-        //if no todo list view exists yet, create view for all todos
+        Todos.fetch();
+        // If no todo list view exists yet, create view for all todos.
         if (!this.currentView) {
+            console.log('no currentview, making one:');
             this.currentView = new TodosView({collection: Todos});
+            console.log(this.currentView);
         }
         this.render();
+
         this.listenTo(Backbone.eventBus, 'guestMode', this.guestMode);
+        this.listenTo(Backbone.eventBus, 'userMode', this.userMode);
         this.listenTo(Backbone.eventBus, 'filterAll', this.filterAll);
         this.listenTo(Backbone.eventBus, 'filterDone', this.filterDone);
         this.listenTo(Backbone.eventBus, 'filterNotDone', this.filterNotDone);
         this.listenTo(Backbone.eventBus, 'filterTag', this.filterTag);
     },
-
+    userMode: function() {
+        Todos.fetch({
+            success: function(){
+                    GuestTodos.toJSON().forEach(function(guestTodo) {
+                      guestTodo.id = null;
+                      Todos.create(guestTodo);
+                    });
+                    var length = GuestTodos.length;
+                    for (var i = length - 1; i >= 0; i--) {
+                      GuestTodos.at(i).destroy();
+                    }
+              }
+        });
+    },
     /**
     * Puts the todos list view within the .todos element
     */
@@ -32081,28 +32067,25 @@ module.exports = Backbone.View.extend({
     },
 
     /**
-    * Following methods clean up any already existing todos view and renders new ones based on status filter
+    * Following methods clean up any already existing todos view and renders new ones based on status filter.
     */
     filterDone: function() {
-        this.currentView.remove();
-        this.currentView = new DoneView({collection: Todos});
-        this.render();
+        this.updateView(DoneView);
     },
     filterNotDone: function() {
-        this.currentView.remove();
-        this.currentView = new NotDoneView({collection: Todos});
-        this.render();
+        this.updateView(NotDoneView);
     },
     filterTag: function() {
-        this.currentView.remove();
-        this.currentView = new FilterTagView({collection: Todos});
-        this.render();
+        this.updateView(FilterTagView);
     },
     filterAll: function() {
+        console.log('todolistview filterAll');
+        this.updateView(TodosView);
+    },
+    updateView: function(viewName) {
         this.currentView.remove();
-        this.currentView = new TodosView({collection: Todos});
+        this.currentView = new viewName({collection: Todos});
         this.render();
-
     },
 
     /**
@@ -32111,15 +32094,34 @@ module.exports = Backbone.View.extend({
     */
     guestMode: function() {
         Todos = GuestTodos;
-        GuestTodos.fetch({reset: true});
-        GuestTags.fetch({reset: true});
+        GuestTodos.fetch();
+        GuestTags.fetch();
         this.filterAll();
     },
+
     /**
     * Uses jQuery UI to make list items sortable.
     * If sorting has occured, order of items is saved to models accordingly.
     */
     orderPersistance: function() {
+        var self = this;
+        var sortHelper = function(w, that, ui) {
+            that.children().each(function() {
+                    if ($(this).hasClass('ui-sortable-helper') || $(this).hasClass('ui-sortable-placeholder'))
+                        return true;
+                    // Get the absolute value of the distance between top of the helper
+                    var dist = Math.abs(ui.position.top - $(this).position().top),
+                    before = ui.position.top > $(this).position().top;
+                    // If overlap is more than half of the dragged item
+                    if ((w - dist) > (w / 2) && (dist < w)) {
+                        if (before)
+                            $('.ui-sortable-placeholder', that).insertBefore($(this));
+                        else
+                            $('.ui-sortable-placeholder', that).insertAfter($(this));
+                        return false;
+                    }
+            });
+        }
         this.$('#todoul').sortable({
             axis: "y",
             // only allow list item to be dragged by .handle (a glyphicon)
@@ -32127,37 +32129,31 @@ module.exports = Backbone.View.extend({
             // prevents list item being dragged out of parent element, else dragging item down extends the page
             containment: "parent",
             tolerance: 'intersect',
-            // this method is called whenever the list has been rearranged
+
+            // This method makes the list sorting smoother and is called whenever the list is being rearranged
+            sort: function(event, ui) {
+                var that = $(this),
+                w = ui.helper.outerHeight();
+                sortHelper(w, that, ui);
+             },
+
+            /**
+            * This method updates the order property of todo models and
+            * is called whenever the list has finished been rearranged
+            */
             update: function(event, ui) {
                 var order = $('#todoul').sortable('toArray'),
                     cidOfDropped = ui.item.context.id,
                     itemIndex = ui.item.index();
-
-                // if dropped item is now last in list, change order property to less than that of penultimate
-                if (itemIndex == order.length - 1) {
-                    var cidOfAbove = order[itemIndex - 1],
-                        orderOfAbove = Todos.get(cidOfAbove).get('order');
-                    Todos.get(cidOfDropped).save({'order': orderOfAbove - 1});
-                } else { // else change the order to more than item below it
-                    Todos.get({cid: cidOfDropped})
-                        .save({'order': Todos.get({cid: order[itemIndex + 1]})
-                            .get('order') + 1});
-
-                    for (var i = 0; i < itemIndex; i++) { // then increase order of those above it
-                        var currentOrder = Todos.get({cid: order[i]}).get('order');
-                        Todos.get({cid: order[i]})
-                            .save({"order": currentOrder + 2});
-                    }
-                }
-                // so that the collection maintains the order without page refresh
-                Todos.sort();
+                    // Todos.hi(cidOfDropped);
+                Todos.sortableOrder(order, cidOfDropped, itemIndex);
 
             }
         });
     }
 
 });
-},{"../collections/guesttags":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/guesttags.js","../collections/guesttodos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/guesttodos.js","../collections/todos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/todos.js","../jquery":"/home/andrew/dev/flask-what-todo/todowhat/static/js/jquery.js","./filterTagView":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filterTagView.js","./filterdoneview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filterdoneview.js","./filtertodoview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filtertodoview.js","./todosview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/todosview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/todosview.js":[function(require,module,exports){
+},{"../collections/guesttags":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/guesttags.js","../collections/guesttodos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/guesttodos.js","../collections/tags":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/tags.js","../collections/todos":"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/todos.js","../jquery":"/home/andrew/dev/flask-what-todo/todowhat/static/js/jquery.js","./filterTagView":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filterTagView.js","./filterdoneview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filterdoneview.js","./filtertodoview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/filtertodoview.js","./todosview":"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/todosview.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/views/todosview.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -32232,7 +32228,8 @@ module.exports = Backbone.View.extend({
             todoItem: this.model.get('content') ,
             done: this.model.get('done'),
             tags: this.model.get('tags'),
-            reminder: this.model.get('reminder')
+            reminder: this.model.get('reminder'),
+            checkboxID: 'cb'+this.model.cid
         }));
         this.$('.edit').html(new editView({model: this.model}).render().el);
         return this;
@@ -32311,21 +32308,7 @@ __p+='<!-- Button trigger modal -->\n<button class="btn btn-primary btn-sm glyph
 ((__t=( modalId ))==null?'':__t)+
 '">\n</button>\n\n<!-- Modal -->\n<div class="modal fade" id="'+
 ((__t=( modalId ))==null?'':__t)+
-'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">\n  <div class="modal-dialog">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n        <h4 class="modal-title" id="myModalLabel">Edit todo content:</h4>\n      </div>\n      <div class="modal-body">\n      <div class="alert alert-danger alert-dismissible hide" role="alert">\n  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n  <strong>Warning!</strong> Todo field cannot be blank.\n</div>\n      ';
- if (notifySupported) { 
-__p+='\n        ';
- if (!reminder) { 
-__p+='\n        <span>Remind me in: </span>\n          <input type="number" name="quantity" id="hours" class="time-input" min="0" max="24">\n          <span> hours and </span>\n          <input type="number" name="quantity" id="minutes" class="time-input" min="0" max="60">\n          <span>minutes</span>\n        ';
- } else { 
-__p+='\n        <span>Reminder set for: ';
-
-        var date = new Date(reminder);
-        print(date.toString().slice(16,25)); 
-__p+=' </span>\n        <span class="glyphicon glyphicon-remove pull-right remove-reminder"></span>\n        ';
- } 
-__p+='\n      ';
- } 
-__p+='\n        <input class="form-control" type="text" id="editfield" value="'+
+'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">\n  <div class="modal-dialog">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n        <h4 class="modal-title" id="myModalLabel">Edit todo</h4>\n      </div>\n      <div class="modal-body">\n      <div class="alert alert-danger alert-dismissible hide" role="alert">\n  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n  <strong>Warning!</strong> Todo field cannot be blank.\n</div>\n        <input class="form-control" type="text" id="editfield" value="'+
 ((__t=( todoItem ))==null?'':__t)+
 '">\n        <input class="form-control" type="text" id="descriptionfield"\n          ';
 if (description == null || description == '') {
@@ -32335,13 +32318,27 @@ __p+='\n            value="'+
 ((__t=(description))==null?'':__t)+
 '"\n            ';
  } 
-__p+='>\n        <input class="form-control hide" type="text" id="edittagfield" placeholder="New tags here, seperate with commas">\n        <button class="glyphicon glyphicon-plus edit-add-tag btn" data-toggle="tooltip" data-placement="top" title="Toggle add new tags mode"></button>\n        <button class="glyphicon glyphicon-minus edit-remove-tag btn" data-toggle="tooltip" data-placement="top" title="Toggle remove tags mode"></button>\n        ';
+__p+='>\n        <input class="form-control hide" type="text" id="edittagfield" placeholder="New tags here, seperate with commas">\n      ';
+ if (notifySupported) { 
+__p+='\n        ';
+ if (!reminder) { 
+__p+='\n        <div class="hide set-reminder">\n        <span>Remind me in: </span>\n          <input type="number" name="quantity" id="hours" class="time-input" min="0" max="24">\n          <span> hours and </span>\n          <input type="number" name="quantity" id="minutes" class="time-input" min="0" max="60">\n          <span>minutes</span>\n        </div>\n        ';
+ } else { 
+__p+='\n        <span>Reminder set for: ';
+
+        var date = new Date(reminder);
+        print(date.toString().slice(16,25)); 
+__p+=' </span>\n        <span class="glyphicon glyphicon-remove pull-right remove-reminder"></span>\n        ';
+ } 
+__p+='\n      ';
+ } 
+__p+='\n        ';
  tags.forEach(function(tag){ 
 __p+='\n    <span class="label label-info edit-tag">'+
 ((__t=( tag ))==null?'':__t)+
 '</span>\n  ';
  }) 
-__p+='\n        <button type="button" class="btn btn-primary pull-right save">Save changes</button>\n      </div>\n    </div>\n  </div>\n</div>\n\n  <script type="text/javascript">\n  $(function () {\n        $(".glyphicon").tooltip({container: \'body\'});\n    });\n  </script>';
+__p+='\n        <button class="glyphicon glyphicon-time activate-reminder-mode btn" data-toggle="tooltip" data-placement="top" title="Toggle add reminder mode"></button>\n        <button class="glyphicon glyphicon-plus edit-add-tag btn" data-toggle="tooltip" data-placement="top" title="Toggle add new tags mode"></button>\n        <button class="glyphicon glyphicon-minus edit-remove-tag btn" data-toggle="tooltip" data-placement="top" title="Toggle remove tags mode"></button>\n        <button type="button" class="btn btn-primary pull-right save">Save changes</button>\n      </div>\n    </div>\n  </div>\n</div>\n\n  <script type="text/javascript">\n  $(function () {\n        $(".glyphicon").tooltip({container: \'body\'});\n    });\n  </script>';
 }
 return __p;
 };
@@ -32407,23 +32404,27 @@ return __p;
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='<ul class="nav nav-pills nav-stacked">\n  <li>Filter by status</li>\n\n    ';
+__p+='<ul class="nav nav-pills nav-stacked">\n  <li><span>Filter by status</span></li>\n\n    ';
  items.forEach(function(item) { 
-__p+='\n      <li ';
+__p+='\n      <li class="';
  if (item.bold) {
-__p+=' class="active" ';
- } 
-__p+=' ><a href="'+
+__p+=' active ';
+ } if (item.disabled) {
+__p+=' disabled ';
+} 
+__p+='" >\n      \t<a href="'+
 ((__t=( item.href ))==null?'':__t)+
-'"\n      class="';
+'"\n      \t\tclass="'+
+((__t=( item.name + 'link'))==null?'':__t)+
+' ';
  if (item.disabled) {
 __p+=' disabled ';
 } if (item.bold) {
 __p+=' bold ';
 } 
-__p+='">\n        '+
+__p+=' nav-link">\n        \t\t'+
 ((__t=( item.name ))==null?'':__t)+
-'\n      </a></li>\n    ';
+'\n      \t</a>\n      </li>\n    ';
  }) 
 __p+='\n\n</ul>';
 }
@@ -32471,11 +32472,15 @@ __p+='<div ';
  if (done) {
 __p+=' class="struck" ';
 } 
-__p+=' >\n\t<span class="handle glyphicon glyphicon-move"></span>\n\t<input class="toggle" type="checkbox" ';
+__p+=' >\n\t<span class="handle glyphicon glyphicon-move"></span>\n\t<input class="toggle" type="checkbox" id="'+
+((__t=(checkboxID))==null?'':__t)+
+'" class="css-checkbox" ';
  if (done) {
 __p+=' checked ';
 } 
-__p+=' >\n\t<span class="todo-item">\n\t'+
+__p+=' />\n\t<label for="'+
+((__t=(checkboxID))==null?'':__t)+
+'"></label>\n\t<span class="todo-item">\n\t'+
 ((__t=( todoItem ))==null?'':__t)+
 '\n\t</span>\n\t';
  if (reminder) { 

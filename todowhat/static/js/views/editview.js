@@ -17,7 +17,8 @@ module.exports = Backbone.View.extend({
         "click .edit-remove-tag": "removeTagsMode",
 		"click .remove-tag-mode": "removeTag",
 		"keyup #editfield": "liveUpdateTodo",
-        "click .remove-reminder": "removeReminder"
+        "click .remove-reminder": "removeReminder",
+        "click .activate-reminder-mode": "activateReminderMode"
 
     },
 
@@ -38,6 +39,9 @@ module.exports = Backbone.View.extend({
         return this;
     },
 
+    activateReminderMode: function() {
+        this.$('.set-reminder').toggleClass('hide');
+    },
     /**
     * First step of updating the todo model
     * This prepares the todo content, tags and description
@@ -77,8 +81,8 @@ module.exports = Backbone.View.extend({
             reminderTime = oldReminderTime
             this.$el.find('.modal').modal('hide');
         }
-        this.saveChanges(nC, tC, d, reminderTime);
 
+        this.saveChanges(nC, tC, d, reminderTime);
     },
 
     /**
@@ -87,7 +91,7 @@ module.exports = Backbone.View.extend({
     saveChanges: function(newContent, tagsContent, description, reminderTime) {
             this.model.get('tags').forEach(function(tag) {
                 GuestTags.removeTag(tag);
-            })
+            });
             tagsContent.forEach(function(tag){
                 GuestTags.exist(tag);
             });

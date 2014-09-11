@@ -8,27 +8,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Edit todo content:</h4>
+        <h4 class="modal-title" id="myModalLabel">Edit todo</h4>
       </div>
       <div class="modal-body">
       <div class="alert alert-danger alert-dismissible hide" role="alert">
   <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
   <strong>Warning!</strong> Todo field cannot be blank.
 </div>
-      <% if (notifySupported) { %>
-        <% if (!reminder) { %>
-        <span>Remind me in: </span>
-          <input type="number" name="quantity" id="hours" class="time-input" min="0" max="24">
-          <span> hours and </span>
-          <input type="number" name="quantity" id="minutes" class="time-input" min="0" max="60">
-          <span>minutes</span>
-        <% } else { %>
-        <span>Reminder set for: <%
-        var date = new Date(reminder);
-        print(date.toString().slice(16,25)); %> </span>
-        <span class="glyphicon glyphicon-remove pull-right remove-reminder"></span>
-        <% } %>
-      <% } %>
         <input class="form-control" type="text" id="editfield" value="<%= todoItem %>">
         <input class="form-control" type="text" id="descriptionfield"
           <%if (description == null || description == '') {%>
@@ -37,11 +23,28 @@
             value="<%=description%>"
             <% } %>>
         <input class="form-control hide" type="text" id="edittagfield" placeholder="New tags here, seperate with commas">
-        <button class="glyphicon glyphicon-plus edit-add-tag btn" data-toggle="tooltip" data-placement="top" title="Toggle add new tags mode"></button>
-        <button class="glyphicon glyphicon-minus edit-remove-tag btn" data-toggle="tooltip" data-placement="top" title="Toggle remove tags mode"></button>
+      <% if (notifySupported) { %>
+        <% if (!reminder) { %>
+        <div class="hide set-reminder">
+        <span>Remind me in: </span>
+          <input type="number" name="quantity" id="hours" class="time-input" min="0" max="24">
+          <span> hours and </span>
+          <input type="number" name="quantity" id="minutes" class="time-input" min="0" max="60">
+          <span>minutes</span>
+        </div>
+        <% } else { %>
+        <span>Reminder set for: <%
+        var date = new Date(reminder);
+        print(date.toString().slice(16,25)); %> </span>
+        <span class="glyphicon glyphicon-remove pull-right remove-reminder"></span>
+        <% } %>
+      <% } %>
         <% tags.forEach(function(tag){ %>
     <span class="label label-info edit-tag"><%= tag %></span>
   <% }) %>
+        <button class="glyphicon glyphicon-time activate-reminder-mode btn" data-toggle="tooltip" data-placement="top" title="Toggle add reminder mode"></button>
+        <button class="glyphicon glyphicon-plus edit-add-tag btn" data-toggle="tooltip" data-placement="top" title="Toggle add new tags mode"></button>
+        <button class="glyphicon glyphicon-minus edit-remove-tag btn" data-toggle="tooltip" data-placement="top" title="Toggle remove tags mode"></button>
         <button type="button" class="btn btn-primary pull-right save">Save changes</button>
       </div>
     </div>

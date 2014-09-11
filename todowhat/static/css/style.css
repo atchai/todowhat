@@ -38,8 +38,7 @@ Create todo fields
     margin: 10px 0 0 5px;
 }
 .input-sm, .form-horizontal .form-group-sm .form-control {
-    border-radius: 5px;
-    border: none;
+    border-radius: 0px;
     webkit-box-shadow: none;
     box-shadow: none;
 }
@@ -54,6 +53,12 @@ Create todo fields
 }
 .search-field {
     width: 103%;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: none;
+}
+.search-field:focus {
+    border: none;
 }
 /***************************
 Navigation
@@ -61,10 +66,19 @@ Navigation
 
 .nav > li {
     text-align: center;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;
+    border-right: 20px solid transparent;
+    transition: border 0.3s;
+}
+.nav-stacked > li + li {
+    margin: 0px;
+}
+.nav-pills > li > a {
+    margin-right: -20px;
 }
 .nav-pills > li:first-child {
-    margin-bottom: -4px;
-    border-bottom: 1px solid #999;
     background: url('../images/concrete_wall.png');
     color: white;
     z-index: 99;
@@ -72,6 +86,39 @@ Navigation
     border-top-right-radius: 4px;
 border-top-left-radius: 4px;
 padding: 10px;
+opacity: 0.8;
+}
+.nav-pills > li:first-child > span {
+    margin-right: -20px;
+}
+.nav-pills > li:first-child:hover {
+    border-color: transparent;
+        background: url('../images/concrete_wall.png');
+
+}
+.nav-pills > li.active > a {
+    background: none;
+    color: #005470;
+}
+.nav-pills > li.active:hover > a {
+    background: none;
+    color: #005470;
+}
+.nav-pills >li.disabled:hover {
+    border-color: transparent;
+    background: none;
+}
+.nav-pills > li:hover a{
+    background: none;
+}
+.nav-pills > li:hover {
+    border-right: 20px solid #B3C6FF;
+    background: white;
+}
+.nav-pills > li.active {
+    border-color: #63b1cf;
+    background: white;
+    /*border-color: #005470;*/
 }
 .navbar {
     margin: 0;
@@ -107,6 +154,7 @@ a.disabled {
 #navlinks {
     width: 15%;
     padding: 0;
+    background: #fafafa;
 }
 /***************************
 Todo list
@@ -121,6 +169,32 @@ Todo list
 input[type='checkbox'] {
     width: 17px;
     height: 17px;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+    border: 1px solid #C6C6E9;
+    background: rgba(239,239,239,0.3);
+margin-bottom: -2px;
+padding-top: 10px;
+}
+input[type=checkbox]:checked {
+    background: #DAFFCC;
+}
+input[type=checkbox]:active {
+    background: #CCE6FF;
+    border: none;
+}
+input[type="checkbox"]:checked + label:after {
+  content: '✔';
+  position: absolute;
+  /*top: 0; left: 4px;*/
+  top: 10px;
+  left: 39px;
+  font-size: 14px;
+  color: #09ad7e;
+}
+input.[type="checkbox"]:checked + label:before {
+  content: '';
 }
 .list-group {
     margin-top: 14px;
@@ -132,9 +206,6 @@ input[type='checkbox'] {
     font-size: 1.4em;
     background: none;
     line-height: 2em;
-}
-.ui-sortable .list-group-item:last-child {
-    padding-bottom: 35px;
 }
 .list-group-item .todo-item {
     margin-right: 10px;
@@ -149,7 +220,8 @@ input[type='checkbox'] {
     height: 30px;
 }
 .handle {
-	color: #777;
+	color: #999;
+    opacity: 0.8;
 }
 #todoul {
     word-wrap: break-word;
@@ -172,6 +244,7 @@ Tags
     font-size: 9px;
     margin-top: 0px;
     width: 15%;
+    background: #fafafa;
 
 }
 .tags-head {
@@ -179,6 +252,7 @@ Tags
     color: white;
     border-radius: 0px;
     text-align: center;
+    opacity: 0.85;
 }
 .taglist li {
     border-radius: 0px;
@@ -187,6 +261,9 @@ Tags
 }
 .taglist > li > div {
     width: 80%;
+}
+.taglist > div > li:nth-child(0n+2) {
+    border-top: none;
 }
 .badge {
     opacity: 0.7;
@@ -332,6 +409,7 @@ position: relative;
     }
     .title {
     	margin-left: 3%;
+        font-weight: 900;
     }
     .submit {
         margin-left: 35%;
@@ -417,9 +495,15 @@ li.ui-sortable-helper, li.ui-sortable-helper input, li.ui-sortable-helper button
     transition: border 0.3s;
     margin-bottom: 0px;
 }
+#todofield {
+        border-radius: 0px;
+}
+#todofield:focus {
+        /*border-color: #59c3cc !important;*/
+
+}
 input:focus {
     border: none;
-    border-color: #555 !important;
  -webkit-box-shadow: none;
  box-shadow: none;
     outline: none !important;
@@ -440,8 +524,7 @@ border-color: none;
 outline: 0;
 }
 .login-form .alert {
-    height: 20px;
-    padding: 5px 0 25px 0;
+    padding: 5px 0 5px 0;
 }
 .controls {
     padding: 0px 30px 0 30px;
@@ -500,7 +583,34 @@ font-weight: 700;
     /*width: 50%;*/
     font-size: 1.2em;
     margin: -30px auto 30px auto;
-    background: #dfdfdf;
+    background: rgba(223,223,213, 0.55);
     padding: 1em;
-    color: #666;
+    color: #777;
+    border-radius: 8px;
+}
+#tagsfield:focus {
+    /*border-color: #8FE3FF;*/
+}
+.modal-content {
+    background: #54616D;
+}
+.modal .close {
+    color: white;
+}
+
+.modal-title {
+    color: #E8EBED;
+}
+.modal-body > input {
+    background: #E8EBED;
+}
+.modal-header {
+    border-color: #999;
+}
+
+.save {
+    background: #6694FF;
+}
+.modal-dialog {
+    margin-top: 80px;
 }

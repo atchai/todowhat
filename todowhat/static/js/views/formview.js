@@ -23,6 +23,7 @@ module.exports = Backbone.View.extend({
 		 return this;
 	},
     guestMode: function() {
+        console.log('on formview guestmode');
         Todos = GuestTodos;
         Tags = GuestTags;
     },
@@ -54,8 +55,8 @@ module.exports = Backbone.View.extend({
                     wait: true,
                     //if todo content was valid, see if tag(s) exists in collection so count can be updated appropriately
                     success: function() {
-                        Todos.fetch({reset: true});
-                        Tags.fetch({reset: true});
+                        Todos.fetch();
+                        Tags.fetch();
                     }
                 });
 

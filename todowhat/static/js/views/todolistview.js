@@ -1,6 +1,7 @@
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
+var Tags = require('../collections/tags');
 var GuestTodos = require('../collections/guesttodos');
 var GuestTags = require('../collections/guesttags');
 var TodosView = require('./todosview');
@@ -18,19 +19,36 @@ module.exports = Backbone.View.extend({
     el: '.todos',
 
     initialize: function() {
-        //fetch existing todos from local storage
-        //if no todo list view exists yet, create view for all todos
+        Todos.fetch();
+        // If no todo list view exists yet, create view for all todos.
         if (!this.currentView) {
+            console.log('no currentview, making one:');
             this.currentView = new TodosView({collection: Todos});
+            console.log(this.currentView);
         }
         this.render();
+
         this.listenTo(Backbone.eventBus, 'guestMode', this.guestMode);
+        this.listenTo(Backbone.eventBus, 'userMode', this.userMode);
         this.listenTo(Backbone.eventBus, 'filterAll', this.filterAll);
         this.listenTo(Backbone.eventBus, 'filterDone', this.filterDone);
         this.listenTo(Backbone.eventBus, 'filterNotDone', this.filterNotDone);
         this.listenTo(Backbone.eventBus, 'filterTag', this.filterTag);
     },
-
+    userMode: function() {
+        Todos.fetch({
+            success: function(){
+                    GuestTodos.toJSON().forEach(function(guestTodo) {
+                      guestTodo.id = null;
+                      Todos.create(guestTodo);
+                    });
+                    var length = GuestTodos.length;
+                    for (var i = length - 1; i >= 0; i--) {
+                      GuestTodos.at(i).destroy();
+                    }
+              }
+        });
+    },
     /**
     * Puts the todos list view within the .todos element
     */
@@ -40,28 +58,25 @@ module.exports = Backbone.View.extend({
     },
 
     /**
-    * Following methods clean up any already existing todos view and renders new ones based on status filter
+    * Following methods clean up any already existing todos view and renders new ones based on status filter.
     */
     filterDone: function() {
-        this.currentView.remove();
-        this.currentView = new DoneView({collection: Todos});
-        this.render();
+        this.updateView(DoneView);
     },
     filterNotDone: function() {
-        this.currentView.remove();
-        this.currentView = new NotDoneView({collection: Todos});
-        this.render();
+        this.updateView(NotDoneView);
     },
     filterTag: function() {
-        this.currentView.remove();
-        this.currentView = new FilterTagView({collection: Todos});
-        this.render();
+        this.updateView(FilterTagView);
     },
     filterAll: function() {
+        console.log('todolistview filterAll');
+        this.updateView(TodosView);
+    },
+    updateView: function(viewName) {
         this.currentView.remove();
-        this.currentView = new TodosView({collection: Todos});
+        this.currentView = new viewName({collection: Todos});
         this.render();
-
     },
 
     /**
@@ -70,15 +85,34 @@ module.exports = Backbone.View.extend({
     */
     guestMode: function() {
         Todos = GuestTodos;
-        GuestTodos.fetch({reset: true});
-        GuestTags.fetch({reset: true});
+        GuestTodos.fetch();
+        GuestTags.fetch();
         this.filterAll();
     },
+
     /**
     * Uses jQuery UI to make list items sortable.
     * If sorting has occured, order of items is saved to models accordingly.
     */
     orderPersistance: function() {
+        var self = this;
+        var sortHelper = function(w, that, ui) {
+            that.children().each(function() {
+                    if ($(this).hasClass('ui-sortable-helper') || $(this).hasClass('ui-sortable-placeholder'))
+                        return true;
+                    // Get the absolute value of the distance between top of the helper
+                    var dist = Math.abs(ui.position.top - $(this).position().top),
+                    before = ui.position.top > $(this).position().top;
+                    // If overlap is more than half of the dragged item
+                    if ((w - dist) > (w / 2) && (dist < w)) {
+                        if (before)
+                            $('.ui-sortable-placeholder', that).insertBefore($(this));
+                        else
+                            $('.ui-sortable-placeholder', that).insertAfter($(this));
+                        return false;
+                    }
+            });
+        }
         this.$('#todoul').sortable({
             axis: "y",
             // only allow list item to be dragged by .handle (a glyphicon)
@@ -86,30 +120,24 @@ module.exports = Backbone.View.extend({
             // prevents list item being dragged out of parent element, else dragging item down extends the page
             containment: "parent",
             tolerance: 'intersect',
-            // this method is called whenever the list has been rearranged
+
+            // This method makes the list sorting smoother and is called whenever the list is being rearranged
+            sort: function(event, ui) {
+                var that = $(this),
+                w = ui.helper.outerHeight();
+                sortHelper(w, that, ui);
+             },
+
+            /**
+            * This method updates the order property of todo models and
+            * is called whenever the list has finished been rearranged
+            */
             update: function(event, ui) {
                 var order = $('#todoul').sortable('toArray'),
                     cidOfDropped = ui.item.context.id,
                     itemIndex = ui.item.index();
-
-                // if dropped item is now last in list, change order property to less than that of penultimate
-                if (itemIndex == order.length - 1) {
-                    var cidOfAbove = order[itemIndex - 1],
-                        orderOfAbove = Todos.get(cidOfAbove).get('order');
-                    Todos.get(cidOfDropped).save({'order': orderOfAbove - 1});
-                } else { // else change the order to more than item below it
-                    Todos.get({cid: cidOfDropped})
-                        .save({'order': Todos.get({cid: order[itemIndex + 1]})
-                            .get('order') + 1});
-
-                    for (var i = 0; i < itemIndex; i++) { // then increase order of those above it
-                        var currentOrder = Todos.get({cid: order[i]}).get('order');
-                        Todos.get({cid: order[i]})
-                            .save({"order": currentOrder + 2});
-                    }
-                }
-                // so that the collection maintains the order without page refresh
-                Todos.sort();
+                    // Todos.hi(cidOfDropped);
+                Todos.sortableOrder(order, cidOfDropped, itemIndex);
 
             }
         });

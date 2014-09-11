@@ -31,19 +31,6 @@ module.exports = Backbone.Router.extend({
       new todoListView();
       new searchView();
     }
-    Todos.fetch({
-            success: function(){
-                    GuestTodos.toJSON().forEach(function(guestTodo) {
-                      guestTodo.id = null;
-                      Todos.create(guestTodo);
-                    });
-                    var length = GuestTodos.length;
-                    for (var i = length - 1; i >= 0; i--) {
-                      GuestTodos.at(i).destroy();
-                    }
-                    // GuestTodos.each(function(g){g.destroy()});
-              }
-        });
     //call change method when anything happens with router
     this.listenTo(this, "all", this.change);
   },
@@ -52,6 +39,7 @@ module.exports = Backbone.Router.extend({
   * based on the route, the following methods pass the todos collection to appropriate view and renders
   */
   filterAll: function() {
+    console.log('firing filterAll from router');
     Backbone.eventBus.trigger('filterAll');
   },
   filterDone: function() {

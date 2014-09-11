@@ -33,7 +33,8 @@ module.exports = Backbone.View.extend({
             todoItem: this.model.get('content') ,
             done: this.model.get('done'),
             tags: this.model.get('tags'),
-            reminder: this.model.get('reminder')
+            reminder: this.model.get('reminder'),
+            checkboxID: 'cb'+this.model.cid
         }));
         this.$('.edit').html(new editView({model: this.model}).render().el);
         return this;

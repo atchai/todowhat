@@ -1,11 +1,13 @@
 <ul class="nav nav-pills nav-stacked">
-  <li>Filter by status</li>
+  <li><span>Filter by status</span></li>
 
     <% items.forEach(function(item) { %>
-      <li <% if (item.bold) {%> class="active" <% } %> ><a href="<%= item.href %>"
-      class="<% if (item.disabled) {%> disabled <%} if (item.bold) {%> bold <%} %>">
-        <%= item.name %>
-      </a></li>
+      <li class="<% if (item.bold) {%> active <% } if (item.disabled) {%> disabled <%} %>" >
+      	<a href="<%= item.href %>"
+      		class="<%= item.name + 'link'%> <% if (item.disabled) {%> disabled <%} if (item.bold) {%> bold <%} %> nav-link">
+        		<%= item.name %>
+      	</a>
+      </li>
     <% }) %>
 
 </ul>

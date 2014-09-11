@@ -18,6 +18,8 @@ module.exports = Backbone.View.extend({
         //listens for change in router so relevant navigation link is given active styling
         this.listenTo(Backbone.eventBus, 'routeChanged', this.render);
         // this.render();
+        GuestTodos.fetch();
+        Todos.fetch();
     },
     render: function() {
         this.$el.html(template({

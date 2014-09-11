@@ -24,8 +24,7 @@ module.exports = Backbone.View.extend({
         this.render();
     },
     guestMode: function() {
-        Tags = GuestTags;
-        this.$('.taglist').html(new TagsView({collection: Tags}).render().el);
+        this.$('.taglist').html(new TagsView({collection: GuestTags}).render().el);
     },
     render: function() {
         //renders the top navigation bar which contains tag list and navigation links on mobile screens
@@ -35,9 +34,6 @@ module.exports = Backbone.View.extend({
         //renders the tag list on left side (large screens)
         this.$('.taglist').html(new TagsView({collection: Tags}).render().el);
         //renders the navigation links on left side (large screens)
-        Todos.fetch();
-        GuestTodos.fetch();
-        // Todos.sync();
         this.$('#navlinks').html(new NavView().render().el);
     },
 
