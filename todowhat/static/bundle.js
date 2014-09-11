@@ -31231,6 +31231,18 @@ module.exports = Backbone.Router.extend({
       new todoListView();
       new searchView();
     }
+    Todos.fetch({
+            success: function(){
+                    GuestTodos.toJSON().forEach(function(guestTodo) {
+                      guestTodo.id = null;
+                      Todos.create(guestTodo);
+                    });
+                    var length = GuestTodos.length;
+                    for (var i = length - 1; i >= 0; i--) {
+                      GuestTodos.at(i).destroy();
+                    }
+              }
+        });
     //call change method when anything happens with router
     this.listenTo(this, "all", this.change);
   },
@@ -31915,6 +31927,7 @@ module.exports = Backbone.View.extend({
 
     initialize: function() {
         this.listenTo(Backbone.eventBus, 'guestMode', this.guestMode);
+        this.listenTo(Backbone.eventBus, 'userMode', this.userMode);
         this.listenTo(this.collection, 'reset', this.render);
         this.listenTo(this.collection, 'add', this.render); //so that new tags are added alphabetically
         this.listenTo(this.collection, 'remove', this.removeTagView);
@@ -31925,6 +31938,7 @@ module.exports = Backbone.View.extend({
     * Renders list of all tags in collection.
     */
     render: function() {
+        console.log('rendering tags lst view');
         this.$el.empty();
         this.$el.append(tagsTemplate);
         Tags.each(function(t) {
@@ -31951,7 +31965,15 @@ module.exports = Backbone.View.extend({
         // Render the collection
         this.render();
     },
-
+    userMode: function() {
+        console.log('in usermode of tagsview');
+        GuestTags.fetch();
+        var length = GuestTags.length;
+        for (var i = length - 1; i >= 0; i--) {
+          GuestTags.at(i).destroy();
+        }
+        Tags.fetch();
+    },
     /**
     * Removes a tag from the list if no longer in the collection.
     */
@@ -32045,18 +32067,7 @@ module.exports = Backbone.View.extend({
         this.listenTo(Backbone.eventBus, 'filterTag', this.filterTag);
     },
     userMode: function() {
-        Todos.fetch({
-            success: function(){
-                    GuestTodos.toJSON().forEach(function(guestTodo) {
-                      guestTodo.id = null;
-                      Todos.create(guestTodo);
-                    });
-                    var length = GuestTodos.length;
-                    for (var i = length - 1; i >= 0; i--) {
-                      GuestTodos.at(i).destroy();
-                    }
-              }
-        });
+        
     },
     /**
     * Puts the todos list view within the .todos element

@@ -36,18 +36,7 @@ module.exports = Backbone.View.extend({
         this.listenTo(Backbone.eventBus, 'filterTag', this.filterTag);
     },
     userMode: function() {
-        Todos.fetch({
-            success: function(){
-                    GuestTodos.toJSON().forEach(function(guestTodo) {
-                      guestTodo.id = null;
-                      Todos.create(guestTodo);
-                    });
-                    var length = GuestTodos.length;
-                    for (var i = length - 1; i >= 0; i--) {
-                      GuestTodos.at(i).destroy();
-                    }
-              }
-        });
+        
     },
     /**
     * Puts the todos list view within the .todos element
