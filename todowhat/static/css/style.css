@@ -288,7 +288,7 @@ Tags
 
 .login-form {
     margin: 0;
-    width: 30%;
+    width: 52%;
     margin:auto;
 }
 .login-form .form-group {
@@ -297,6 +297,19 @@ Tags
 .login {
     text-align: center;
 
+}
+.login-box-border {
+width: 60%;
+display: inline-block;
+margin: auto;
+border: 1px solid #E3E3E3;
+background: white;
+padding: 2em 2em 2.5em 2em;
+margin-top: 3em;
+opacity: 0.85;
+}
+.login-title {
+    color: #333;
 }
 /***************************
 Custom breakpoints
@@ -311,9 +324,9 @@ Custom breakpoints
 		font-size: 0.75em;
 	}
     .list-group-item .editbutton, .list-group-item .remove {
-    opacity: 0.1;
+    opacity: 0.3;
 }
-.list-group-item:hover .editbutton, .list-group-item:hover .remove {
+.editbutton:hover, .remove:hover {
     opacity: 1;
 }
 .input-group-addon {
@@ -485,7 +498,7 @@ li.ui-sortable-helper, li.ui-sortable-helper input, li.ui-sortable-helper button
 
 
 .form-horizontal input {
-    width: 100%;
+    /*width: 100%;*/
     height: 35px;
     text-align: center;
     border: none;
@@ -495,8 +508,9 @@ li.ui-sortable-helper, li.ui-sortable-helper input, li.ui-sortable-helper button
     transition: border 0.3s;
     margin-bottom: 0px;
 }
-#todofield {
+#todofield, #tagsfield {
         border-radius: 0px;
+        width: 102%;
 }
 #todofield:focus {
         /*border-color: #59c3cc !important;*/
@@ -563,8 +577,12 @@ font-weight: 700;
     width: 42px;
     height: 39px;
 }
-#username, #password {
-        margin-bottom: 20px;
+#username, #password, #confirm-password {
+    margin-bottom: 20px;
+    width: 100%;
+}
+#username:focus, #password:focus, #confirm-password:focus {
+    border-color: #999;
 }
 .btn-login {
     display: block;
@@ -587,9 +605,6 @@ font-weight: 700;
     padding: 1em;
     color: #777;
     border-radius: 8px;
-}
-#tagsfield:focus {
-    /*border-color: #8FE3FF;*/
 }
 .modal-content {
     background: #54616D;

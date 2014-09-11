@@ -15,6 +15,8 @@
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 </head>
 
@@ -37,6 +39,7 @@
 
     </nav>
     <div class="container main-content login">
+        <div class="login-box-border">
         {% block title %} {% endblock %}
         <form class="form-horizontal login-form" role="form" method="post">
             {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
@@ -49,14 +52,16 @@
             <div class="form-group form-group-lg">
                 <input type="password" id="password" name="password" placeholder="Enter password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Password'" value="{{ request.form.password }}" required>
             </div>
+            {% block confirmpassword %} {% endblock %}
             <div class="control-group">
                 <div class="controls">
                     {% block controls %} {% endblock %}
                 </div>
             </div>
         </form>
-
+        </div>
     </div>
+    {% block javascript %} {% endblock %}
 </body>
 
 </html>

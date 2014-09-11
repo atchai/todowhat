@@ -18,8 +18,6 @@ module.exports = Backbone.View.extend({
 	initialize: function() {
 		this.render();
 		this.listenTo(Todos, 'remove', this.checkVisible);
-		this.listenTo(Todos, 'add', this.checkVisible);
-		this.listenTo(Todos, 'change', this.checkVisible);
 		this.listenTo(Todos, 'sync', this.checkVisible);
 
 	},

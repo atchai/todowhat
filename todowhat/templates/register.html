@@ -1,6 +1,37 @@
-{% extends "baselogin.html" %} {% block title %}
-<h1>Create new account</h1>
-{% endblock %} {% block controls %}
-<button type="submit" class="btn btn-primary btn-login">Register</button>
+{% extends "baselogin.html" %}
+
+{% block title %}
+<h1 class="login-title">Create new account</h1>
+{% endblock %}
+
+{% block confirmpassword %}
+<div class="form-group form-group-lg">
+    <input type="password" id="confirm-password" name="password" placeholder="Re-enter password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Re-enter Password'" required>
+</div>
+{% endblock %}
+
+{% block controls %}
+<button type="submit" class="btn btn-primary btn-login disabled">Register</button>
 <a href="/login" class="login-link">or login</a>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+	$('input').keyup(function(){$('.btn-login').addClass('disabled')});
+	var validate = function() {
+		if (this.value) {
+			console.log(this.value)
+			if ($('#confirm-password').val() == $('#password').val()) {
+				$('#confirm-password').css('border-color', '#A9DC4C');
+				$('.btn-login').removeClass('disabled')
+			} else {
+				$('#confirm-password').css('border-color', '#FF295E');
+			}
+		} else {
+			$('#confirm-password').css('border-color', '#777');
+		}
+	}
+	$('#confirm-password').keyup(_.debounce(validate, 730));
+
+</script>
 {% endblock %}

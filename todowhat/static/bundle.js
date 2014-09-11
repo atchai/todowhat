@@ -33541,8 +33541,6 @@ module.exports = Backbone.View.extend({
 	initialize: function() {
 		this.render();
 		this.listenTo(Todos, 'remove', this.checkVisible);
-		this.listenTo(Todos, 'add', this.checkVisible);
-		this.listenTo(Todos, 'change', this.checkVisible);
 		this.listenTo(Todos, 'sync', this.checkVisible);
 
 	},
@@ -33720,7 +33718,7 @@ module.exports = Backbone.View.extend({
     el: '.todos',
 
     initialize: function() {
-        Todos.fetch();
+        Todos.fetch({reset:true});
         // If no todo list view exists yet, create view for all todos.
         if (!this.currentView) {
             // Todos.fetch();
@@ -33792,8 +33790,6 @@ module.exports = Backbone.View.extend({
         Todos = GuestTodos;
         GuestTodos.fetch();
         GuestTags.fetch();
-        console.log(Todos);
-        console.log('^^^LOCAL TODOS^^^');
         this.filterAll();
     },
 
