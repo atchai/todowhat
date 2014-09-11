@@ -63,5 +63,5 @@ class TodosView(FlaskView):
         # If todo belongs to logged in user return True
         if db_todo.user_id == g.user.id:
             return True
-        # Else return 404 error
-        return abort(401)
+        # Else return unauthorized error
+        abort(401)

@@ -2,6 +2,7 @@
 from flask import Flask, g
 from flask.ext.login import LoginManager, current_user
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.mail import Mail
 
 # Create database and loginmanager object
 db = SQLAlchemy()
@@ -44,4 +45,8 @@ def create_app():
 
     # Setup database
     db.init_app(app)
+
+    # Setup email
+    mail = Mail(app)
+
     return app

@@ -2,7 +2,7 @@ from flask import jsonify, abort, redirect, flash, url_for
 from flask.ext.classy import FlaskView, route
 from flask.ext.login import current_user
 from todowhat.models.user import User
-from itsdangerous import BadSignature
+from itsdangerous import BadSignature, URLSafeSerializer
 
 
 class AuthView(FlaskView):
@@ -13,9 +13,12 @@ class AuthView(FlaskView):
             return jsonify({"authenticated": True}), 200
         return jsonify({"authenticated": False}), 400
 
+    def get_serializer(self):
+        return URLSafeSerializer('str8 up inject SQL in2 bloodstream')
+
     @route('/users/activate/<payload>')
-    def activate_user(payload):
-        s = User.get_serializer()
+    def activate_user(self, payload):
+        s = self.get_serializer()
         try:
             user_id = s.loads(payload)
         except BadSignature:
@@ -23,5 +26,5 @@ class AuthView(FlaskView):
 
         user = User.query.get_or_404(user_id)
         user.activate()
-        flash('User activated')
+        flash('User activated', 'success')
         return redirect(url_for('page.LoginView:index'))

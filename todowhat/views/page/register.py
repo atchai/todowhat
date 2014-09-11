@@ -4,6 +4,10 @@ from werkzeug import generate_password_hash
 
 from todowhat import db
 from todowhat.models.user import User
+from config import ADMINS
+from flask.ext.mail import Mail, Message
+
+mail = Mail()
 
 
 class RegisterView(FlaskView):
@@ -31,9 +35,18 @@ class RegisterView(FlaskView):
                 return redirect(url_for('page.RegisterView:index'))
             db.session.add(user)
             db.session.commit()
-            flash('User successfully registered', 'info')
+            print user.get_activation_link()
+            flash('User successfully registered. Please activate your account by clicking on the link sent to your email.', 'info')
+            link = user.get_activation_link()
+            body = render_template("email.html", link=link)
+            self.send_email('Account activation', ADMINS[0], ADMINS, body)
             return redirect(url_for('page.LoginView:index'))
 
         # Otherwise show error message
         flash('Username already taken', 'info')
         return redirect(url_for('page.RegisterView:index'))
+
+    def send_email(self, subject, sender, recipients, html_body):
+        msg = Message(subject, sender=sender, recipients=recipients)
+        msg.html = html_body
+        mail.send(msg)

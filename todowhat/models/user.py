@@ -11,6 +11,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(60), unique=True, index=True)
     pwdhash = db.Column(db.String())
+    activated = db.Column(db.Boolean, default=False)
     todos = db.relationship('Todo', backref='user', lazy='dynamic')
 
     def check_password(self, password):
@@ -28,6 +29,9 @@ class User(db.Model):
     def get_id(self):
         return unicode(self.id)
 
+    def is_email_activated(self):
+        return self.activated
+
     @validates('username')
     def validate_username(self, key, username):
         assert '/' not in username
@@ -41,5 +45,10 @@ class User(db.Model):
         payload = s.dumps(self.id)
         return url_for('api.AuthView:activate_user', payload=payload, _external=True)
 
+    def activate(self):
+        self.activated = True
+        db.session.add(self)
+        db.session.commit()
+
     def __repr__(self):
-        return '<User %r>' % (self.username)
+        return '<User %r, activated %r>' % (self.username, self.activated)

@@ -1,4 +1,5 @@
 from todowhat import db
+from flask import g
 
 
 class Tag(db.Model):
@@ -14,13 +15,18 @@ class Tag(db.Model):
         return {
             'id': self.id,
             'name': self.name,
-            'count': self.todos.count(),
+            'count': self.get_todo_count(),
             'todos': self.serialize_todos()
         }
 
     def serialize_todos(self):
         """Return this tags todos in easily serializeable format"""
-        return [{'todo_id': i.id, 'todo_content': i.content} for i in self.todos.all()]
+        return [{'todo_id': i.id, 'todo_content': i.content}
+                for i in self.todos.all() if i.user_id == g.user.id]
+
+    def get_todo_count(self):
+        todos = self.serialize_todos()
+        return len(todos)
 
     def create(self, tags_list):
         """

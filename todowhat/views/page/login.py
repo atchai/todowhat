@@ -25,8 +25,12 @@ class LoginView(FlaskView):
         # Otherwise user exists.
         # If password hash matches, log the user in and redirect to index page
         if user.check_password(requestData['password']):
-            login_user(user)
-            return redirect(request.args.get('next') or url_for('page.MainView:index', username=username))
+            if user.activated:
+                login_user(user)
+                return redirect(request.args.get('next') or url_for('page.MainView:index', username=username))
+            else:
+                flash('Please activate your account first by clicking on the link sent to your email.', 'warning')
+                return redirect(url_for('page.LoginView:index'))
 
         # Otherwise redirect to login page with error message
         flash('Password is invalid', 'danger')
