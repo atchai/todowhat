@@ -58,7 +58,6 @@ module.exports = Backbone.View.extend({
         for (var i = length - 1; i >= 0; i--) {
           GuestTags.at(i).destroy();
         }
-        Tags.fetch();
     },
     /**
     * Removes a tag from the list if no longer in the collection.

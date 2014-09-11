@@ -31,18 +31,6 @@ module.exports = Backbone.Router.extend({
       new todoListView();
       new searchView();
     }
-    Todos.fetch({
-            success: function(){
-                    GuestTodos.toJSON().forEach(function(guestTodo) {
-                      guestTodo.id = null;
-                      Todos.create(guestTodo);
-                    });
-                    var length = GuestTodos.length;
-                    for (var i = length - 1; i >= 0; i--) {
-                      GuestTodos.at(i).destroy();
-                    }
-              }
-        });
     //call change method when anything happens with router
     this.listenTo(this, "all", this.change);
   },

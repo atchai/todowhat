@@ -22,7 +22,7 @@ module.exports = Backbone.View.extend({
         Todos.fetch();
         // If no todo list view exists yet, create view for all todos.
         if (!this.currentView) {
-
+            // Todos.fetch();
             this.currentView = new TodosView({collection: Todos});
 
         }
@@ -34,9 +34,6 @@ module.exports = Backbone.View.extend({
         this.listenTo(Backbone.eventBus, 'filterDone', this.filterDone);
         this.listenTo(Backbone.eventBus, 'filterNotDone', this.filterNotDone);
         this.listenTo(Backbone.eventBus, 'filterTag', this.filterTag);
-    },
-    userMode: function() {
-        
     },
     /**
     * Puts the todos list view within the .todos element
@@ -67,6 +64,25 @@ module.exports = Backbone.View.extend({
         this.render();
     },
 
+    userMode: function() {
+        GuestTodos.toJSON().forEach(function(guestTodo) {
+          guestTodo.id = null;
+          Todos.create(guestTodo,
+            {
+                wait:true,
+                success: function() {
+                    Todos.fetch({reset:true});
+                    Tags.fetch({reset:true});
+                }
+            });
+        });
+        var length = GuestTodos.length;
+        for (var i = length - 1; i >= 0; i--) {
+          GuestTodos.at(i).destroy();
+        }
+        this.filterAll();
+    },
+
     /**
     * If no user is logged in, only show the guest todos/tags
     * saved in localStorage.
@@ -75,6 +91,8 @@ module.exports = Backbone.View.extend({
         Todos = GuestTodos;
         GuestTodos.fetch();
         GuestTags.fetch();
+        console.log(Todos);
+        console.log('^^^LOCAL TODOS^^^');
         this.filterAll();
     },
 
