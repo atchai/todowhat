@@ -4,8 +4,9 @@ from werkzeug import generate_password_hash
 
 from todowhat import db
 from todowhat.models.user import User
-from config import ADMINS
 from flask.ext.mail import Mail, Message
+import mandrill
+
 
 mail = Mail()
 
@@ -36,10 +37,14 @@ class RegisterView(FlaskView):
             db.session.add(user)
             db.session.commit()
             print user.get_activation_link()
-            flash('User successfully registered. Please activate your account by clicking on the link sent to your email.', 'info')
+            flash("""
+                    We\'ve sent you an email. Please click the link in the
+                    email to complete the creation of your account.
+                    """, 'info')
             link = user.get_activation_link()
             body = render_template("email.html", link=link)
-            self.send_email('Account activation', ADMINS[0], ADMINS, body)
+            # self.send_email('Account activation', ADMINS[0], ADMINS, body)
+            self.send_email_mandrill(body, username)
             return redirect(url_for('page.LoginView:index'))
 
         # Otherwise show error message
@@ -50,3 +55,14 @@ class RegisterView(FlaskView):
         msg = Message(subject, sender=sender, recipients=recipients)
         msg.html = html_body
         mail.send(msg)
+
+    def send_email_mandrill(self, html_body, username):
+        mandrill_client = mandrill.Mandrill('tNmPygMAlNO5FbIs6V0X0g')
+        message = {'from_email': 'activate.account@todowhat.com',
+                   'from_name': 'Todo What',
+                   'html': html_body,
+                   'to': [{'email': username,
+                           'name': 'Recipient Name',
+                           'type': 'to'}]}
+        print message
+        result = mandrill_client.messages.send(message=message, async=True, ip_pool='Main Pool')

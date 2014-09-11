@@ -30864,7 +30864,6 @@ $(document).ready(function() {
     Backbone.eventBus = _.extend({}, Backbone.Events);
     new appRouter();
     Backbone.history.start();
-    console.log(Backbone.history.fragment);
 });
 },{"./routers/router":"/home/andrew/dev/flask-what-todo/todowhat/static/js/routers/router.js","backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/collections/basetodos.js":[function(require,module,exports){
 var $ = require('jquery');
@@ -31251,7 +31250,6 @@ module.exports = Backbone.Router.extend({
   * based on the route, the following methods pass the todos collection to appropriate view and renders
   */
   filterAll: function() {
-    console.log('firing filterAll from router');
     Backbone.eventBus.trigger('filterAll');
   },
   filterDone: function() {
@@ -31614,7 +31612,6 @@ module.exports = Backbone.View.extend({
 		 return this;
 	},
     guestMode: function() {
-        console.log('on formview guestmode');
         Todos = GuestTodos;
         Tags = GuestTags;
     },
@@ -31938,7 +31935,6 @@ module.exports = Backbone.View.extend({
     * Renders list of all tags in collection.
     */
     render: function() {
-        console.log('rendering tags lst view');
         this.$el.empty();
         this.$el.append(tagsTemplate);
         Tags.each(function(t) {
@@ -31966,7 +31962,6 @@ module.exports = Backbone.View.extend({
         this.render();
     },
     userMode: function() {
-        console.log('in usermode of tagsview');
         GuestTags.fetch();
         var length = GuestTags.length;
         for (var i = length - 1; i >= 0; i--) {
@@ -32053,9 +32048,9 @@ module.exports = Backbone.View.extend({
         Todos.fetch();
         // If no todo list view exists yet, create view for all todos.
         if (!this.currentView) {
-            console.log('no currentview, making one:');
+
             this.currentView = new TodosView({collection: Todos});
-            console.log(this.currentView);
+
         }
         this.render();
 
@@ -32090,7 +32085,6 @@ module.exports = Backbone.View.extend({
         this.updateView(FilterTagView);
     },
     filterAll: function() {
-        console.log('todolistview filterAll');
         this.updateView(TodosView);
     },
     updateView: function(viewName) {

@@ -35,6 +35,7 @@ class User(db.Model):
     @validates('username')
     def validate_username(self, key, username):
         assert '/' not in username
+        assert '@' in username
         return username
 
     def get_serializer(self):
