@@ -29,9 +29,9 @@ module.exports = Backbone.View.extend({
             });
             this.$el.prepend(todoview.render().el);
         }, this);
-        if (!this.collection.last()) { //if collection is empty
-            this.$el.append('<li id="noTodos" class="list-group-item">Nothing to do</li>');
-        }
+        // if (!this.collection.last()) { //if collection is empty
+        //     this.$el.append('<li id="noTodos" class="list-group-item">Nothing to do</li>');
+        // }
         return this;
     }
 

@@ -17,11 +17,25 @@ module.exports = Backbone.View.extend({
 
 	initialize: function() {
 		this.render();
+		this.listenTo(Todos, 'remove', this.checkVisible);
+		this.listenTo(Todos, 'add', this.checkVisible);
+		this.listenTo(Todos, 'change', this.checkVisible);
+		this.listenTo(Todos, 'sync', this.checkVisible);
+
 	},
 
 	render: function() {
 		this.$el.prepend(template());
         return this;
+	},
+
+	checkVisible: function() {
+		console.log('hi checking');
+		if (!Todos.last()) {//if collection is empty
+            this.$el.addClass('hide');
+		} else {
+            this.$el.removeClass('hide');
+		}
 	},
 
 	/**

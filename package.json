@@ -12,7 +12,7 @@
     "backbone.localstorage": "1.1.13",
     "bootstrap": "^3.2.0",
     "jquery": "1.11.1",
-    "jquery-ui": "1.10.5",
+    "jquery-ui": "ackl/jquery-ui",
     "jquery-ui-touch-punch": "ackl/jquery-ui-touch-punch",
     "underscore": "1.6.0"
   },
@@ -43,7 +43,7 @@
     ]
   },
   "browser": {
-    "jquery-ui": "./node_modules/jquery-ui/jquery-ui.js",
+    "jquery-ui": "./node_modules/jquery-ui/dist/jquery-ui.js",
     "jquery-ui-touch-punch": "./node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.js",
     "bootstrap": "./node_modules/bootstrap/dist/js/bootstrap.js"
   },

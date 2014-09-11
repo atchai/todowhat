@@ -35,7 +35,7 @@ module.exports = Backbone.View.extend({
             this.$el.append(tagList.render().el);
         }, this);
         if(!Tags.last()) {
-           this.$el.append('<li class="list-group-item">No tags yet, trying adding one</li>');
+           this.$el.append('<li class="list-group-item">No tags yet, try adding one</li>');
         }
         return this;
     },
