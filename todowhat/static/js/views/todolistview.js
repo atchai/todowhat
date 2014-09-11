@@ -22,9 +22,9 @@ module.exports = Backbone.View.extend({
         Todos.fetch();
         // If no todo list view exists yet, create view for all todos.
         if (!this.currentView) {
-            console.log('no currentview, making one:');
+
             this.currentView = new TodosView({collection: Todos});
-            console.log(this.currentView);
+
         }
         this.render();
 
@@ -59,7 +59,6 @@ module.exports = Backbone.View.extend({
         this.updateView(FilterTagView);
     },
     filterAll: function() {
-        console.log('todolistview filterAll');
         this.updateView(TodosView);
     },
     updateView: function(viewName) {

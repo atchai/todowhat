@@ -23,7 +23,6 @@ module.exports = Backbone.View.extend({
 		 return this;
 	},
     guestMode: function() {
-        console.log('on formview guestmode');
         Todos = GuestTodos;
         Tags = GuestTags;
     },

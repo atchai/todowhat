@@ -26,7 +26,6 @@ module.exports = Backbone.View.extend({
     * Renders list of all tags in collection.
     */
     render: function() {
-        console.log('rendering tags lst view');
         this.$el.empty();
         this.$el.append(tagsTemplate);
         Tags.each(function(t) {
@@ -54,7 +53,6 @@ module.exports = Backbone.View.extend({
         this.render();
     },
     userMode: function() {
-        console.log('in usermode of tagsview');
         GuestTags.fetch();
         var length = GuestTags.length;
         for (var i = length - 1; i >= 0; i--) {

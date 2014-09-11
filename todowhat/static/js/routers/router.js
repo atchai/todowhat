@@ -51,7 +51,6 @@ module.exports = Backbone.Router.extend({
   * based on the route, the following methods pass the todos collection to appropriate view and renders
   */
   filterAll: function() {
-    console.log('firing filterAll from router');
     Backbone.eventBus.trigger('filterAll');
   },
   filterDone: function() {
