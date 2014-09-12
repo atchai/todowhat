@@ -13,7 +13,7 @@ module.exports = Backbone.View.extend({
         this.listenTo(Backbone.eventBus, 'guestMode', this.guestMode);
     },
 	events: {
-		"click .submit": "addTodo",
+		"click .submit": "parseInput",
 		"keyup #todofield": "keyPressEventHandler",
         "keyup #tagsfield": "keyPressEventHandler"
 	},
@@ -26,11 +26,7 @@ module.exports = Backbone.View.extend({
         Todos = GuestTodos;
         Tags = GuestTags;
     },
-	/**
-    * add a todo model (and tags) to the collection(s) using content in
-    * input boxes
-    */
-	addTodo: function(e) {
+    parseInput: function(e) {
         e.preventDefault();
         //cache input fields
         this.$todofield = this.$('#todofield');
@@ -40,9 +36,16 @@ module.exports = Backbone.View.extend({
         tagsContent = this.$tagsfield.val();
         //grabs tag values deliminated by commas and removes whitespace & repeats
         tagsContent = Tags.parseTags(this.$tagsfield.val());
-        tagsContent.forEach(function(tag) {
-                            GuestTags.exist(tag);
-                        });
+        // tagsContent.forEach(function(tag) {
+        //     GuestTags.exist(tag);
+        // });
+        this.addTodo(todoContent, tagsContent);
+    },
+	/**
+    * add a todo model (and tags) to the collection(s) using content in
+    * input boxes
+    */
+	addTodo: function(todoContent, tagsContent) {
         Todos.create(
                 {
                     content: todoContent,
@@ -54,8 +57,9 @@ module.exports = Backbone.View.extend({
                     wait: true,
                     //if todo content was valid, see if tag(s) exists in collection so count can be updated appropriately
                     success: function() {
-                        Todos.fetch();
-                        Tags.fetch();
+                        // Todos.fetch();
+                        // Tags.fetch();
+                        // Backbone.eventBus.trigger('addTodo');
                     }
                 });
 

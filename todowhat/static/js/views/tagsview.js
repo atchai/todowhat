@@ -19,6 +19,7 @@ module.exports = Backbone.View.extend({
         this.listenTo(this.collection, 'reset', this.render);
         this.listenTo(this.collection, 'add', this.render); //so that new tags are added alphabetically
         this.listenTo(this.collection, 'remove', this.removeTagView);
+        this.listenTo(Backbone.eventBus, 'todoRemoved', this.render);
         Tags.fetch();
     },
 

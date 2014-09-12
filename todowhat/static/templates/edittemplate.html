@@ -9,6 +9,11 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <h4 class="modal-title" id="myModalLabel">Edit todo</h4>
+        <div class="modal-buttons">
+          <button class="glyphicon glyphicon-time activate-reminder-mode btn" data-toggle="tooltip" data-placement="top" title="Toggle add reminder mode"></button>
+        <button class="glyphicon glyphicon-plus edit-add-tag btn" data-toggle="tooltip" data-placement="top" title="Toggle add new tags mode"></button>
+        <button class="glyphicon glyphicon-minus edit-remove-tag btn" data-toggle="tooltip" data-placement="top" title="Toggle remove tags mode"></button>
+        </div>
       </div>
       <div class="modal-body">
       <div class="alert alert-danger alert-dismissible hide" role="alert">
@@ -22,7 +27,7 @@
             <% } else { %>
             value="<%=description%>"
             <% } %>>
-        <input class="form-control hide" type="text" id="edittagfield" placeholder="New tags here, seperate with commas">
+        <input class="form-control" type="text" id="edittagfield" placeholder="New tags here, seperate with commas">
       <% if (notifySupported) { %>
         <% if (!reminder) { %>
         <div class="hide set-reminder">
@@ -33,18 +38,16 @@
           <span>minutes</span>
         </div>
         <% } else { %>
-        <span>Reminder set for: <%
+        <span class="glyphicon glyphicon-remove remove-reminder"></span>
+        <span class="reminder-time">Reminder set for: <%
         var date = new Date(reminder);
         print(date.toString().slice(16,25)); %> </span>
-        <span class="glyphicon glyphicon-remove pull-right remove-reminder"></span>
         <% } %>
-      <% } %>
+      <% } %><div></div>
         <% tags.forEach(function(tag){ %>
     <span class="label label-info edit-tag"><%= tag %></span>
   <% }) %>
-        <button class="glyphicon glyphicon-time activate-reminder-mode btn" data-toggle="tooltip" data-placement="top" title="Toggle add reminder mode"></button>
-        <button class="glyphicon glyphicon-plus edit-add-tag btn" data-toggle="tooltip" data-placement="top" title="Toggle add new tags mode"></button>
-        <button class="glyphicon glyphicon-minus edit-remove-tag btn" data-toggle="tooltip" data-placement="top" title="Toggle remove tags mode"></button>
+
         <button type="button" class="btn btn-primary pull-right save">Save changes</button>
       </div>
     </div>

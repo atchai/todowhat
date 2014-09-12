@@ -113,7 +113,10 @@ module.exports = Backbone.View.extend({
     },
 
     showTagField: function() {
-        this.$('#edittagfield').toggleClass('hide');
+        if (this.$('#edittagfield').is( ":hidden" ) ) {
+            console.log('yo');
+        this.$('#edittagfield').slideDown({duration:"fast", easing: "easeInQuad"}); }
+        else { this.$('#edittagfield').slideUp();}
     },
 
     /**

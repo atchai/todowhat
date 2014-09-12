@@ -12,8 +12,8 @@ module.exports = Backbone.View.extend({
     id: 'todoul',
     initialize: function() {
         this.listenTo(this.collection, 'reset', this.render);
-        this.listenTo(this.collection, 'add', this.render);
-        this.listenTo(this.collection, 'remove', this.render);
+        this.listenTo(this.collection, 'add', this.addTodo);
+        // this.listenTo(this.collection, 'remove', this.render);
     },
 
     /**
@@ -33,6 +33,13 @@ module.exports = Backbone.View.extend({
         //     this.$el.append('<li id="noTodos" class="list-group-item">Nothing to do</li>');
         // }
         return this;
+    },
+
+    addTodo: function(todo) {
+        var todoview = new TodoView({
+                model: todo
+            });
+        $(todoview.render().el).hide().prependTo(this.$el).slideDown({duration: "fast", easing: "easeInCubic"});
     }
 
 })

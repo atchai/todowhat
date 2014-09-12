@@ -42,6 +42,9 @@ module.exports = Backbone.View.extend({
 	*/
 	findTodos: _.debounce(function(e) {
         var searchTerm = e.target.value;
+        if (!searchTerm) {
+        	this.resetSearch();
+        }
         var thing = Todos.search(searchTerm);
         this.searchedView = new TodosView({collection: thing});
         this.$('#todoul').html(this.searchedView.render().el);

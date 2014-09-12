@@ -54,6 +54,9 @@ module.exports = Backbone.View.extend({
         // Fetch tags from server so count on view is updated
         Tags.fetch({reset: true});
         this.render();
+        console.log(this.model.cid);
+        this.$el.slideUp({duration: "slow", easing: "easeInOutBack"});
+        Backbone.eventBus.trigger('todoRemoved');
     },
 
     /**
@@ -101,6 +104,7 @@ module.exports = Backbone.View.extend({
                 "body": content,
                 "icon": "http://i.imgur.com/iD3UXom.png"
             });
+        $('modal-backdrop').hide();
     }
 
 });
