@@ -550,6 +550,9 @@ outline: 0;
     padding: 5px;
 padding-top: 10px;
 }
+.alert-info {
+    color: #444;
+}
 .controls {
     padding: 0px 30px 0 30px;
 }
