@@ -157,7 +157,6 @@ class TodoWhatTests(TestCase):
 
             # Check the tags are equal to what was sent in the PUT request
             response = self.client.get('/todos/1')
-            assert response.json['tags'] is tags_data['tags']
             self.assertEquals(response.json['tags'], tags_data['tags'])
 
     def test_authorized_post_todos(self):
