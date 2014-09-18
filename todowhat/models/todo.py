@@ -95,7 +95,8 @@ class Todo(db.Model):
         """
         self.user = g.user
         self.set_dict_attr(request_data)
-        self.set_tags_attr(request_data['tags'])
+        if 'tags' in request_data:
+            self.set_tags_attr(request_data['tags'])
         db.session.add(self)
         db.session.commit()
 

@@ -1,11 +1,11 @@
 <div class="col-xs-12 col-sm-12 col-md-10 row add-todo-fields">
     <div class="col-xs-10 col-md-10">
-        <form class="form-horizontal" role="form">
+        <form class="form-horizontal" role="form" autocomplete="off">
             <div class="form-group form-group-lg">
-                <input class="form-control" type="text" id="todofield" placeholder="Enter your todo here">
+                <input class="form-control" type="text" id="todofield" placeholder="Enter your todo here" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your todo here'">
             </div>
             <div class="form-group form-group-sm">
-                <input class="form-control" type="text" id="tagsfield" placeholder="Put optional tags here, seperated with commas">
+                <input class="form-control" type="text" id="tagsfield" placeholder="Put optional tags here, seperated with commas" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Put optional tags here, seperated with commas'">
             </div>
         </form>
 

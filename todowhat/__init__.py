@@ -10,11 +10,11 @@ login_manager = LoginManager()
 
 
 # App factory
-def create_app():
+def create_app(config):
     app = Flask(__name__, static_url_path='')
 
     app.secret_key = 'str8 up inject SQL in2 bloodstream'
-    app.config.from_object('config')
+    app.config.from_object(config)
 
     # Setup login manager
     login_manager.init_app(app)

@@ -6,7 +6,7 @@ from todowhat import db
 from todowhat.models.user import User
 from flask.ext.mail import Mail, Message
 import mandrill
-
+from config import ADMINS
 
 mail = Mail()
 
@@ -43,8 +43,8 @@ class RegisterView(FlaskView):
                     """, 'info')
             link = user.get_activation_link()
             body = render_template("email.html", link=link)
-            # self.send_email('Account activation', ADMINS[0], ADMINS, body)
-            self.send_email_mandrill(body, username)
+            self.send_email('Account activation', ADMINS[0], ADMINS, body)
+            # self.send_email_mandrill(body, username)
             return redirect(url_for('page.LoginView:index'))
 
         # Otherwise show error message
