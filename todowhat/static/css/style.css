@@ -1,5 +1,10 @@
 body {
-    background: url('../images/paper_fibers.png');
+    background: #efefef;
+}
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 .title {
 	font-size: 3em;
@@ -10,7 +15,7 @@ body {
     color: #fff;
 }
 .main-content {
-    margin-top: 100px;
+    margin-top: 40px;
 }
 .second-row {
     margin-top: 5px;
@@ -60,23 +65,30 @@ Create todo fields
 .search-field:focus {
     border: none;
 }
+.search-todos {
+    display: none;
+}
 /***************************
 Navigation
 ***************************/
 
 .nav > li {
-    text-align: center;
+    text-align: left;
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;
     border-right: 20px solid transparent;
     transition: border 0.3s;
 }
+.nav > li:first-child {
+    text-align: center;
+}
 .nav-stacked > li + li {
     margin: 0px;
 }
 .nav-pills > li > a {
     margin-right: -20px;
+    margin-left: 7px;
 }
 .nav-pills > li:first-child {
     background: #54616D;
@@ -160,7 +172,7 @@ Todo list
 ***************************/
 
 .well {
-    background: url('../images/linedpaper.png');
+    background: #fcfcfc;
 }
 #noTodos {
     pointer-events: none;
@@ -188,7 +200,7 @@ input[type="checkbox"]:checked + label:after {
   position: absolute;
   /*top: 0; left: 4px;*/
   top: 10px;
-  left: 39px;
+  left: 38px;
   font-size: 14px;
   color: #09ad7e;
 }
@@ -251,10 +263,18 @@ Tags
     color: white;
     border-radius: 0px;
     text-align: center;
+    font-size: 14px;
+background: #54616D;
+height: 40px;
+line-height: 21px;
+margin: 0;
+}
+.tags-head:hover {
+    background: #54616D;
 }
 .taglist li {
     border-radius: 0px;
-    word-wrap: break-word;
+    word-wrap: break-word;, .list-group-item:hover .remove
     border: none;
 }
 .taglist > li > div {
@@ -321,10 +341,16 @@ Custom breakpoints
 	.handle {
 		font-size: 0.75em;
 	}
-    .list-group-item .editbutton, .list-group-item .remove {
-    opacity: 0.3;
+    .list-group-item .editbutton, .list-group-item .remove, .list-group-item .handle {
+        opacity: 0;
 }
-.editbutton:hover, .remove:hover {
+.list-group-item:hover .remove, .list-group-item:hover .editbutton {
+    opacity: 0.4;
+}
+.list-group-item:hover .handle {
+    opacity: 0.7;
+}
+.list-group-item:hover .editbutton:hover, .list-group-item:hover .remove:hover, .list-group-item:hover .handle:hover {
     opacity: 1;
 }
 .input-group-addon {
@@ -611,14 +637,17 @@ font-weight: 700;
 
 .visitor-info {
     text-align: center;
-    /*width: 50%;*/
     font-size: 1.2em;
-    margin: -30px auto 30px auto;
+    margin: 57px auto 30px auto;
     background: rgba(223,223,213, 0.55);
     padding: 1em;
     color: #777;
     border-radius: 8px;
     width: 100%;
+}
+.visitor-info > div {
+    width: 73%;
+    margin: auto;
 }
 .visitor-info > a {
     text-decoration: none;
@@ -680,4 +709,27 @@ input[type="number"] {
 }
 .reminder-time {
     color: #efefef;
+}
+
+.tags-head:hover {
+    background: #54616D;
+}
+body, html {
+    height: 86%;
+}
+.main-content {
+    min-height: 100%;
+    margin: 0 auto -79px;
+}
+.footer, .push {
+    height: 87px;
+}
+.footer {
+    text-align: center;
+    border-top: 1px dashed #BDBDA8;
+    padding-top: 1em;
+    color: #888;
+}
+.footer a {
+    text-decoration: none;
 }
