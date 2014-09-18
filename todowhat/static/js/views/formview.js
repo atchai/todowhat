@@ -74,6 +74,7 @@ module.exports = Backbone.View.extend({
     keyPressEventHandler: function(event) {
         if (event.keyCode == 13) {
             this.$(".submit").click();
+            this.$("#todofield").focus();
         }
         if (this.$('#todofield').val() !== "") {
             this.$('.submit').removeClass('disabled');

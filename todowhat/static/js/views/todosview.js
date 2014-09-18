@@ -29,9 +29,10 @@ module.exports = Backbone.View.extend({
             });
             this.$el.prepend(todoview.render().el);
         }, this);
-        // if (!this.collection.last()) { //if collection is empty
-        //     this.$el.append('<li id="noTodos" class="list-group-item">Nothing to do</li>');
-        // }
+        if (this.collection.last()) { //if collection is empty
+            // this.$el.append('<li id="noTodos" class="list-group-item">Nothing to do</li>');
+            $('.search-todos').fadeIn();
+        }
         return this;
     },
 
@@ -39,7 +40,10 @@ module.exports = Backbone.View.extend({
         var todoview = new TodoView({
                 model: todo
             });
-        $(todoview.render().el).hide().prependTo(this.$el).slideDown({duration: "fast", easing: "easeInCubic"});
+        $(todoview.render().el).hide().prependTo(this.$el).slideDown({easing: "easeInOutQuart"});
+        if (this.collection.last()) {
+            $('.search-todos').fadeIn();
+        }
     }
 
 })

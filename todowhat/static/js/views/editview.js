@@ -49,11 +49,12 @@ module.exports = Backbone.View.extend({
     */
     parseContent: function() {
         // Get whatever content user provided and assign to variables
-        var newContent = this.$('#editfield').val();
-        var description = this.$('#descriptionfield').val();
-        var newTags = this.$('#edittagfield').val();
-        var oldTags = this.model.getTags();
-        var tagsContent = Tags.parseNewTags(newTags, oldTags, this.tagsToRemoveArr);
+        var newContent, description, newTags, oldTags, tagsContent;
+        newContent = this.$('#editfield').val();
+        description = this.$('#descriptionfield').val();
+        newTags = this.$('#edittagfield').val();
+        oldTags = this.model.getTags();
+        tagsContent = Tags.parseNewTags(newTags, oldTags, this.tagsToRemoveArr);
         this.parseReminder(newContent, tagsContent, description);
 
     },
