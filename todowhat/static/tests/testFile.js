@@ -1,32 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/home/andrew/what-todo/js/models/todo.js":[function(require,module,exports){
-var $ = require('jquery');
-var Backbone = require('backbone');
-var _ = require('underscore');
-
-module.exports = Backbone.Model.extend({
-    defaults: {
-        done: false,
-        order: 0
-    },
-
-    getTags: function() {
-    	return this.get('tags');
-    },
-    /**
-    * validates the content from input field
-    */
-    validate: function (attrs) {
-        //no empty strings allowed
-        if(attrs.content.trim()=='') {
-        	return 'mal';
-        }
-        //no todo over 255 chars allowed
-        if (attrs.content.length > 255) {
-            return 'mal';
-        }
-    }
-})
-},{"backbone":"/home/andrew/what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/what-todo/node_modules/backbone/backbone.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js":[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -1636,7 +1608,7 @@ module.exports = Backbone.Model.extend({
 
 }));
 
-},{"underscore":"/home/andrew/what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/what-todo/node_modules/jquery/dist/jquery.js":[function(require,module,exports){
+},{"underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js":[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v1.11.1
  * http://jquery.com/
@@ -11946,7 +11918,7 @@ return jQuery;
 
 }));
 
-},{}],"/home/andrew/what-todo/node_modules/underscore/underscore.js":[function(require,module,exports){
+},{}],"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js":[function(require,module,exports){
 //     Underscore.js 1.6.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -13291,7 +13263,52 @@ return jQuery;
   }
 }).call(this);
 
-},{}],"/home/andrew/what-todo/tests/specs.js":[function(require,module,exports){
+},{}],"/home/andrew/dev/flask-what-todo/todowhat/static/js/models/todo.js":[function(require,module,exports){
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
+
+module.exports = Backbone.Model.extend({
+    defaults: {
+        done: false,
+        order: 0
+    },
+
+    getTags: function() {
+    	return this.get('tags');
+    },
+    /**
+    * validates the content from input field
+    */
+    validate: function(attrs) {
+        //no empty strings allowed
+        if(attrs.content.trim()=='') {
+            return 'Todo field cannot be blank';
+        }
+        //no todo over 255 chars allowed
+        if (attrs.content.length > 255) {
+            return 'mal';
+        }
+    },
+
+    parseReminderTime: function(hours, minutes) {
+        if (hours == 0) {hours = ''}
+        if (minutes == 0) {minutes = ''}
+        // If a reminder time was given
+        if (hours || minutes) {
+            // Make user confirm they want to close the window
+            window.onbeforeunload = function() {
+                return 'You have a reminder set.';
+            };
+        // Calculate time in milliseconds until the reminder
+        var deltaTime = (hours*3.6*Math.pow(10,6)) + (minutes*6*Math.pow(10,4));
+        var reminderTime = Date.now() + deltaTime;
+        $('.alert-reminder').toggleClass('hide');
+        return reminderTime;
+        }
+    }
+})
+},{"backbone":"/home/andrew/dev/flask-what-todo/node_modules/backbone/backbone.js","jquery":"/home/andrew/dev/flask-what-todo/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/dev/flask-what-todo/node_modules/underscore/underscore.js"}],"/home/andrew/dev/flask-what-todo/todowhat/static/tests/specs.js":[function(require,module,exports){
 var Todo = require('../js/models/todo');
 
 describe("the todo", function(){
@@ -13328,4 +13345,4 @@ describe("todo content length greater than 255 chars", function(){
     expect(this.todo.isValid()).not.toBeTruthy();
   })
 });
-},{"../js/models/todo":"/home/andrew/what-todo/js/models/todo.js"}]},{},["/home/andrew/what-todo/tests/specs.js"])
+},{"../js/models/todo":"/home/andrew/dev/flask-what-todo/todowhat/static/js/models/todo.js"}]},{},["/home/andrew/dev/flask-what-todo/todowhat/static/tests/specs.js"])

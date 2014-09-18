@@ -1,13 +1,13 @@
 var Todo = require('../js/models/todo');
 
 describe("the todo", function(){
- 
+
   beforeEach(function(){
     this.todo = new Todo({
       content: "A test todo"
     });
   });
- 
+
   it("should have content", function(){
     expect(this.todo.get("content")).toBe("A test todo");
   });
@@ -16,7 +16,7 @@ describe("the todo", function(){
   });
   it("should have no tags yet", function(){
     expect(this.todo.getTags()).not.toBeTruthy();
-  }); 
+  });
 });
 describe("todo blank content", function(){
   beforeEach(function(){
