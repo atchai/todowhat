@@ -20,7 +20,6 @@
 	$('input').keyup(function(){$('.btn-login').addClass('disabled')});
 	var validate = function() {
 		if (this.value) {
-			console.log(this.value)
 			if ($('#confirm-password').val() == $('#password').val()) {
 				$('#confirm-password').css('border-color', '#A9DC4C');
 				$('.btn-login').removeClass('disabled')
