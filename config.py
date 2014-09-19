@@ -11,8 +11,8 @@ class BaseConfiguration(object):
     MAIL_PORT = 587
     MAIL_USE_TLS = False
     MAIL_USE_SSL = False
-    MAIL_USERNAME = 'app29149508@heroku.com'
-    MAIL_PASSWORD = 'tNmPygMAlNO5FbIs6V0X0g'
+    MAIL_USERNAME = 'app29765757@heroku.com'
+    MAIL_PASSWORD = 'MshbA-KuRKHJJavgOI7PLA'
     # administrator list
 
 
