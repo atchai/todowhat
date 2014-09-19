@@ -1,9 +1,5 @@
 import os
 
-ADMINS = ['andrewcklow@gmail.com',
-          'low_andrew@hotmail.com',
-          'todowhat@mailinator.com']
-
 
 class BaseConfiguration(object):
     DEBUG = True
