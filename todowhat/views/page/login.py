@@ -6,6 +6,8 @@ from todowhat.models.user import User
 
 
 class LoginView(FlaskView):
+    trailing_slash = False
+
     def index(self):
         return render_template('login.html')
 

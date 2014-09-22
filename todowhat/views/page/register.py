@@ -11,6 +11,8 @@ mail = Mail()
 
 
 class RegisterView(FlaskView):
+    trailing_slash = False
+
     def index(self):
         return render_template('register.html')
 

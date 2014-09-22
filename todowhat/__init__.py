@@ -3,6 +3,8 @@ from flask import Flask, g
 from flask.ext.login import LoginManager, current_user
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.mail import Mail
+from werkzeug.contrib.fixers import ProxyFix
+from flask_sslify import SSLify
 
 # Create database and loginmanager object
 db = SQLAlchemy()
@@ -15,6 +17,10 @@ def create_app(config):
 
     app.secret_key = 'str8 up inject SQL in2 bloodstream'
     app.config.from_object(config)
+
+    if app.config['ON_HEROKU']:
+        app.wsgi_app = ProxyFix(app.wsgi_app)
+        SSLify(app, age=300, permanent=True)
 
     # Setup login manager
     login_manager.init_app(app)
