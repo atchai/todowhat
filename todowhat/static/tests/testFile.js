@@ -13358,15 +13358,4 @@ describe("todo with tags", function(){
     expect(this.todo.getTags().length).toEqual(3);
   });
 });
-describe("todo with duplicate tags", function() {
-  beforeEach(function() {
-    this.todo = new Todo({
-      content: 'A test todo with duplicate tags',
-      tags: ['tag1','tag1','tag2','tag1','tag3','tag2']
-    });
-  });
-  it("should again have three tags", function() {
-    expect(this.todo.getTags().length).toEqual(3);
-  })
-})
 },{"../js/models/todo":"/home/andrew/dev/flask-what-todo/todowhat/static/js/models/todo.js"}]},{},["/home/andrew/dev/flask-what-todo/todowhat/static/tests/specs.js"])
