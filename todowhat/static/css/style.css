@@ -200,7 +200,7 @@ input[type="checkbox"]:checked + label:after {
   position: absolute;
   /*top: 0; left: 4px;*/
   top: 10px;
-  left: 38px;
+  left: 37px;
   font-size: 14px;
   color: #09ad7e;
 }
@@ -691,7 +691,7 @@ font-weight: 700;
 .modal-buttons {
     position: absolute;
 right: 60px;
-top: 20px;
+top: 17px;
 }
 .modal-buttons > .btn {
     border-radius: 0px;
