@@ -3,7 +3,7 @@ import os
 
 class BaseConfiguration(object):
     DEBUG = False
-    SECRET_KEY = 'flask-session-insecure-secret-key'
+    SECRET_KEY = os.environ['SECRET_KEY']
     HASH_ROUNDS = 100000
 
     # email server
