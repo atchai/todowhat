@@ -1,49 +1,55 @@
 <!doctype html>
 <html>
+
 <head>
-  <meta charset="utf-8">
-  <title>What Todo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-  <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
-  <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <meta charset="utf-8">
+    <title>What Todo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
+
 <body>
 
-  <div class="visitor-info">
-  <div>
-    TodoWhat is a simple task management app.
-    The code is available as open source on <a href="">Github</a> and there is a <a href="">blog post</a> from Andrew Low explaining how he built the app as part of his internship at <a href="http://atchai.com/">Atchai Digital.</a>
-  </div>
-  </div>
-<div class="container main-content">
-  <div class="row mainrow">
-  <div class="alert alert-success alert-dismissible hide alert-reminder" role="alert">
-  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-  <strong>OK!</strong> Your reminder has been set.
-</div>
-{% if guest %}
-{% endif %}
-      <div class="col-sm-2 col-md-2 visible-md visible-lg well" id="navlinks"></div>
-  </div>
+    <div class="wrapper">
+        {% if guest %}
+        <div class="visitor-info">
+            <div>
+                TodoWhat is a simple task management app. The code is available as open source on <a href="">Github</a> and there is a <a href="">blog post</a> from Andrew Low explaining how he built the app as part of his internship at <a href="http://atchai.com/">Atchai Digital.</a>
+            </div>
+        </div>
+        {% endif %}
+        <div class="container main-content {% if not guest %} top-margin {% endif %}">
+            <div class="row mainrow">
+                <div class="alert alert-success alert-dismissible hide alert-reminder" role="alert">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <strong>OK!</strong>Your reminder has been set.
+                </div>
+                <div class="col-sm-2 col-md-2 visible-md visible-lg well" id="navlinks"></div>
+            </div>
 
-  <div class="row second-row">
+            <div class="row second-row">
 
-    <ul class="list-group col-md-2 taglist visible-md visible-lg well"></ul>
-    <div class="search-todos">
-    <div class="well col-xs-12 col-md-10 pull-right todos">
+                <ul class="list-group col-md-2 taglist visible-md visible-lg well"></ul>
+                <div class="search-todos">
+                    <div class="well col-xs-12 col-md-10 pull-right todos">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="push"></div>
     </div>
+    <div class="footer col-md-12">
+        <a href="http://www.atchai.com">Made by Atchai</a> |
+        <a href="#">Terms</a> |
+        <a href="#">Privacy Policy</a>
     </div>
-  </div>
-<div class="push"></div>
-</div>
-
-<div class="footer col-md-12"> 
-  <a href="http://www.atchai.com">Made by Atchai</a> |
-  <a href="#">Terms</a> |
-  <a href="#">Privacy Policy</a>
-</div>
-  <script src="/../bundle.js"></script>
+    <script src="/../bundle.js"></script>
 
 </body>
+
 </html>

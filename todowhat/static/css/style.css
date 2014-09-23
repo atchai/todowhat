@@ -748,13 +748,6 @@ input[type="number"] {
 .tags-head:hover {
     background: #54616D;
 }
-body, html {
-    height: 86%;
-}
-.main-content {
-    min-height: 100%;
-    margin: 0 auto -79px;
-}
 .footer, .push {
     height: 87px;
 }
@@ -763,7 +756,29 @@ body, html {
     border-top: 1px dashed #BDBDA8;
     padding-top: 1em;
     color: #888;
+    bottom: 0;
 }
 .footer a {
     text-decoration: none;
+}
+.top-margin {
+    padding-top: 55px;
+}
+* {
+margin: 0;
+}
+html, body {
+height: 95%;
+}
+.wrapper {
+min-height: 100%;
+height: auto !important;
+height: 100%;
+margin: 0 auto -4em;
+}
+.footer {
+height: 4em;
+}
+.push {
+height: 10em;
 }
