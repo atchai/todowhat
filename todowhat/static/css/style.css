@@ -439,7 +439,7 @@ position: relative;
     /*Create todo forms*/
     .form-horizontal {
         margin-left: 0;
-
+        width: 107%;
     }
     .add-todo-fields {
         float: none;
@@ -450,7 +450,7 @@ position: relative;
         font-size: 10px;
     }
     .main-content {
-        margin-top: 76px;
+        margin-top: 26px;
     }
       .submit {
         margin-left: 60%;
