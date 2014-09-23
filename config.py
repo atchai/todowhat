@@ -32,3 +32,4 @@ class DevConfiguration(BaseConfiguration):
 class TestConfiguration(BaseConfiguration):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     MAIL_SUPPRESS_SEND = True
+    ON_HEROKU = False
