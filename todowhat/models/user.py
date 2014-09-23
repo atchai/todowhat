@@ -1,8 +1,9 @@
+import os
+
 from todowhat import db
 from werkzeug import check_password_hash
 from itsdangerous import URLSafeSerializer
 from sqlalchemy.orm import validates
-
 from flask import url_for
 
 
@@ -39,12 +40,14 @@ class User(db.Model):
         return username
 
     def get_serializer(self):
-        return URLSafeSerializer('str8 up inject SQL in2 bloodstream')
+        return URLSafeSerializer(os.environ['SECRET_KEY'])
 
     def get_activation_link(self):
         s = self.get_serializer()
         payload = s.dumps(self.id)
-        return url_for('api.AuthView:activate_user', payload=payload, _external=True)
+        return url_for('api.AuthView:activate_user',
+                       payload=payload,
+                       _external=True)
 
     def activate(self):
         self.activated = True

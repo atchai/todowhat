@@ -5,10 +5,6 @@ from flask.ext.login import login_required
 from todowhat import db
 from todowhat.models.todo import Todo
 
-#
-# Todos API
-#
-
 
 class TodosView(FlaskView):
     trailing_slash = False

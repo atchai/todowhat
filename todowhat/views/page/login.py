@@ -6,13 +6,12 @@ from todowhat.models.user import User
 
 
 class LoginView(FlaskView):
-    # trailing_slash = False
 
     def index(self):
         return render_template('login.html')
 
     def post(self):
-        """Checks login credentials"""
+        """Check login credentials."""
         requestData = request.form
         username = requestData['username']
 

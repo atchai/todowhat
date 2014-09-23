@@ -4,7 +4,6 @@ from flask.ext.classy import FlaskView, route
 
 
 class MainView(FlaskView):
-    # trailing_slash = False
     route_base = '/user'
     decorators = []
 
