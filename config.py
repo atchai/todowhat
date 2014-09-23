@@ -11,8 +11,8 @@ class BaseConfiguration(object):
     MAIL_PORT = 587
     MAIL_USE_TLS = False
     MAIL_USE_SSL = False
-    MAIL_USERNAME = 'app29149449@heroku.com'
-    MAIL_PASSWORD = '7dLVrVXIlAwIcKvUQwHSaQ'
+    MAIL_USERNAME = os.environ['MANDRILL_USERNAME']
+    MAIL_PASSWORD = os.environ['MANDRILL_APIKEY']
     # administrator list
 
 
