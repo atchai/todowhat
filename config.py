@@ -2,7 +2,7 @@ import os
 
 
 class BaseConfiguration(object):
-    DEBUG = True
+    DEBUG = False
     SECRET_KEY = 'flask-session-insecure-secret-key'
     HASH_ROUNDS = 100000
 
