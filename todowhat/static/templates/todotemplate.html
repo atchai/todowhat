@@ -1,7 +1,9 @@
 <div <% if (done) {%> class="struck" <%} %> >
 	<span class="handle glyphicon glyphicon-move"></span>
+	<label for="<%=checkboxID%>" class="checkbox">
 	<input class="toggle" type="checkbox" id="<%=checkboxID%>" class="css-checkbox" <% if (done) {%> checked <%} %> />
-	<label for="<%=checkboxID%>"></label>
+	<span></span>
+	</label>
 	<span class="todo-item">
 	<%= todoItem %>
 	</span>

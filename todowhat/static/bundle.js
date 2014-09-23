@@ -34194,15 +34194,15 @@ __p+='<div ';
  if (done) {
 __p+=' class="struck" ';
 } 
-__p+=' >\n\t<span class="handle glyphicon glyphicon-move"></span>\n\t<input class="toggle" type="checkbox" id="'+
+__p+=' >\n\t<span class="handle glyphicon glyphicon-move"></span>\n\t<label for="'+
+((__t=(checkboxID))==null?'':__t)+
+'" class="checkbox">\n\t<input class="toggle" type="checkbox" id="'+
 ((__t=(checkboxID))==null?'':__t)+
 '" class="css-checkbox" ';
  if (done) {
 __p+=' checked ';
 } 
-__p+=' />\n\t<label for="'+
-((__t=(checkboxID))==null?'':__t)+
-'"></label>\n\t<span class="todo-item">\n\t'+
+__p+=' />\n\t<span></span>\n\t</label>\n\t<span class="todo-item">\n\t'+
 ((__t=( todoItem ))==null?'':__t)+
 '\n\t</span>\n\t';
  if (reminder) { 

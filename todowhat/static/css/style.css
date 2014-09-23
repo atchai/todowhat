@@ -177,7 +177,33 @@ Todo list
 #noTodos {
     pointer-events: none;
 }
-input[type='checkbox'] {
+label.checkbox {
+    display: inline;
+    top: -2px;
+}
+label.checkbox input[type="checkbox"] {display:none;}
+label.checkbox span {
+    display:inline-block;
+    width:20px;
+    height:20px;
+    border: 1px solid #C6C6E9;
+    background: rgba(239,239,239,0.3);
+    vertical-align:middle;
+    margin:3px;
+}
+label.checkbox :checked + span {
+    background: #DAFFCC;
+}
+label.checkbox :checked + span:after {
+    content: '✔';
+    position: absolute;
+    top: -4px;
+    left: 5px;
+    width:20px;
+    height:20px;
+    color: #09ad7e;
+}
+/*input[type='checkbox'] {
     width: 17px;
     height: 17px;
     -webkit-appearance:none;
@@ -198,7 +224,7 @@ input[type=checkbox]:active {
 input[type="checkbox"]:checked + label:after {
   content: '✔';
   position: absolute;
-  /*top: 0; left: 4px;*/
+  top: 0; left: 4px;
   top: 10px;
   left: 37px;
   font-size: 14px;
@@ -207,6 +233,7 @@ input[type="checkbox"]:checked + label:after {
 input.[type="checkbox"]:checked + label:before {
   content: '';
 }
+*/
 .list-group {
     margin-top: 14px;
     padding: 0px;
