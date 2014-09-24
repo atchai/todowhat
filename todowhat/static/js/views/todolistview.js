@@ -133,8 +133,8 @@ module.exports = Backbone.View.extend({
              },
 
             /**
-            * This method updates the order property of todo models and
-            * is called whenever the list has finished been rearranged
+            * Update the order property of todo models whenever the
+            * list has finished been rearranged.
             */
             update: function(event, ui) {
                 var order = $('#todoul').sortable('toArray'),
