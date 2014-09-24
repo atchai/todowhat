@@ -5,6 +5,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.mail import Mail
 from flask_sslify import SSLify
 from werkzeug.contrib.fixers import ProxyFix
+from todowhat.middleware import GzipMiddleware
 
 # Create database and loginmanager object
 db = SQLAlchemy()
@@ -53,5 +54,6 @@ def create_app(config):
 
     # Setup email
     mail = Mail(app)
+    app.wsgi_app = GzipMiddleware(app.wsgi_app, compresslevel=5)
 
     return app
