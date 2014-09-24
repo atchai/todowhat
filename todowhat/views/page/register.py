@@ -5,7 +5,6 @@ from werkzeug import generate_password_hash
 from todowhat import db
 from todowhat.models.user import User
 from flask.ext.mail import Mail, Message
-import mandrill
 
 mail = Mail()
 
@@ -43,8 +42,9 @@ class RegisterView(FlaskView):
                     """, 'info')
             link = user.get_activation_link()
             body = render_template("email.html", link=link)
-            self.send_email('Account activation', 'activation@atchai-whattodo.heroku.com', [username], body)
-            # self.send_email_mandrill(body, username)
+            self.send_email('Account activation',
+                            'activate@todowhat.herokuapp.com',
+                            [username], body)
             return redirect(url_for('page.LoginView:index'))
 
         # Otherwise show error message
@@ -55,14 +55,3 @@ class RegisterView(FlaskView):
         msg = Message(subject, sender=sender, recipients=recipients)
         msg.html = html_body
         mail.send(msg)
-
-    def send_email_mandrill(self, html_body, username):
-        mandrill_client = mandrill.Mandrill('tNmPygMAlNO5FbIs6V0X0g')
-        message = {'from_email': 'activate.account@todowhat.com',
-                   'from_name': 'Todo What',
-                   'html': html_body,
-                   'to': [{'email': username,
-                           'name': 'Recipient Name',
-                           'type': 'to'}]}
-        print message
-        result = mandrill_client.messages.send(message=message, async=True, ip_pool='Main Pool')
