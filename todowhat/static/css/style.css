@@ -38,12 +38,13 @@ Create todo fields
 }
 .add-todo-fields {
     float: right;
-    border: 1px solid;
+    /*border: 1px solid #999;*/
     margin-left: 0px;
     padding-left: 0px;
     margin-right: 0px;
     padding-right: 0px;
     padding-top: 13px;
+    background: #D6D6F8;
 }
 .glyphicon-plus {
     margin: 10px 0 0 5px;
@@ -77,10 +78,11 @@ Create todo fields
 }
 .search-todos {
     display: none;
-    border: 1px solid black;
-    margin-top: -67px;
+    /*border: 1px solid #999;*/
+    margin-top: -43px;
     margin-left: 19px;
     padding-top: 13px;
+    background: #e6e6c6;
 }
 /***************************
 Navigation
@@ -383,7 +385,13 @@ Custom breakpoints
 ***************************/
 @media (max-width: 1200px) {
     .submit {
-        margin-left: 35%;
+        margin-left: 26%;
+    }
+    .search-todos {
+        margin-left: 16px;
+    }
+    .add-todo-fields .form-horizontal {
+        width: 100%;
     }
 }
 @media(min-width: 991px) {
@@ -392,23 +400,23 @@ Custom breakpoints
 	}
     .list-group-item .editbutton, .list-group-item .remove, .list-group-item .handle {
         opacity: 0;
-}
-.list-group-item:hover .remove, .list-group-item:hover .editbutton {
-    opacity: 0.4;
-}
-.list-group-item:hover .handle {
-    opacity: 0.7;
-}
-.list-group-item:hover .editbutton:hover, .list-group-item:hover .remove:hover, .list-group-item:hover .handle:hover {
-    opacity: 1;
-}
-.input-group-addon {
-    left: 29px;
-position: relative;
-}
-.input-group .form-control:first-child {
-    width: 103%;
-}
+    }
+    .list-group-item:hover .remove, .list-group-item:hover .editbutton {
+        opacity: 0.4;
+    }
+    .list-group-item:hover .handle {
+        opacity: 0.7;
+    }
+    .list-group-item:hover .editbutton:hover, .list-group-item:hover .remove:hover, .list-group-item:hover .handle:hover {
+        opacity: 1;
+    }
+    .input-group-addon {
+        left: 29px;
+        position: relative;
+    }
+    .input-group .form-control:first-child {
+        width: 104%;
+    }
 }
 
 @media (max-width: 991px) {
@@ -457,10 +465,12 @@ position: relative;
     /*Create todo forms*/
     .form-horizontal {
         margin-left: 0;
-        width: 107%;
+        width: 103%;
     }
     .add-todo-fields {
         float: none;
+        padding: 17px;
+        padding-bottom: 0px;
     }
 
     /*tags*/
@@ -471,11 +481,14 @@ position: relative;
         margin-top: 26px;
     }
       .submit {
-        margin-left: 60%;
+        margin-left: 25%;
     }
 
     .search {
         margin: -5px -14px 0px -14px;
+    }
+    .search .input-group {
+        margin-right: -14px;
     }
     .search-field {
         width: 100%;
@@ -487,8 +500,14 @@ position: relative;
         margin-right: 0px;
         margin-left: 0px;
     }
-    .add-todo-fields {
-        margin-left: -15px;
+    .search-todos {
+        padding-left: 0px;
+        margin-top: 0px;
+        margin-left: 0px;
+        padding: 17px;
+    }
+    .search-todos .form-group {
+        margin: 0px;
     }
 }
 
@@ -504,7 +523,7 @@ position: relative;
         font-weight: 900;
     }
     .submit {
-        margin-left: 35%;
+        margin-left: 20%;
     }
     .login-form {
         margin-left: 0%;
@@ -518,7 +537,7 @@ position: relative;
 }
 @media (max-width: 630px) {
     .submit {
-        /*margin-left: 23px;*/
+        margin-left: 4%;
     }
     .login-form {
         width: 100%;
@@ -526,18 +545,31 @@ position: relative;
 }
 @media (max-width: 580px) {
     .submit {
-        margin-left: 10%;
+        margin-left: -21%;
     }
-    .form-horizontal {
-        width: 100%;
+    .add-todo-fields .form-horizontal {
+        width: 95%;
     }
 }
 @media (max-width: 450px) {
     .submit {
-        margin-left: -60%;
+        margin-left: -158%;
     }
-    .form-horizontal {
-        width: 90%;
+    .add-todo-fields .form-horizontal {
+        width: 84%;
+    }
+    .main-content {
+        padding: 0px;
+    }
+    .search-todos {
+        padding: 0px;
+    }
+    .todos {
+        margin-bottom: 0px;
+    }
+    .add-todo-fields {
+        padding: 10px;
+        padding-bottom: 0px;
     }
 }
 
@@ -568,7 +600,7 @@ position: relative;
 .handle:hover {
     cursor: move;
 }
-li.ui-sortable-helper, li.ui-sortable-helper input, li.ui-sortable-helper button{
+li.ui-sortable-helper, li.ui-sortable-helper input, li.ui-sortable-helper button, li.ui-sortable-helper label{
     cursor: move;
 }
 .remove-tag-mode {
@@ -799,4 +831,7 @@ height: 4em;
 }
 .push {
 height: 10em;
+}
+.row.second-row input {
+    border-radius: 0px;
 }
