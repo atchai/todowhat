@@ -33,11 +33,17 @@ Create todo fields
 ***************************/
 
 .form-horizontal {
-    margin-left: -30px;
-    width: 110%;
+    margin-left: 15px;
+    width: 103%;
 }
 .add-todo-fields {
     float: right;
+    border: 1px solid;
+    margin-left: 0px;
+    padding-left: 0px;
+    margin-right: 0px;
+    padding-right: 0px;
+    padding-top: 13px;
 }
 .glyphicon-plus {
     margin: 10px 0 0 5px;
@@ -50,11 +56,15 @@ Create todo fields
 .submit {
     height: 90px;
     font-size: 50px;
-    margin-left: 48%;
+    margin-left: 39%;
 }
 
 .search {
-    margin: -80px 0 60px 5px;
+    margin: 0px 0px 60px 0px;
+    padding-left: 0px;
+}
+.search .input-group {
+    margin-right: 15px;
 }
 .search-field {
     width: 103%;
@@ -67,6 +77,10 @@ Create todo fields
 }
 .search-todos {
     display: none;
+    border: 1px solid black;
+    margin-top: -67px;
+    margin-left: 19px;
+    padding-top: 13px;
 }
 /***************************
 Navigation
@@ -176,6 +190,10 @@ Todo list
 }
 #noTodos {
     pointer-events: none;
+}
+.todos {
+    padding-right: 0px;
+    padding-left: 0px;
 }
 label.checkbox {
     display: inline;
