@@ -2,23 +2,28 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
-var template = require('../../templates/mobilenavtemplate.html')
+var GuestTodos = require('../collections/guesttodos');
+var template = require('../../templates/navtemplate.html');
 
 /**
-* View for navigation links on small screens
+* View for navigation links on large screens
 */
 module.exports = Backbone.View.extend({
     initialize: function() {
+        this.listenTo(Backbone.eventBus, 'guestMode', this.guestMode);
         //listens for change in todos so navigation link can be disabled if necessary
         this.listenTo(Backbone.eventBus, 'statusChanged', this.render);
         this.listenTo(Todos, 'remove', this.render);
         this.listenTo(Todos, 'add', this.render);
         //listens for change in router so relevant navigation link is given active styling
         this.listenTo(Backbone.eventBus, 'routeChanged', this.render);
+        // this.render();
+        GuestTodos.fetch();
+        Todos.fetch();
     },
-
     render: function() {
         this.$el.html(template({
+            //data for navigation links
             items: [
                 {
                     name: 'all',
@@ -37,9 +42,13 @@ module.exports = Backbone.View.extend({
                     disabled: (Todos.filterDone(true).length == 0),
                     bold: ('#done' == window.location.hash)
                 }
-            ],
-            current: window.location.hash
+
+            ]
         }));
         return this;
+    },
+    guestMode: function() {
+        Todos = GuestTodos;
+        this.render();
     }
 });

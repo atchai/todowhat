@@ -1,12 +1,11 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
-var Tags = require('../collections/tags');
+var TodosView = require ('./todos');
 var template = require('../../templates/searchtemplate.html');
+var Tags = require('../collections/tags');
 var Todos = require('../collections/todos');
 var GuestTodos = require('../collections/guesttodos');
-var TodosView = require ('./todosview');
-
 
 module.exports = Backbone.View.extend({
 	el: '.search-todos',
@@ -53,6 +52,7 @@ module.exports = Backbone.View.extend({
         if (!searchTerm) {
         	this.resetSearch();
         }
+
         var thing = Todos.search(searchTerm);
         this.searchedView = new TodosView({collection: thing});
         this.$('#todoul').html(this.searchedView.render().el);

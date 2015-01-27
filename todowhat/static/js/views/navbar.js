@@ -2,8 +2,8 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
-var MobileNavView = require('./mobilenavview');
-var TagsView = require('./tagsview');
+var MobileNavView = require('./mobilenav');
+var TagsView = require('./tags');
 var Tags = require('../collections/tags');
 var template = require('../../templates/navbartemplate.html')
 

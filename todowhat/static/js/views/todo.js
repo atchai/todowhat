@@ -1,9 +1,9 @@
 var Backbone = require('backbone');
 var _ = require('underscore');
+var editView = require('./edit');
+var template = require('../../templates/todotemplate.html');
 var Tags = require('../collections/tags');
 var GuestTags = require('../collections/guesttags');
-var template = require('../../templates/todotemplate.html');
-var editView = require('./editview');
 
 module.exports = Backbone.View.extend({
 

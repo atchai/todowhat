@@ -1,8 +1,8 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
-var NavView = require('./navview');
-var MobileNavView = require('./mobilenavview');
+var NavView = require('./nav');
+var MobileNavView = require('./mobilenav');
 var Tags = require('../collections/tags');
 var GuestTags = require('../collections/guesttags');
 var GuestTodos = require('../collections/guesttodos');
@@ -38,12 +38,14 @@ module.exports = Backbone.View.extend({
             reminder: this.model.get('reminder'),
             notifySupported: this.notifySupported
         }));
+
         return this;
     },
 
     activateReminderMode: function() {
         this.$('.set-reminder').toggleClass('hide');
     },
+
     /**
     * First step of updating the todo model
     * This prepares the todo content, tags and description
@@ -51,11 +53,12 @@ module.exports = Backbone.View.extend({
     */
     parseContent: function() {
         // Get whatever content user provided and assign to variables
-        var newContent, description, newTags, oldTags, tagsContent;
-        newContent = this.$('#editfield').val();
-        description = this.$('#descriptionfield').val();
-        newTags = this.$('#edittagfield').val();
-        oldTags = this.model.getTags();
+        //var newContent, description, newTags, oldTags, tagsContent;
+
+        var newContent = this.$('#editfield').val(),
+        description = this.$('#descriptionfield').val(),
+        newTags = this.$('#edittagfield').val(),
+        oldTags = this.model.getTags(),
         tagsContent = Tags.parseNewTags(newTags, oldTags, this.tagsToRemoveArr);
         this.parseReminder(newContent, tagsContent, description);
 
@@ -141,17 +144,15 @@ module.exports = Backbone.View.extend({
 
 	liveUpdateTodo: function() {
 		var todo = this.$('#editfield').val();
-		this.$el.closest('.list-group-item').find('span:eq(1)').html(todo);
-
+		this.$el.closest('.list-group-item').find('.todo-item').html(todo);
 	},
 
     /**
     * This resets any reminder the user may have set
     */
     removeReminder: function() {
-        this.model.save({
-            reminder: null
-        });
+        this.model.save({ reminder: null });
+
         $('.modal-backdrop').remove();
     },
 

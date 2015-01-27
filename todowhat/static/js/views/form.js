@@ -4,7 +4,7 @@ var _ = require('underscore');
 var Todos = require('../collections/todos');
 var GuestTodos = require('../collections/guesttodos');
 var GuestTags = require('../collections/guesttags');
-var TagsView = require('./tagsview');
+var TagsView = require('./tags');
 var Tags = require('../collections/tags');
 var template = require('../../templates/formtemplate.html');
 
@@ -25,6 +25,7 @@ module.exports = Backbone.View.extend({
 	},
 
     guestMode: function() {
+        this.isGuest = true;
         Todos = GuestTodos;
         Tags = GuestTags;
     },
@@ -39,9 +40,12 @@ module.exports = Backbone.View.extend({
         tagsContent = this.$tagsfield.val();
         //grabs tag values deliminated by commas and removes whitespace & repeats
         tagsContent = Tags.parseTags(this.$tagsfield.val());
-         tagsContent.forEach(function(tag) {
-             GuestTags.exist(tag);
-         });
+        if (this.isGuest) {
+            tagsContent.forEach(function(tag) {
+                GuestTags.exist(tag);
+            });
+        }
+
         this.addTodo(todoContent, tagsContent);
     },
 

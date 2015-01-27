@@ -1,13 +1,10 @@
 var Backbone = require('backbone');
-var FilterDoneView = require('../views/filterdoneview');
-var FilterTodoView = require('../views/filtertodoview');
-var FilterTagView = require('../views/filterTagView');
 var Todos = require('../collections/todos');
 var GuestTodos = require('../collections/guesttodos');
 var GuestTags = require('../collections/guesttags');
-var todoAppView = require('../views/mainview');
-var todoListView = require('../views/todolistview');
-var searchView = require('../views/searchview');
+var todoAppView = require('../views/main');
+var todoListView = require('../views/todolist');
+var searchView = require('../views/search');
 
 /**
 * Manages which todos view is rendered

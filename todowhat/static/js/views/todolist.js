@@ -1,16 +1,18 @@
 var Backbone = require('backbone');
 var _ = require('underscore');
+var $ = require('../jquery');
+Backbone.$ = $;
+
+var TodosView = require('./todos');
+var DoneView = require('./filter/done');
+var NotDoneView = require('./filter/todo');
+var FilterTagView = require('./filter/tag');
+
 var Todos = require('../collections/todos');
 var Tags = require('../collections/tags');
 var GuestTodos = require('../collections/guesttodos');
 var GuestTags = require('../collections/guesttags');
-var TodosView = require('./todosview');
-var DoneView = require('./filterdoneview');
-var NotDoneView = require('./filtertodoview');
-var FilterTagView = require('./filterTagView');
 
-var $ = require('../jquery')
-Backbone.$ = $;
 
 /**
 * View for list of todos
@@ -20,12 +22,11 @@ module.exports = Backbone.View.extend({
 
     initialize: function() {
         Todos.fetch({reset:true});
-        // If no todo list view exists yet, create view for all todos.
-        if (!this.currentView) {
-            // Todos.fetch();
-            this.currentView = new TodosView({collection: Todos});
 
+        if (!this.currentView) {
+            this.currentView = new TodosView({collection: Todos});
         }
+
         this.render();
 
         this.listenTo(Backbone.eventBus, 'guestMode', this.guestMode);
@@ -35,6 +36,7 @@ module.exports = Backbone.View.extend({
         this.listenTo(Backbone.eventBus, 'filterNotDone', this.filterNotDone);
         this.listenTo(Backbone.eventBus, 'filterTag', this.filterTag);
     },
+
     /**
     * Puts the todos list view within the .todos element
     */
@@ -99,39 +101,37 @@ module.exports = Backbone.View.extend({
     * If sorting has occured, order of items is saved to models accordingly.
     */
     orderPersistance: function() {
-        var self = this;
         var sortHelper = function(w, that, ui) {
             that.children().each(function() {
-                    if ($(this).hasClass('ui-sortable-helper') || $(this).hasClass('ui-sortable-placeholder'))
-                        return true;
-                    // Get the absolute value of the distance between top of the helper
-                    var dist = Math.abs(ui.position.top - $(this).position().top),
+                if ($(this).hasClass('ui-sortable-helper') || $(this).hasClass('ui-sortable-placeholder')) {
+                    return true;
+                }
+
+                // Get the absolute value of the distance between top of the helper
+                var dist = Math.abs(ui.position.top - $(this).position().top),
                     before = ui.position.top > $(this).position().top;
-                    // If overlap is more than half of the dragged item
-                    if ((w - dist) > (w / 2) && (dist < w)) {
-                        if (before)
-                            $('.ui-sortable-placeholder', that).insertBefore($(this));
-                        else
-                            $('.ui-sortable-placeholder', that).insertAfter($(this));
-                        return false;
+                // If overlap is more than half of the dragged item
+                if ((w - dist) > (w / 2) && (dist < w)) {
+                    if (before) {
+                        $('.ui-sortable-placeholder', that).insertBefore($(this));
+                    } else {
+                        $('.ui-sortable-placeholder', that).insertAfter($(this));
                     }
+                }
             });
         }
+
         this.$('#todoul').sortable({
             axis: "y",
-            // only allow list item to be dragged by .handle (a glyphicon)
             handle: ".handle",
-            // prevents list item being dragged out of parent element, else dragging item down extends the page
             containment: "parent",
             tolerance: 'intersect',
-
-            // This method makes the list sorting smoother and is called whenever the list is being rearranged
+            // Helper method to make sorting smoother
             sort: function(event, ui) {
                 var that = $(this),
-                w = ui.helper.outerHeight();
+                    w = ui.helper.outerHeight();
                 sortHelper(w, that, ui);
              },
-
             /**
             * Update the order property of todo models whenever the
             * list has finished been rearranged.
@@ -140,9 +140,7 @@ module.exports = Backbone.View.extend({
                 var order = $('#todoul').sortable('toArray'),
                     cidOfDropped = ui.item.context.id,
                     itemIndex = ui.item.index();
-                    // Todos.hi(cidOfDropped);
                 Todos.sortableOrder(order, cidOfDropped, itemIndex);
-
             }
         });
     }

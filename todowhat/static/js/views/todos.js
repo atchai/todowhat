@@ -1,7 +1,8 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
-var TodoView = require('./todoview');
+var TodoView = require('./todo');
+
 
 /**
 * View for all todos in the collection
