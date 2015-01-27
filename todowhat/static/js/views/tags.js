@@ -13,11 +13,15 @@ module.exports = Backbone.View.extend({
         "click .all-todo": "activateAll"
     },
 
-    initialize: function() {
+    initialize: function(options) {
+
         this.listenTo(Backbone.eventBus, 'guestMode', this.guestMode);
         this.listenTo(Backbone.eventBus, 'userMode', this.userMode);
         this.listenTo(Backbone.eventBus, 'todoRemoved', this.render);
 
+        if (!_.isUndefined(options) && options.guest) {
+            Tags = GuestTags;
+        }
         //so that new tags are added alphabetically
         this.listenTo(Tags, 'add', this.render);
         this.listenTo(Tags, 'reset', this.render);
@@ -48,6 +52,7 @@ module.exports = Backbone.View.extend({
     * tags associated with a user from the server
     */
     guestMode: function() {
+        console.log('tags view guest mode');
         this.stopListening(Tags);
         Tags = GuestTags;
         this.listenTo(Tags, 'add', this.render);
@@ -55,6 +60,7 @@ module.exports = Backbone.View.extend({
         this.listenTo(Tags, 'remove', this.removeTagView);
         Tags.fetch();
         this.render();
+        console.log(this);
     },
 
     userMode: function() {
