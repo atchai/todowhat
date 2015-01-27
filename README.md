@@ -12,12 +12,14 @@ Todowhat was built as an intern project by Andrew Low at [Atchai Digital](http:/
 
 ## Installation
 ```
+git clone git@github.com:atchai/todowhat.git
+cd todowhat
 sudo apt-get install npm python-pip python-dev
-python virtualenv.py flask
 sudo pip install virtualenv
-virtualenv flask && source flask/bin/activate
+virtualenv flask
+. flask/bin/activate
 pip install -r requirements.txt
-sudo npm install
+npm install
 gulp
 ./db_create.py
 ./run.py
