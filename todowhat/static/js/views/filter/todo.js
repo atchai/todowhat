@@ -5,7 +5,11 @@ var $ = require('jquery');
 
 module.exports = FilterView.extend({
     initialize: function() {
-        this.todoList = this.collection.filterDone(false);
+        this.refresh();
         FilterView.prototype.initialize.apply(this, arguments);
+    },
+
+    refresh: function() {
+        this.todoList = this.collection.filterDone(false);
     }
 })

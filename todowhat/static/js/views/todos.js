@@ -5,7 +5,7 @@ var TodoView = require('./todo');
 
 
 /**
-* View for all todos in the collection
+* Base class for View for all todos in a collection
 */
 module.exports = Backbone.View.extend({
     initialize: function() {
@@ -21,22 +21,23 @@ module.exports = Backbone.View.extend({
     * Renders every todo in the todos collection.
     */
     render: function() {
-        // Clear all the filter actives
-        $('.list-group-item.active').removeClass('active');
-        this.$el.empty();
-
-        this.collection.each(function(todo) {
-            var todoview = new TodoView({
-                model: todo
-            });
-            this.$el.prepend(todoview.render().el);
-        }, this);
-
+        this.replaceTodosWith(this.collection);
         if (this.collection.last()) { //if collection is empty
             $('.search-todos').fadeIn();
         }
 
         return this;
+    },
+
+    replaceTodosWith: function(todos) {
+        // Clear all the filter actives
+        $('.list-group-item.active').removeClass('active');
+        this.$el.empty();
+
+        todos.each(function(todo) {
+            var todoview = new TodoView({ model: todo });
+            this.$el.prepend(todoview.render().el);
+        }, this);
     },
 
     addTodo: function(todo) {

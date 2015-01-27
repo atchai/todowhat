@@ -5,6 +5,11 @@ var $ = require('jquery');
 
 module.exports = FilterView.extend({
     initialize: function() {
+        this.refresh();
+        FilterView.prototype.initialize.apply(this, arguments);
+    },
+
+    refresh: function() {
         var tag = Backbone.history.fragment.split("/")[1];
         this.todoList = (tag === 'all') ?
             this.collection : this.collection.filterTag(tag)

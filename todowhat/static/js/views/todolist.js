@@ -15,7 +15,7 @@ var GuestTags = require('../collections/guesttags');
 
 
 /**
-* View for list of todos
+* Todo list view controller
 */
 module.exports = Backbone.View.extend({
     el: '.todos',

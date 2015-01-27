@@ -32889,6 +32889,7 @@ var GuestTags = Backbone.Collection.extend({
 
 // calling this module from others returns a new tag model
 module.exports = new GuestTags([]);
+
 },{"../models/tag":"/home/andrew/lab/todowhat/todowhat/static/js/models/tag.js","backbone":"/home/andrew/lab/todowhat/node_modules/backbone/backbone.js","backbone.localstorage":"/home/andrew/lab/todowhat/node_modules/backbone.localstorage/backbone.localStorage.js","underscore":"/home/andrew/lab/todowhat/node_modules/underscore/underscore.js"}],"/home/andrew/lab/todowhat/todowhat/static/js/collections/guesttodos.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
@@ -33156,8 +33157,8 @@ module.exports = Backbone.Router.extend({
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
-var NavView = require('./nav');
-var MobileNavView = require('./mobilenav');
+var NavView = require('./navigation/status');
+var MobileNavView = require('./navigation/mobileStatus');
 var Tags = require('../collections/tags');
 var GuestTags = require('../collections/guesttags');
 var GuestTodos = require('../collections/guesttodos');
@@ -33175,7 +33176,6 @@ module.exports = Backbone.View.extend({
 		"keyup #editfield": "liveUpdateTodo",
         "click .remove-reminder": "removeReminder",
         "click .activate-reminder-mode": "activateReminderMode"
-
     },
 
     initialize: function() {
@@ -33324,23 +33324,20 @@ module.exports = Backbone.View.extend({
     }
 });
 
-},{"../../templates/edittemplate.html":"/home/andrew/lab/todowhat/todowhat/static/templates/edittemplate.html","../collections/guesttags":"/home/andrew/lab/todowhat/todowhat/static/js/collections/guesttags.js","../collections/guesttodos":"/home/andrew/lab/todowhat/todowhat/static/js/collections/guesttodos.js","../collections/tags":"/home/andrew/lab/todowhat/todowhat/static/js/collections/tags.js","../collections/todos":"/home/andrew/lab/todowhat/todowhat/static/js/collections/todos.js","./mobilenav":"/home/andrew/lab/todowhat/todowhat/static/js/views/mobilenav.js","./nav":"/home/andrew/lab/todowhat/todowhat/static/js/views/nav.js","backbone":"/home/andrew/lab/todowhat/node_modules/backbone/backbone.js","jquery":"/home/andrew/lab/todowhat/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/lab/todowhat/node_modules/underscore/underscore.js"}],"/home/andrew/lab/todowhat/todowhat/static/js/views/filter.js":[function(require,module,exports){
+},{"../../templates/edittemplate.html":"/home/andrew/lab/todowhat/todowhat/static/templates/edittemplate.html","../collections/guesttags":"/home/andrew/lab/todowhat/todowhat/static/js/collections/guesttags.js","../collections/guesttodos":"/home/andrew/lab/todowhat/todowhat/static/js/collections/guesttodos.js","../collections/tags":"/home/andrew/lab/todowhat/todowhat/static/js/collections/tags.js","../collections/todos":"/home/andrew/lab/todowhat/todowhat/static/js/collections/todos.js","./navigation/mobileStatus":"/home/andrew/lab/todowhat/todowhat/static/js/views/navigation/mobileStatus.js","./navigation/status":"/home/andrew/lab/todowhat/todowhat/static/js/views/navigation/status.js","backbone":"/home/andrew/lab/todowhat/node_modules/backbone/backbone.js","jquery":"/home/andrew/lab/todowhat/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/lab/todowhat/node_modules/underscore/underscore.js"}],"/home/andrew/lab/todowhat/todowhat/static/js/views/filter.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
-var Todos = require('../collections/todos');
-var TodoView = require('./todo');
+var TodosView = require('./todos');
 
-module.exports = Backbone.View.extend({
-    tagName: 'ul',
-
-    id: 'todoul',
+/**
+ * Base class for a filtered todos list view
+ */
+module.exports = TodosView.extend({
 
     initialize: function() {
-        // Changing done state of a model in this collection will rerender view so the todo is removed from view
-        this.listenTo(this.collection, 'change', this.render);
-        // Likewise if the todo is removed from collection
-        this.listenTo(this.collection, 'remove', this.render);
+        // Changing done state will rerender view so the todo is removed
+        this.listenTo(this.todoList, 'change', this.render);
         // If a new todo is added to collection, ensure user is routed back to all todos view
         this.listenTo(this.collection, 'add', this.close);
     },
@@ -33349,13 +33346,8 @@ module.exports = Backbone.View.extend({
     * Renders the todos that have been set to done.
     */
     render: function() {
-        $('.list-group-item.active').removeClass('active');
-        this.$el.empty();
-
-        this.todoList.each(function(c) {
-            var todoview = new TodoView({ model: c });
-            this.$el.prepend(todoview.render().el);
-        }, this);
+        this.refresh();
+        TodosView.prototype.replaceTodosWith.call(this, this.todoList);
 
         if (!this.todoList.last()) {
             this.close();
@@ -33369,7 +33361,7 @@ module.exports = Backbone.View.extend({
     }
 })
 
-},{"../collections/todos":"/home/andrew/lab/todowhat/todowhat/static/js/collections/todos.js","./todo":"/home/andrew/lab/todowhat/todowhat/static/js/views/todo.js","backbone":"/home/andrew/lab/todowhat/node_modules/backbone/backbone.js","jquery":"/home/andrew/lab/todowhat/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/lab/todowhat/node_modules/underscore/underscore.js"}],"/home/andrew/lab/todowhat/todowhat/static/js/views/filter/done.js":[function(require,module,exports){
+},{"./todos":"/home/andrew/lab/todowhat/todowhat/static/js/views/todos.js","backbone":"/home/andrew/lab/todowhat/node_modules/backbone/backbone.js","jquery":"/home/andrew/lab/todowhat/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/lab/todowhat/node_modules/underscore/underscore.js"}],"/home/andrew/lab/todowhat/todowhat/static/js/views/filter/done.js":[function(require,module,exports){
 var $ = require('jquery');
     Backbone = require('backbone'),
     _ = require('underscore'),
@@ -33377,8 +33369,12 @@ var $ = require('jquery');
 
 module.exports = FilterView.extend({
     initialize: function() {
-        this.todoList = this.collection.filterDone(true);
+        this.refresh();
         FilterView.prototype.initialize.apply(this, arguments);
+    },
+
+    refresh: function() {
+        this.todoList = this.collection.filterDone(true);
     }
 })
 
@@ -33390,6 +33386,11 @@ var $ = require('jquery');
 
 module.exports = FilterView.extend({
     initialize: function() {
+        this.refresh();
+        FilterView.prototype.initialize.apply(this, arguments);
+    },
+
+    refresh: function() {
         var tag = Backbone.history.fragment.split("/")[1];
         this.todoList = (tag === 'all') ?
             this.collection : this.collection.filterTag(tag)
@@ -33404,8 +33405,12 @@ var $ = require('jquery');
 
 module.exports = FilterView.extend({
     initialize: function() {
-        this.todoList = this.collection.filterDone(false);
+        this.refresh();
         FilterView.prototype.initialize.apply(this, arguments);
+    },
+
+    refresh: function() {
+        this.todoList = this.collection.filterDone(false);
     }
 })
 
@@ -33467,19 +33472,19 @@ module.exports = Backbone.View.extend({
     */
 	addTodo: function(todoContent, tagsContent) {
         Todos.create(
-                {
-                    content: todoContent,
-                    order: Todos.newOrder(),
-                    tags: tagsContent
-                },
-                {
-                    //using .create so we must set wait:true so input can be validated by model
-                    wait: true,
-                    //if todo content was valid, see if tag(s) exists in collection so count can be updated appropriately
-                    success: function() {
-                         Tags.fetch();
-                    }
-                });
+            {
+                content: todoContent,
+                order: Todos.newOrder(),
+                tags: tagsContent
+            },
+            {
+                //using .create so we must set wait:true so input can be validated by model
+                wait: true,
+                //if todo content was valid, see if tag(s) exists in collection so count can be updated appropriately
+                success: function() {
+                        Tags.fetch();
+                }
+            });
 
         this.$todofield.val('');
         this.$tagsfield.val('');
@@ -33494,7 +33499,8 @@ module.exports = Backbone.View.extend({
             this.$(".submit").click();
             this.$("#todofield").focus();
         }
-        if (this.$('#todofield').val() !== "") {
+
+        if (this.$('#todofield').val()) {
             this.$('.submit').removeClass('disabled');
         } else {
             this.$('.submit').addClass('disabled');
@@ -33511,7 +33517,7 @@ var GuestTags = require('../collections/guesttags')
 var Todos = require('../collections/todos')
 var GuestTodos = require('../collections/guesttodos')
 var TagsView = require('./tags');
-var NavView = require('./nav');
+var NavView = require('./navigation/status');
 var FormView = require('./form');
 var NavBarView = require('./navbar');
 var TodosView = require('./todos');
@@ -33536,7 +33542,6 @@ module.exports = Backbone.View.extend({
         this.$('.mainrow').append(new FormView().render().el);
         //renders the tag list on left side (large screens)
         this.$('.taglist').html(new TagsView().render().el);
-        console.log(Tags);
         //renders the navigation links on left side (large screens)
         this.$('#navlinks').html(new NavView().render().el);
     },
@@ -33551,12 +33556,53 @@ module.exports = Backbone.View.extend({
     }
 });
 
-},{"../collections/guesttags":"/home/andrew/lab/todowhat/todowhat/static/js/collections/guesttags.js","../collections/guesttodos":"/home/andrew/lab/todowhat/todowhat/static/js/collections/guesttodos.js","../collections/tags":"/home/andrew/lab/todowhat/todowhat/static/js/collections/tags.js","../collections/todos":"/home/andrew/lab/todowhat/todowhat/static/js/collections/todos.js","../jquery":"/home/andrew/lab/todowhat/todowhat/static/js/jquery.js","./form":"/home/andrew/lab/todowhat/todowhat/static/js/views/form.js","./nav":"/home/andrew/lab/todowhat/todowhat/static/js/views/nav.js","./navbar":"/home/andrew/lab/todowhat/todowhat/static/js/views/navbar.js","./tags":"/home/andrew/lab/todowhat/todowhat/static/js/views/tags.js","./todos":"/home/andrew/lab/todowhat/todowhat/static/js/views/todos.js","backbone":"/home/andrew/lab/todowhat/node_modules/backbone/backbone.js","underscore":"/home/andrew/lab/todowhat/node_modules/underscore/underscore.js"}],"/home/andrew/lab/todowhat/todowhat/static/js/views/mobilenav.js":[function(require,module,exports){
+},{"../collections/guesttags":"/home/andrew/lab/todowhat/todowhat/static/js/collections/guesttags.js","../collections/guesttodos":"/home/andrew/lab/todowhat/todowhat/static/js/collections/guesttodos.js","../collections/tags":"/home/andrew/lab/todowhat/todowhat/static/js/collections/tags.js","../collections/todos":"/home/andrew/lab/todowhat/todowhat/static/js/collections/todos.js","../jquery":"/home/andrew/lab/todowhat/todowhat/static/js/jquery.js","./form":"/home/andrew/lab/todowhat/todowhat/static/js/views/form.js","./navbar":"/home/andrew/lab/todowhat/todowhat/static/js/views/navbar.js","./navigation/status":"/home/andrew/lab/todowhat/todowhat/static/js/views/navigation/status.js","./tags":"/home/andrew/lab/todowhat/todowhat/static/js/views/tags.js","./todos":"/home/andrew/lab/todowhat/todowhat/static/js/views/todos.js","backbone":"/home/andrew/lab/todowhat/node_modules/backbone/backbone.js","underscore":"/home/andrew/lab/todowhat/node_modules/underscore/underscore.js"}],"/home/andrew/lab/todowhat/todowhat/static/js/views/navbar.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var Todos = require('../collections/todos');
-var template = require('../../templates/mobilenavtemplate.html')
+var MobileNavView = require('./navigation/mobileStatus');
+var TagsView = require('./tags');
+var Tags = require('../collections/tags');
+var template = require('../../templates/navbartemplate.html')
+
+/**
+* View for top navigation bar - contains navigation links and tag list for small screens
+*/
+module.exports = Backbone.View.extend({
+	initialize: function() {
+		this.listenTo(Tags, 'add', this.renderMobileTags);
+		this.listenTo(Backbone.eventBus, 'statusChanged', this.renderMobileLinks);
+		this.listenTo(Backbone.eventBus, 'guestMode', this.guestMode);
+	},
+
+	render: function() {
+		this.$el.html(template({guest: this.guest}));
+        this.renderMobileLinks();
+        this.renderMobileTags();
+        return this;
+	},
+	guestMode: function() {
+		this.guest = true;
+		this.render();
+	},
+	//renders mobile navigation links
+	renderMobileLinks: function() {
+        this.$('.mobilelinks').html(new MobileNavView().render().el);
+	},
+
+	//renders mobile tags list
+	renderMobileTags: function() {
+        this.$('.taglist').html(new TagsView({collection: Tags}).render().el);
+	}
+});
+
+},{"../../templates/navbartemplate.html":"/home/andrew/lab/todowhat/todowhat/static/templates/navbartemplate.html","../collections/tags":"/home/andrew/lab/todowhat/todowhat/static/js/collections/tags.js","../collections/todos":"/home/andrew/lab/todowhat/todowhat/static/js/collections/todos.js","./navigation/mobileStatus":"/home/andrew/lab/todowhat/todowhat/static/js/views/navigation/mobileStatus.js","./tags":"/home/andrew/lab/todowhat/todowhat/static/js/views/tags.js","backbone":"/home/andrew/lab/todowhat/node_modules/backbone/backbone.js","jquery":"/home/andrew/lab/todowhat/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/lab/todowhat/node_modules/underscore/underscore.js"}],"/home/andrew/lab/todowhat/todowhat/static/js/views/navigation/mobileStatus.js":[function(require,module,exports){
+var $ = require('jquery');
+var Backbone = require('backbone');
+var _ = require('underscore');
+var Todos = require('../../collections/todos');
+var template = require('../../../templates/mobilenavtemplate.html')
 
 /**
 * View for navigation links on small screens
@@ -33598,13 +33644,13 @@ module.exports = Backbone.View.extend({
     }
 });
 
-},{"../../templates/mobilenavtemplate.html":"/home/andrew/lab/todowhat/todowhat/static/templates/mobilenavtemplate.html","../collections/todos":"/home/andrew/lab/todowhat/todowhat/static/js/collections/todos.js","backbone":"/home/andrew/lab/todowhat/node_modules/backbone/backbone.js","jquery":"/home/andrew/lab/todowhat/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/lab/todowhat/node_modules/underscore/underscore.js"}],"/home/andrew/lab/todowhat/todowhat/static/js/views/nav.js":[function(require,module,exports){
+},{"../../../templates/mobilenavtemplate.html":"/home/andrew/lab/todowhat/todowhat/static/templates/mobilenavtemplate.html","../../collections/todos":"/home/andrew/lab/todowhat/todowhat/static/js/collections/todos.js","backbone":"/home/andrew/lab/todowhat/node_modules/backbone/backbone.js","jquery":"/home/andrew/lab/todowhat/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/lab/todowhat/node_modules/underscore/underscore.js"}],"/home/andrew/lab/todowhat/todowhat/static/js/views/navigation/status.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
-var Todos = require('../collections/todos');
-var GuestTodos = require('../collections/guesttodos');
-var template = require('../../templates/navtemplate.html');
+var Todos = require('../../collections/todos');
+var GuestTodos = require('../../collections/guesttodos');
+var template = require('../../../templates/navtemplate.html');
 
 /**
 * View for navigation links on large screens
@@ -33612,16 +33658,19 @@ var template = require('../../templates/navtemplate.html');
 module.exports = Backbone.View.extend({
     initialize: function() {
         this.listenTo(Backbone.eventBus, 'guestMode', this.guestMode);
+
         //listens for change in todos so navigation link can be disabled if necessary
         this.listenTo(Backbone.eventBus, 'statusChanged', this.render);
         this.listenTo(Todos, 'remove', this.render);
         this.listenTo(Todos, 'add', this.render);
+
         //listens for change in router so relevant navigation link is given active styling
         this.listenTo(Backbone.eventBus, 'routeChanged', this.render);
-        // this.render();
+
         GuestTodos.fetch();
         Todos.fetch();
     },
+
     render: function() {
         this.$el.html(template({
             //data for navigation links
@@ -33646,56 +33695,17 @@ module.exports = Backbone.View.extend({
 
             ]
         }));
+
         return this;
     },
+
     guestMode: function() {
         Todos = GuestTodos;
         this.render();
     }
 });
 
-},{"../../templates/navtemplate.html":"/home/andrew/lab/todowhat/todowhat/static/templates/navtemplate.html","../collections/guesttodos":"/home/andrew/lab/todowhat/todowhat/static/js/collections/guesttodos.js","../collections/todos":"/home/andrew/lab/todowhat/todowhat/static/js/collections/todos.js","backbone":"/home/andrew/lab/todowhat/node_modules/backbone/backbone.js","jquery":"/home/andrew/lab/todowhat/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/lab/todowhat/node_modules/underscore/underscore.js"}],"/home/andrew/lab/todowhat/todowhat/static/js/views/navbar.js":[function(require,module,exports){
-var $ = require('jquery');
-var Backbone = require('backbone');
-var _ = require('underscore');
-var Todos = require('../collections/todos');
-var MobileNavView = require('./mobilenav');
-var TagsView = require('./tags');
-var Tags = require('../collections/tags');
-var template = require('../../templates/navbartemplate.html')
-
-/**
-* View for top navigation bar - contains navigation links and tag list for small screens
-*/
-module.exports = Backbone.View.extend({
-	initialize: function() {
-		this.listenTo(Tags, 'add', this.renderMobileTags);
-		this.listenTo(Backbone.eventBus, 'statusChanged', this.renderMobileLinks);
-		this.listenTo(Backbone.eventBus, 'guestMode', this.guestMode);
-	},
-
-	render: function() {
-		this.$el.html(template({guest: this.guest}));
-        this.renderMobileLinks();
-        this.renderMobileTags();
-        return this;
-	},
-	guestMode: function() {
-		this.guest = true;
-		this.render();
-	},
-	//renders mobile navigation links
-	renderMobileLinks: function() {
-        this.$('.mobilelinks').html(new MobileNavView().render().el);
-	},
-
-	//renders mobile tags list
-	renderMobileTags: function() {
-        this.$('.taglist').html(new TagsView({collection: Tags}).render().el);
-	}
-});
-
-},{"../../templates/navbartemplate.html":"/home/andrew/lab/todowhat/todowhat/static/templates/navbartemplate.html","../collections/tags":"/home/andrew/lab/todowhat/todowhat/static/js/collections/tags.js","../collections/todos":"/home/andrew/lab/todowhat/todowhat/static/js/collections/todos.js","./mobilenav":"/home/andrew/lab/todowhat/todowhat/static/js/views/mobilenav.js","./tags":"/home/andrew/lab/todowhat/todowhat/static/js/views/tags.js","backbone":"/home/andrew/lab/todowhat/node_modules/backbone/backbone.js","jquery":"/home/andrew/lab/todowhat/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/lab/todowhat/node_modules/underscore/underscore.js"}],"/home/andrew/lab/todowhat/todowhat/static/js/views/search.js":[function(require,module,exports){
+},{"../../../templates/navtemplate.html":"/home/andrew/lab/todowhat/todowhat/static/templates/navtemplate.html","../../collections/guesttodos":"/home/andrew/lab/todowhat/todowhat/static/js/collections/guesttodos.js","../../collections/todos":"/home/andrew/lab/todowhat/todowhat/static/js/collections/todos.js","backbone":"/home/andrew/lab/todowhat/node_modules/backbone/backbone.js","jquery":"/home/andrew/lab/todowhat/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/lab/todowhat/node_modules/underscore/underscore.js"}],"/home/andrew/lab/todowhat/todowhat/static/js/views/search.js":[function(require,module,exports){
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
@@ -33808,7 +33818,7 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var TagView = require('./tag');
-var NavView = require('./nav');
+var NavView = require('./navigation/status');
 var tagsTemplate = require('../../templates/tagsTemplate.html');
 var Tags = require('../collections/tags');
 var GuestTags = require('../collections/guesttags');
@@ -33838,7 +33848,6 @@ module.exports = Backbone.View.extend({
     render: function() {
         //this.$el.empty();
         this.$el.html(tagsTemplate);
-
         Tags.each(function(t) {
                 var tagList = new TagView({ model: t });
                 this.$el.append(tagList.render().el);
@@ -33855,7 +33864,11 @@ module.exports = Backbone.View.extend({
     * tags associated with a user from the server
     */
     guestMode: function() {
+        this.stopListening(Tags);
         Tags = GuestTags;
+        this.listenTo(Tags, 'add', this.render);
+        this.listenTo(Tags, 'reset', this.render);
+        this.listenTo(Tags, 'remove', this.removeTagView);
         Tags.fetch();
         this.render();
     },
@@ -33886,7 +33899,7 @@ module.exports = Backbone.View.extend({
     }
 });
 
-},{"../../templates/tagsTemplate.html":"/home/andrew/lab/todowhat/todowhat/static/templates/tagsTemplate.html","../collections/guesttags":"/home/andrew/lab/todowhat/todowhat/static/js/collections/guesttags.js","../collections/tags":"/home/andrew/lab/todowhat/todowhat/static/js/collections/tags.js","./nav":"/home/andrew/lab/todowhat/todowhat/static/js/views/nav.js","./tag":"/home/andrew/lab/todowhat/todowhat/static/js/views/tag.js","backbone":"/home/andrew/lab/todowhat/node_modules/backbone/backbone.js","jquery":"/home/andrew/lab/todowhat/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/lab/todowhat/node_modules/underscore/underscore.js"}],"/home/andrew/lab/todowhat/todowhat/static/js/views/todo.js":[function(require,module,exports){
+},{"../../templates/tagsTemplate.html":"/home/andrew/lab/todowhat/todowhat/static/templates/tagsTemplate.html","../collections/guesttags":"/home/andrew/lab/todowhat/todowhat/static/js/collections/guesttags.js","../collections/tags":"/home/andrew/lab/todowhat/todowhat/static/js/collections/tags.js","./navigation/status":"/home/andrew/lab/todowhat/todowhat/static/js/views/navigation/status.js","./tag":"/home/andrew/lab/todowhat/todowhat/static/js/views/tag.js","backbone":"/home/andrew/lab/todowhat/node_modules/backbone/backbone.js","jquery":"/home/andrew/lab/todowhat/node_modules/jquery/dist/jquery.js","underscore":"/home/andrew/lab/todowhat/node_modules/underscore/underscore.js"}],"/home/andrew/lab/todowhat/todowhat/static/js/views/todo.js":[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var editView = require('./edit');
@@ -34025,7 +34038,7 @@ var GuestTags = require('../collections/guesttags');
 
 
 /**
-* View for list of todos
+* Todo list view controller
 */
 module.exports = Backbone.View.extend({
     el: '.todos',
@@ -34165,7 +34178,7 @@ var TodoView = require('./todo');
 
 
 /**
-* View for all todos in the collection
+* Base class for View for all todos in a collection
 */
 module.exports = Backbone.View.extend({
     initialize: function() {
@@ -34181,22 +34194,23 @@ module.exports = Backbone.View.extend({
     * Renders every todo in the todos collection.
     */
     render: function() {
-        // Clear all the filter actives
-        $('.list-group-item.active').removeClass('active');
-        this.$el.empty();
-
-        this.collection.each(function(todo) {
-            var todoview = new TodoView({
-                model: todo
-            });
-            this.$el.prepend(todoview.render().el);
-        }, this);
-
+        this.replaceTodosWith(this.collection);
         if (this.collection.last()) { //if collection is empty
             $('.search-todos').fadeIn();
         }
 
         return this;
+    },
+
+    replaceTodosWith: function(todos) {
+        // Clear all the filter actives
+        $('.list-group-item.active').removeClass('active');
+        this.$el.empty();
+
+        todos.each(function(todo) {
+            var todoview = new TodoView({ model: todo });
+            this.$el.prepend(todoview.render().el);
+        }, this);
     },
 
     addTodo: function(todo) {

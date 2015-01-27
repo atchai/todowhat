@@ -5,7 +5,7 @@ var GuestTags = require('../collections/guesttags')
 var Todos = require('../collections/todos')
 var GuestTodos = require('../collections/guesttodos')
 var TagsView = require('./tags');
-var NavView = require('./nav');
+var NavView = require('./navigation/status');
 var FormView = require('./form');
 var NavBarView = require('./navbar');
 var TodosView = require('./todos');
@@ -30,7 +30,6 @@ module.exports = Backbone.View.extend({
         this.$('.mainrow').append(new FormView().render().el);
         //renders the tag list on left side (large screens)
         this.$('.taglist').html(new TagsView().render().el);
-        console.log(Tags);
         //renders the navigation links on left side (large screens)
         this.$('#navlinks').html(new NavView().render().el);
     },

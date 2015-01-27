@@ -2,7 +2,7 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
 var TagView = require('./tag');
-var NavView = require('./nav');
+var NavView = require('./navigation/status');
 var tagsTemplate = require('../../templates/tagsTemplate.html');
 var Tags = require('../collections/tags');
 var GuestTags = require('../collections/guesttags');
@@ -32,7 +32,6 @@ module.exports = Backbone.View.extend({
     render: function() {
         //this.$el.empty();
         this.$el.html(tagsTemplate);
-
         Tags.each(function(t) {
                 var tagList = new TagView({ model: t });
                 this.$el.append(tagList.render().el);
@@ -49,7 +48,11 @@ module.exports = Backbone.View.extend({
     * tags associated with a user from the server
     */
     guestMode: function() {
+        this.stopListening(Tags);
         Tags = GuestTags;
+        this.listenTo(Tags, 'add', this.render);
+        this.listenTo(Tags, 'reset', this.render);
+        this.listenTo(Tags, 'remove', this.removeTagView);
         Tags.fetch();
         this.render();
     },

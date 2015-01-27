@@ -1,8 +1,8 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
 var _ = require('underscore');
-var NavView = require('./nav');
-var MobileNavView = require('./mobilenav');
+var NavView = require('./navigation/status');
+var MobileNavView = require('./navigation/mobileStatus');
 var Tags = require('../collections/tags');
 var GuestTags = require('../collections/guesttags');
 var GuestTodos = require('../collections/guesttodos');
@@ -20,7 +20,6 @@ module.exports = Backbone.View.extend({
 		"keyup #editfield": "liveUpdateTodo",
         "click .remove-reminder": "removeReminder",
         "click .activate-reminder-mode": "activateReminderMode"
-
     },
 
     initialize: function() {

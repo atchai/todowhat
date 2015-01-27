@@ -55,19 +55,19 @@ module.exports = Backbone.View.extend({
     */
 	addTodo: function(todoContent, tagsContent) {
         Todos.create(
-                {
-                    content: todoContent,
-                    order: Todos.newOrder(),
-                    tags: tagsContent
-                },
-                {
-                    //using .create so we must set wait:true so input can be validated by model
-                    wait: true,
-                    //if todo content was valid, see if tag(s) exists in collection so count can be updated appropriately
-                    success: function() {
-                         Tags.fetch();
-                    }
-                });
+            {
+                content: todoContent,
+                order: Todos.newOrder(),
+                tags: tagsContent
+            },
+            {
+                //using .create so we must set wait:true so input can be validated by model
+                wait: true,
+                //if todo content was valid, see if tag(s) exists in collection so count can be updated appropriately
+                success: function() {
+                        Tags.fetch();
+                }
+            });
 
         this.$todofield.val('');
         this.$tagsfield.val('');
@@ -82,7 +82,8 @@ module.exports = Backbone.View.extend({
             this.$(".submit").click();
             this.$("#todofield").focus();
         }
-        if (this.$('#todofield').val() !== "") {
+
+        if (this.$('#todofield').val()) {
             this.$('.submit').removeClass('disabled');
         } else {
             this.$('.submit').addClass('disabled');
