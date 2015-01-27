@@ -11,6 +11,7 @@ var Todos = require('../collections/todos');
 
 module.exports = Backbone.View.extend({
     tagName: 'span',
+
     events: {
         "click .save": "parseContent",
         "click .edit-add-tag": "showTagField",
@@ -27,6 +28,7 @@ module.exports = Backbone.View.extend({
     	this.tagsToRemoveArr = [];
         this.notifySupported = ("Notification" in window);
     },
+
     render: function() {
         this.$el.html(template({
             modalId: 'modal' + this.model.cid,

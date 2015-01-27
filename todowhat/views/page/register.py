@@ -35,6 +35,7 @@ class RegisterView(FlaskView):
                 return redirect(url_for('page.RegisterView:index'))
             db.session.add(user)
             db.session.commit()
+            print user
             print user.get_activation_link()
             flash("""
                     We\'ve sent you an email. Please click the link in the

@@ -14,7 +14,7 @@ class AuthView(FlaskView):
         """Check if a user is logged in."""
         if current_user.is_authenticated():
             return jsonify({"authenticated": True}), 200
-        return jsonify({"authenticated": False}), 400
+        return jsonify({"authenticated": False}), 401
 
     def get_serializer(self):
         return URLSafeSerializer(os.environ['SECRET_KEY'])

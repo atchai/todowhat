@@ -29,6 +29,8 @@ module.exports = Backbone.View.extend({
     render: function() {
         this.$el.empty();
         this.$el.append(tagsTemplate);
+        console.log('rendering');
+        console.log(GuestTags);
         Tags.each(function(t) {
             var tagList = new TagView({
                 model: t

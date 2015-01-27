@@ -5,15 +5,15 @@ class BaseConfiguration(object):
     """Shared configuration options for testing and development."""
 
     DEBUG = False
-    SECRET_KEY = os.environ['SECRET_KEY']
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'default_secret_key')
 
     # Email server settings
     MAIL_SERVER = 'smtp.mandrillapp.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = False
     MAIL_USE_SSL = False
-    MAIL_USERNAME = os.environ['MANDRILL_USERNAME']
-    MAIL_PASSWORD = os.environ['MANDRILL_APIKEY']
+    MAIL_USERNAME = os.environ.get('MANDRILL_USERNAME', 'app29765757@heroku.com')
+    MAIL_PASSWORD = os.environ.get('MANDRILL_APIKEY', 'MshbA-KuRKHJJavgOI7PLA')
     ON_HEROKU = False
 
 

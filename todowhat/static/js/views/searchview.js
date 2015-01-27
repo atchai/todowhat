@@ -4,6 +4,7 @@ var _ = require('underscore');
 var Tags = require('../collections/tags');
 var template = require('../../templates/searchtemplate.html');
 var Todos = require('../collections/todos');
+var GuestTodos = require('../collections/guesttodos');
 var TodosView = require ('./todosview');
 
 
@@ -17,10 +18,17 @@ module.exports = Backbone.View.extend({
 
 	initialize: function() {
 		this.render();
+
+        this.listenTo(Backbone.eventBus, 'guestMode', this.guestMode);
 		this.listenTo(Todos, 'remove', this.checkVisible);
 		this.listenTo(Todos, 'sync', this.checkVisible);
 
 	},
+
+    guestMode: function() {
+        this.isGuest = true;
+        Todos = GuestTodos;
+    },
 
 	render: function() {
 		this.$el.prepend(template());
