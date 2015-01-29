@@ -35,7 +35,6 @@ module.exports = Backbone.View.extend({
 	},
 
 	checkVisible: function() {
-		console.log('hi checking');
 		if (!Todos.last()) {//if collection is empty
             this.$el.addClass('hide');
 		} else {

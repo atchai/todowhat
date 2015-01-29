@@ -67,11 +67,9 @@ module.exports = Backbone.Router.extend({
      $.ajax("/auth", {
          type: "GET",
          success: function() {
-                 console.log('logged in');
             Backbone.eventBus.trigger('userMode');
          },
          error: function() {
-                 console.log('not logged in');
             Backbone.eventBus.trigger('guestMode');
          }
      });

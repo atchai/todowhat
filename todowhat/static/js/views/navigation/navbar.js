@@ -19,7 +19,6 @@ module.exports = Backbone.View.extend({
 	},
 
 	render: function() {
-        console.log('rendering');
 		this.$el.html(template({guest: this.guest}));
         this.renderMobileLinks();
         this.renderMobileTags();
