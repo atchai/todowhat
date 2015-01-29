@@ -39,7 +39,7 @@ module.exports = Backbone.Collection.extend({
         if (!letters) {
             return this;
         }
-        var pattern = new RegExp(letters, "gi");
+        var pattern = new RegExp(letters, "i");
         return new this.constructor(
             this.filter(function(data) {
                 return pattern.test(data.get("content"));
