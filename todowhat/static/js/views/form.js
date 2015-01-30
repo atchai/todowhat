@@ -68,8 +68,8 @@ module.exports = Backbone.View.extend({
                 }
             });
 
-        this.$todofield.val('');
-        this.$tagsfield.val('');
+        this.$('#todofield').val('');
+        this.$('#tagsfield').val('');
         this.$('.submit').addClass('disabled');
 
     },
