@@ -32,14 +32,13 @@ module.exports = Backbone.View.extend({
 
     parseInput: function(e) {
         e.preventDefault();
+
         //cache input fields
-        this.$todofield = this.$('#todofield');
-        this.$tagsfield = this.$('#tagsfield');
-        var todoContent, tagsContent;
-        todoContent = this.$todofield.val();
-        tagsContent = this.$tagsfield.val();
+        var todoContent = this.$('#todofield').val(),
+            tagsContent = this.$('#tagsfield').val();
+
         //grabs tag values deliminated by commas and removes whitespace & repeats
-        tagsContent = Tags.parseTags(this.$tagsfield.val());
+        tagsContent = Tags.parseTags(this.$('#tagsfield').val());
         if (this.isGuest) {
             tagsContent.forEach(function(tag) {
                 GuestTags.exist(tag);
@@ -61,11 +60,11 @@ module.exports = Backbone.View.extend({
                 tags: tagsContent
             },
             {
-                //using .create so we must set wait:true so input can be validated by model
+                //using Backbone collection.create so we must set wait:true so input can be validated by model
                 wait: true,
                 //if todo content was valid, see if tag(s) exists in collection so count can be updated appropriately
                 success: function() {
-                        Tags.fetch();
+                    Tags.fetch();
                 }
             });
 
@@ -74,11 +73,12 @@ module.exports = Backbone.View.extend({
         this.$('.submit').addClass('disabled');
 
     },
+
     /**
     * clicks add todo button if enter key is pressed, toggles button appearance
     */
     keyPressEventHandler: function(event) {
-        if (event.keyCode == 13) {
+        if (event.keyCode == 13 && this.$('#todofield').val()) {
             this.$(".submit").click();
             this.$("#todofield").focus();
         }

@@ -5,6 +5,7 @@ from werkzeug import check_password_hash
 from itsdangerous import URLSafeSerializer
 from sqlalchemy.orm import validates
 from flask import url_for
+from flask import current_app as app
 
 
 class User(db.Model):
@@ -40,7 +41,7 @@ class User(db.Model):
         return username
 
     def get_serializer(self):
-        return URLSafeSerializer(os.environ['SECRET_KEY'])
+        return URLSafeSerializer(app.config['SECRET_KEY'])
 
     def get_activation_link(self):
         s = self.get_serializer()

@@ -33446,14 +33446,13 @@ module.exports = Backbone.View.extend({
 
     parseInput: function(e) {
         e.preventDefault();
+
         //cache input fields
-        this.$todofield = this.$('#todofield');
-        this.$tagsfield = this.$('#tagsfield');
-        var todoContent, tagsContent;
-        todoContent = this.$todofield.val();
-        tagsContent = this.$tagsfield.val();
+        var todoContent = this.$('#todofield').val(),
+            tagsContent = this.$('#tagsfield').val();
+
         //grabs tag values deliminated by commas and removes whitespace & repeats
-        tagsContent = Tags.parseTags(this.$tagsfield.val());
+        tagsContent = Tags.parseTags(this.$('#tagsfield').val());
         if (this.isGuest) {
             tagsContent.forEach(function(tag) {
                 GuestTags.exist(tag);
@@ -33475,11 +33474,11 @@ module.exports = Backbone.View.extend({
                 tags: tagsContent
             },
             {
-                //using .create so we must set wait:true so input can be validated by model
+                //using Backbone collection.create so we must set wait:true so input can be validated by model
                 wait: true,
                 //if todo content was valid, see if tag(s) exists in collection so count can be updated appropriately
                 success: function() {
-                        Tags.fetch();
+                    Tags.fetch();
                 }
             });
 
@@ -33488,11 +33487,12 @@ module.exports = Backbone.View.extend({
         this.$('.submit').addClass('disabled');
 
     },
+
     /**
     * clicks add todo button if enter key is pressed, toggles button appearance
     */
     keyPressEventHandler: function(event) {
-        if (event.keyCode == 13) {
+        if (event.keyCode == 13 && this.$('#todofield').val()) {
             this.$(".submit").click();
             this.$("#todofield").focus();
         }
@@ -33687,12 +33687,10 @@ module.exports = Backbone.View.extend({
 	},
 
 	initialize: function() {
-		this.render();
-
         this.listenTo(Backbone.eventBus, 'guestMode', this.guestMode);
 		this.listenTo(Todos, 'remove', this.checkVisible);
 		this.listenTo(Todos, 'sync', this.checkVisible);
-
+		this.render();
 	},
 
     guestMode: function() {
@@ -33723,9 +33721,9 @@ module.exports = Backbone.View.extend({
         	this.resetSearch();
         }
 
-        var thing = Todos.search(searchTerm);
-        this.searchedView = new TodosView({collection: thing});
-        this.$('#todoul').html(this.searchedView.render().el);
+        var filteredTodos = Todos.search(searchTerm);
+        this.searchView = new TodosView({collection: filteredTodos});
+        this.$('#todoul').html(this.searchView.render().el);
     }, 800),
 
 	/**
@@ -33734,7 +33732,7 @@ module.exports = Backbone.View.extend({
 	*/
     resetSearch: function() {
     	this.$('.search-field').val('');
-    	this.searchedView.remove();
+    	this.searchView.remove();
     	Backbone.eventBus.trigger('filterAll');
     }
 })

@@ -16,12 +16,10 @@ module.exports = Backbone.View.extend({
 	},
 
 	initialize: function() {
-		this.render();
-
         this.listenTo(Backbone.eventBus, 'guestMode', this.guestMode);
 		this.listenTo(Todos, 'remove', this.checkVisible);
 		this.listenTo(Todos, 'sync', this.checkVisible);
-
+		this.render();
 	},
 
     guestMode: function() {
@@ -52,9 +50,9 @@ module.exports = Backbone.View.extend({
         	this.resetSearch();
         }
 
-        var thing = Todos.search(searchTerm);
-        this.searchedView = new TodosView({collection: thing});
-        this.$('#todoul').html(this.searchedView.render().el);
+        var filteredTodos = Todos.search(searchTerm);
+        this.searchView = new TodosView({collection: filteredTodos});
+        this.$('#todoul').html(this.searchView.render().el);
     }, 800),
 
 	/**
@@ -63,7 +61,7 @@ module.exports = Backbone.View.extend({
 	*/
     resetSearch: function() {
     	this.$('.search-field').val('');
-    	this.searchedView.remove();
+    	this.searchView.remove();
     	Backbone.eventBus.trigger('filterAll');
     }
 })
